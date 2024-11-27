@@ -1,4 +1,4 @@
-import { Marquee } from '@gfazioli/mantine-marquee';
+import { Parallax } from '@gfazioli/mantine-parallax';
 import { Avatar, Card, Group, Rating, Stack, Text, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 import { ReactNode } from 'react';
@@ -75,18 +75,18 @@ function Wrapper(props: any) {
   }
 
   return (
-    <Marquee w={800} pauseOnHover fadeEdges>
+    <Parallax w={800} pauseOnHover fadeEdges>
       {testimonials.map(({ text, ...testimonial }, index) => (
         <BoxComponent key={index} {...testimonial}>
           {text}
         </BoxComponent>
       ))}
-    </Marquee>
+    </Parallax>
   );
 }
 
 const code = `
-import { Marquee } from '@gfazioli/mantine-marquee';
+import { Parallax } from '@gfazioli/mantine-parallax';
 import { Avatar, Card, Group, Rating, Stack, Text, Title } from '@mantine/core';
 import { ReactNode } from 'react';
 
@@ -162,13 +162,13 @@ function Demo() {
   }
 
   return (
-    <Marquee w={800} pauseOnHover fadeEdges>
+    <Parallax w={800} pauseOnHover fadeEdges>
       {testimonials.map(({ text, ...testimonial }, index) => (
         <BoxComponent key={index} {...testimonial}>
           {text}
         </BoxComponent>
       ))}
-    </Marquee>
+    </Parallax>
   );
 }
 `;

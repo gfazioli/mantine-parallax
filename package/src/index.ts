@@ -1,8 +1,9 @@
-export { Marquee } from './Marquee';
+export { Parallax } from './Parallax';
 export type {
-  MarqueeBaseProps,
-  MarqueeCssVariables,
-  MarqueeFactory,
-  MarqueeProps,
-  MarqueeStylesNames,
-} from './Marquee';
+    ParallaxBaseProps,
+    ParallaxCssVariables,
+    ParallaxFactory,
+    ParallaxProps,
+    ParallaxStylesNames
+} from './Parallax';
+

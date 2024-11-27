@@ -12,8 +12,8 @@ export default function HomePage() {
       <PageHeader data={PACKAGE_DATA} />
       <DocsTabs
         docgen={docgen}
-        componentsProps={['Marquee']}
-        componentsStyles={['Marquee']}
+        componentsProps={['Parallax']}
+        componentsStyles={['Parallax']}
         stylesApiData={STYLES_API_DATA}
       >
         <Docs />

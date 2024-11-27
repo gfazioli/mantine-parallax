@@ -1,14 +1,14 @@
-import { Marquee } from '@gfazioli/mantine-marquee';
+import { Parallax } from '@gfazioli/mantine-parallax';
 import { ThemeIcon } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 import {
-  IconBrand4chan,
-  IconBrandAmazon,
-  IconBrandBing,
-  IconBrandGithub,
-  IconBrandMantine,
-  IconBrandWhatsapp,
-  IconBrandWordpress,
+    IconBrand4chan,
+    IconBrandAmazon,
+    IconBrandBing,
+    IconBrandGithub,
+    IconBrandMantine,
+    IconBrandWhatsapp,
+    IconBrandWordpress,
 } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 
@@ -32,16 +32,16 @@ function Wrapper(props: any) {
   }
 
   return (
-    <Marquee w={800} pauseOnHover fadeEdges>
+    <Parallax w={800} pauseOnHover fadeEdges>
       {iconsBrand.map((icon, index) => (
         <BoxComponent key={index}>{icon}</BoxComponent>
       ))}
-    </Marquee>
+    </Parallax>
   );
 }
 
 const code = `
-import { Marquee } from '@gfazioli/mantine-marquee';
+import { Parallax } from '@gfazioli/mantine-parallax';
 
 function Demo() {
   const iconsBrand = [
@@ -63,11 +63,11 @@ function Demo() {
   }
 
   return (
-    <Marquee w={800} pauseOnHover fadeEdges>
+    <Parallax w={800} pauseOnHover fadeEdges>
       {iconsBrand.map((icon, index) => (
         <BoxComponent key={index}>{icon}</BoxComponent>
       ))}
-    </Marquee>
+    </Parallax>
   );
 }
 `;

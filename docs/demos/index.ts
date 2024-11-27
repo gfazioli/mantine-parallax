@@ -1,5 +1,6 @@
-export { configurator } from './Marquee.demo.configurator';
-export { example } from './Marquee.demo.example';
-export { feedbacks } from './Marquee.demo.feedbacks';
-export { multiple } from './Marquee.demo.multiple';
-export { multipleVertical } from './Marquee.demo.multiple-vertical';
+export { configurator } from './Parallax.demo.configurator';
+export { example } from './Parallax.demo.example';
+export { feedbacks } from './Parallax.demo.feedbacks';
+export { multiple } from './Parallax.demo.multiple';
+export { multipleVertical } from './Parallax.demo.multiple-vertical';
+

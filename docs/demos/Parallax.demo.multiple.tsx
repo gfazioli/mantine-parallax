@@ -1,4 +1,4 @@
-import { Marquee } from '@gfazioli/mantine-marquee';
+import { Parallax } from '@gfazioli/mantine-parallax';
 import { Box } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 import { ReactNode } from 'react';
@@ -14,24 +14,24 @@ function Wrapper(props: any) {
 
   return (
     <>
-      <Marquee w={800} mb={16} fadeEdges>
+      <Parallax w={800} mb={16} fadeEdges>
         <BoxComponent bg="red">Hello World #1</BoxComponent>
         <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
         <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
         <BoxComponent bg="lime">Goodbye #4</BoxComponent>
-      </Marquee>
-      <Marquee reverse w={800} fadeEdges>
+      </Parallax>
+      <Parallax reverse w={800} fadeEdges>
         <BoxComponent bg="red">Hello World #1</BoxComponent>
         <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
         <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
         <BoxComponent bg="lime">Goodbye #4</BoxComponent>
-      </Marquee>
+      </Parallax>
     </>
   );
 }
 
 const code = `
-import { Marquee } from '@gfazioli/mantine-marquee';
+import { Parallax } from '@gfazioli/mantine-parallax';
 
 function Demo() {
   function BoxComponent({ children, ...props }: { children: ReactNode; [key: string]: any }) {
@@ -44,18 +44,18 @@ function Demo() {
 
   return (
     <>
-      <Marquee w={800} mb={16} fadeEdges>
+      <Parallax w={800} mb={16} fadeEdges>
         <BoxComponent bg="red">Hello World #1</BoxComponent>
         <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
         <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
         <BoxComponent bg="lime">Goodbye #4</BoxComponent>
-      </Marquee>
-      <Marquee reverse w={800} fadeEdges>
+      </Parallax>
+      <Parallax reverse w={800} fadeEdges>
         <BoxComponent bg="red">Hello World #1</BoxComponent>
         <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
         <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
         <BoxComponent bg="lime">Goodbye #4</BoxComponent>
-      </Marquee>
+      </Parallax>
     </>
   );
 }

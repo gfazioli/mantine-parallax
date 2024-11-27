@@ -1,8 +1,8 @@
 {
-  "name": "@gfazioli/mantine-marquee",
+  "name": "@gfazioli/mantine-parallax",
   "version": "2.0.8",
-  "description": "Marquee component is a wrapper for any component that can be flipped. It is used to create cards, flip boxes and more.",
-  "homepage": "https://gfazioli.github.io/mantine-marquee/",
+  "description": "Parallax component is a wrapper for any component that can be flipped. It is used to create cards, flip boxes and more.",
+  "homepage": "https://gfazioli.github.io/mantine-parallax/",
   "packageManager": "yarn@4.0.1",
   "license": "MIT",
   "author": "Giovambattista Fazioli <giovambattista.fazioli@gmail.com>",
@@ -13,7 +13,7 @@
     "typescript",
     "react-component",
     "animation",
-    "marquee",
+    "parallax",
     "scroll",
     "branding"
   ],
@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gfazioli/mantine-marquee.git"
+    "url": "https://github.com/gfazioli/mantine-parallax.git"
   },
   "workspaces": [
     "docs"
@@ -47,5 +47,5 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
-  "bugs": "https://github.com/gfazioli/mantine-marquee/issues"
+  "bugs": "https://github.com/gfazioli/mantine-parallax/issues"
 }

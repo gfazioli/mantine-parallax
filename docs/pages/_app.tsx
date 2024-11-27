@@ -12,7 +12,7 @@ import Head from 'next/head';
 import favicon from '../assets/favicon.svg';
 import { theme } from '../theme';
 
-import '@gfazioli/mantine-marquee/styles.css';
+import '@gfazioli/mantine-parallax/styles.css';
 import { Footer } from '../components/Footer';
 
 async function loadShiki() {
@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <MantineProvider theme={theme}>
       <Head>
-        <title>Mantine Marquee</title>
+        <title>Mantine Parallax</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"

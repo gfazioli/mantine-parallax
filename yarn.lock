@@ -2566,9 +2566,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gfazioli/mantine-marquee@workspace:*, @gfazioli/mantine-marquee@workspace:package":
+"@gfazioli/mantine-parallax@workspace:*, @gfazioli/mantine-parallax@workspace:package":
   version: 0.0.0-use.local
-  resolution: "@gfazioli/mantine-marquee@workspace:package"
+  resolution: "@gfazioli/mantine-parallax@workspace:package"
   peerDependencies:
     "@mantine/core": ">=7.0.0"
     "@mantine/hooks": ">=7.0.0"
@@ -12715,7 +12715,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "mantine-minimal-next-template@workspace:docs"
   dependencies:
-    "@gfazioli/mantine-marquee": "workspace:*"
+    "@gfazioli/mantine-parallax": "workspace:*"
     "@mantine/core": "npm:7.14.0"
     "@mantine/dates": "npm:^7.14.0"
     "@mantine/hooks": "npm:7.14.0"

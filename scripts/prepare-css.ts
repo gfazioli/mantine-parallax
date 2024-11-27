@@ -14,7 +14,7 @@ const content = fs.readFileSync(rollupCssFilePath, 'utf-8');
 fs.writeFileSync(path.join(process.cwd(), './package/dist/styles.css'), content);
 fs.writeFileSync(
   path.join(process.cwd(), './package/dist/styles.layer.css'),
-  `@layer mantine-marquee {${content}}`
+  `@layer mantine-parallax {${content}}`
 );
 
 fs.removeSync(rollupCssFilePath);

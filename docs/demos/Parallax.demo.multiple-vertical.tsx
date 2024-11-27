@@ -1,4 +1,4 @@
-import { Marquee } from '@gfazioli/mantine-marquee';
+import { Parallax } from '@gfazioli/mantine-parallax';
 import { Box, Flex } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 import { ReactNode } from 'react';
@@ -14,24 +14,24 @@ function Wrapper(props: any) {
 
   return (
     <Flex w={500}>
-      <Marquee h={300} fadeEdges vertical>
+      <Parallax h={300} fadeEdges vertical>
         <BoxComponent bg="red">Hello World #1</BoxComponent>
         <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
         <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
         <BoxComponent bg="lime">Goodbye #4</BoxComponent>
-      </Marquee>
-      <Marquee h={300} reverse fadeEdges vertical>
+      </Parallax>
+      <Parallax h={300} reverse fadeEdges vertical>
         <BoxComponent bg="red">Hello World #1</BoxComponent>
         <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
         <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
         <BoxComponent bg="lime">Goodbye #4</BoxComponent>
-      </Marquee>
+      </Parallax>
     </Flex>
   );
 }
 
 const code = `
-import { Marquee } from '@gfazioli/mantine-marquee';
+import { Parallax } from '@gfazioli/mantine-parallax';
 
   function BoxComponent({ children, ...props }: { children: ReactNode; [key: string]: any }) {
     return (
@@ -43,18 +43,18 @@ import { Marquee } from '@gfazioli/mantine-marquee';
 
   return (
     <Flex w={500}>
-      <Marquee h={300} fadeEdges vertical>
+      <Parallax h={300} fadeEdges vertical>
         <BoxComponent bg="red">Hello World #1</BoxComponent>
         <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
         <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
         <BoxComponent bg="lime">Goodbye #4</BoxComponent>
-      </Marquee>
-      <Marquee h={300} reverse fadeEdges vertical>
+      </Parallax>
+      <Parallax h={300} reverse fadeEdges vertical>
         <BoxComponent bg="red">Hello World #1</BoxComponent>
         <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
         <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
         <BoxComponent bg="lime">Goodbye #4</BoxComponent>
-      </Marquee>
+      </Parallax>
     </Flex>
   );
 }
