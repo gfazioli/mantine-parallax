@@ -1,0 +1,55 @@
+import { InstallScript } from './components/InstallScript/InstallScript';
+import * as demos from './demos';
+
+## Installation
+
+<InstallScript packages="@gfazioli/mantine-marquee" />
+
+After installation import package styles at the root of your application:
+
+```tsx
+import '@gfazioli/mantine-marquee/styles.css';
+```
+
+You can import styles within a layer `@layer mantine-marquee` by importing `@gfazioli/mantine-marquee/styles.layer.css` file. 
+
+```tsx
+import '@gfazioli/mantine-marquee/styles.layer.css';
+```
+
+
+
+## Usage
+
+The `Marquee` component allows you to create a marquee effect with any content.
+
+
+<Demo data={demos.configurator} />
+
+## Multiple
+
+The `Marquee` component allows you to create a marquee effect with multiple items.
+
+<Demo data={demos.multiple} />
+
+### Vertical
+
+The `Marquee` component allows you to create a marquee effect with multiple items in vertical direction.
+
+<Demo data={demos.multipleVertical} />
+
+## Examples
+
+### Testimonials
+
+Your customers feedback is important to you. Use Marquee to display your testimonials.
+
+<Demo data={demos.feedbacks} />
+
+### Branding
+
+One of the most common use cases for `Marquee` is to create branding banners.
+
+<Demo data={demos.example} />
+
+
