@@ -2,11 +2,14 @@ import {
   Box,
   BoxProps,
   Factory,
+  MantineColor,
   MantineStyleProp,
   StylesApiProps,
   createVarsResolver,
   factory,
   getSize,
+  getThemeColor,
+  useMantineTheme,
   useProps,
   useStyles,
 } from "@mantine/core";
@@ -84,6 +87,12 @@ export interface ParallaxBaseProps {
   lightSize?: number;
 
   /**
+   * The color of the light effect.
+   * @default 'white'
+   */
+  lightColor?: MantineColor;
+
+  /**
    * The content to be rendered inside the parallax component.
    */
   children?: React.ReactNode;
@@ -136,6 +145,8 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [lightPosition, setLightPosition] = useState({ x: 50, y: 50 });
 
+  const theme = useMantineTheme();
+
   const {
     threshold = 15,
     perspective = 1000,
@@ -147,6 +158,7 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     backgroundImage,
     lightIntensity = 0.2,
     lightSize = 50,
+    lightColor = "white",
 
     classNames,
     style,
@@ -192,7 +204,6 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
   }, [mousePosition, isHovering, threshold, lightEffect]);
 
   const handleMouseEnter = () => {
-    console.log("handleMouseEnter");
     setIsHovering(true);
   };
   const handleMouseLeave = () => {
@@ -225,7 +236,7 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
         bottom: 0,
         pointerEvents: "none",
         zIndex: 999,
-        background: `radial-gradient(circle at ${lightPosition.x}% ${lightPosition.y}%, rgba(255,255,255,${lightIntensity}) 0%, rgba(255,255,255,0) ${lightSize}%)`,
+        background: `radial-gradient(circle at ${lightPosition.x}% ${lightPosition.y}%, ${getThemeColor(lightColor, theme)} ${lightIntensity * 100}%, rgba(255,255,255,0) ${lightSize}%)`,
         transition: "background 0.3s ease-out",
       }
     : {};

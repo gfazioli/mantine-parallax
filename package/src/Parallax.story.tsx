@@ -10,6 +10,7 @@ export default {
     lightEffect: true,
     lightIntensity: 0.2,
     lightSize: 50,
+    lightColor: "rgba(255, 255, 255, .1)",
     backgroundParallax: true,
     backgroundParallaxThreshold: 0,
     parallax: true,
@@ -33,6 +34,7 @@ export default {
     lightEffect: { control: { type: "boolean" } },
     backgroundParallax: { control: { type: "boolean" } },
     parallax: { control: { type: "boolean" } },
+    lightColor: { control: { type: "color" } },
   },
 };
 
