@@ -126,12 +126,12 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
 
   const {
     threshold = 15,
-    lightEffect = true,
     perspective = 1000,
+    lightEffect = true,
     backgroundParallax = true,
-    parallax = true,
-    parallaxDistance = 50,
     backgroundParallaxThreshold = 1,
+    parallax = true,
+    parallaxDistance = 1,
     backgroundImage,
 
     classNames,
@@ -193,15 +193,12 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     transform: isHovering
       ? `perspective(${perspective}px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
       : "perspective(1000px) rotateX(0deg) rotateY(0deg)",
-    backgroundImage: backgroundImage,
+    backgroundImage: backgroundImage ? backgroundImage : undefined,
     backgroundPosition:
       isHovering && backgroundParallax
         ? `${50 + rotation.y * backgroundParallaxThreshold}% ${50 - rotation.x * backgroundParallaxThreshold}%`
         : "center center",
     transformStyle: "preserve-3d",
-    backgroundColor: "white",
-    borderRadius: "8px",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
     overflow: "visible",
   };
 
@@ -213,6 +210,7 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
         right: 0,
         bottom: 0,
         pointerEvents: "none",
+        zIndex: 999,
         background: `radial-gradient(circle at ${lightPosition.x}% ${lightPosition.y}%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%)`,
         transition: "background 0.3s ease-out",
       }
@@ -245,12 +243,13 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     zIndex: 1,
     transformStyle: "preserve-3d",
     overflow: "visible",
-    padding: "20px",
   };
 
   return (
     <Box
       ref={cardRef}
+      w={props.w}
+      h={props.h}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
