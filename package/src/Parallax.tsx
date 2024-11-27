@@ -72,6 +72,18 @@ export interface ParallaxBaseProps {
   backgroundImage?: string;
 
   /**
+   * The intensity of the light effect.
+   * @default 0.2
+   */
+  lightIntensity?: number;
+
+  /**
+   * The size of the light effect.
+   * @default 50
+   */
+  lightSize?: number;
+
+  /**
    * The content to be rendered inside the parallax component.
    */
   children?: React.ReactNode;
@@ -133,6 +145,8 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     parallax = true,
     parallaxDistance = 1,
     backgroundImage,
+    lightIntensity = 0.2,
+    lightSize = 50,
 
     classNames,
     style,
@@ -211,7 +225,7 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
         bottom: 0,
         pointerEvents: "none",
         zIndex: 999,
-        background: `radial-gradient(circle at ${lightPosition.x}% ${lightPosition.y}%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%)`,
+        background: `radial-gradient(circle at ${lightPosition.x}% ${lightPosition.y}%, rgba(255,255,255,${lightIntensity}) 0%, rgba(255,255,255,0) ${lightSize}%)`,
         transition: "background 0.3s ease-out",
       }
     : {};

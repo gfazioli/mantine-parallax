@@ -8,6 +8,8 @@ export default {
     threshold: 40,
     perspective: 1000,
     lightEffect: true,
+    lightIntensity: 0.2,
+    lightSize: 50,
     backgroundParallax: true,
     backgroundParallaxThreshold: 0,
     parallax: true,
@@ -18,6 +20,12 @@ export default {
     perspective: { control: { type: "range", min: 1, max: 2000, step: 1 } },
     parallaxDistance: {
       control: { type: "range", min: 0, max: 10, step: 0.01 },
+    },
+    lightIntensity: {
+      control: { type: "range", min: 0, max: 1, step: 0.01 },
+    },
+    lightSize: {
+      control: { type: "range", min: 0, max: 100, step: 0.1 },
     },
     backgroundParallaxThreshold: {
       control: { type: "range", min: -10, max: 10, step: 0.01 },
