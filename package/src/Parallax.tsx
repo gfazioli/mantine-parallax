@@ -93,6 +93,18 @@ export interface ParallaxBaseProps {
   lightColor?: MantineColor;
 
   /**
+   * The type of gradient for the light effect.
+   * @default 'radial'
+   */
+  lightGradientType?: "radial" | "linear";
+
+  /**
+   * The angle of the light gradient.
+   * @default 0
+   */
+  lightGradientAngle?: number;
+
+  /**
    * The content to be rendered inside the parallax component.
    */
   children?: React.ReactNode;
@@ -159,6 +171,8 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     lightIntensity = 0.2,
     lightSize = 50,
     lightColor = "white",
+    lightGradientType = "radial",
+    lightGradientAngle = 0,
 
     classNames,
     style,
@@ -227,6 +241,14 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     overflow: "visible",
   };
 
+  const lightGradientColor = getThemeColor(lightColor, theme);
+
+  const gradients = {
+    radial: `radial-gradient(circle at ${lightPosition.x}% ${lightPosition.y}%, ${lightGradientColor} ${lightIntensity * 100}%, rgba(255,255,255,0) ${lightSize}%)`,
+
+    linear: `linear-gradient(${lightGradientAngle}deg, rgba(255,255,255,0) 0%, ${lightGradientColor} ${lightPosition.x}%, rgba(255,255,255,0) 100%)`,
+  };
+
   const lightStyle: React.CSSProperties = lightEffect
     ? {
         position: "absolute",
@@ -236,7 +258,7 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
         bottom: 0,
         pointerEvents: "none",
         zIndex: 999,
-        background: `radial-gradient(circle at ${lightPosition.x}% ${lightPosition.y}%, ${getThemeColor(lightColor, theme)} ${lightIntensity * 100}%, rgba(255,255,255,0) ${lightSize}%)`,
+        background: gradients[lightGradientType],
         transition: "background 0.3s ease-out",
       }
     : {};

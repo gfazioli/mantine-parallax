@@ -11,6 +11,8 @@ export default {
     lightIntensity: 0.2,
     lightSize: 50,
     lightColor: "rgba(255, 255, 255, .1)",
+    lightGradientType: "radial",
+    lightGradientAngle: 0,
     backgroundParallax: true,
     backgroundParallaxThreshold: 0,
     parallax: true,
@@ -31,10 +33,17 @@ export default {
     backgroundParallaxThreshold: {
       control: { type: "range", min: -10, max: 10, step: 0.01 },
     },
+    lightGradientAngle: {
+      control: { type: "range", min: -360, max: 360, step: 0.1 },
+    },
     lightEffect: { control: { type: "boolean" } },
     backgroundParallax: { control: { type: "boolean" } },
     parallax: { control: { type: "boolean" } },
     lightColor: { control: { type: "color" } },
+    lightGradientType: {
+      control: { type: "inline-radio" },
+      options: ["radial", "linear"],
+    },
   },
 };
 
@@ -51,6 +60,26 @@ export function Usage(props: ParallaxProps) {
       >
         <Title c="blue">Parallax Card Parallax</Title>
         <Text c="white">Hover to see the effect</Text>
+      </Parallax>
+    </div>
+  );
+}
+
+export function Shadow(props: ParallaxProps) {
+  return (
+    <div style={{ padding: "2rem", display: "block" }}>
+      <Parallax
+        {...props}
+        w={300}
+        h={200}
+        style={{
+          backgroundColor: "rgba(255,255,255, 1)",
+        }}
+      >
+        <Title c="blue">Parallax Card Parallax</Title>
+        <Text data-shadow c="tomato">
+          Hover to see the effect
+        </Text>
       </Parallax>
     </div>
   );
