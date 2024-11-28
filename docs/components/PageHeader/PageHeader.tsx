@@ -1,16 +1,16 @@
-import { Badge, Container, Text, Title } from "@mantine/core";
-import { GithubIcon, NpmIcon } from "@mantinex/dev-icons";
+import { Badge, Container, Text, Title } from '@mantine/core';
+import { GithubIcon, NpmIcon } from '@mantinex/dev-icons';
 import {
   IconEdit,
   IconLicense,
   IconPackage,
   IconUserCode,
   IconVersions,
-} from "@tabler/icons-react";
-import pack from "../../../package/package.json";
-import type { PackageData } from "../../data";
-import classes from "./PageHeader.module.css";
-import { PageHeaderLink } from "./PageHeaderLink/PageHeaderLink";
+} from '@tabler/icons-react';
+import pack from '../../../package/package.json';
+import type { PackageData } from '../../data';
+import classes from './PageHeader.module.css';
+import { PageHeaderLink } from './PageHeaderLink/PageHeaderLink';
 
 interface PageHeaderProps {
   data: PackageData;
@@ -47,7 +47,7 @@ export function PageHeader({ data }: PageHeaderProps) {
           <PageHeaderLink
             label="See More"
             icon={<IconPackage size={16} />}
-            link={`https://mantine-extensions.vercel.app/`}
+            link="https://mantine-extensions.vercel.app/"
           >
             Mantine Extensions
           </PageHeaderLink>
@@ -63,7 +63,7 @@ export function PageHeader({ data }: PageHeaderProps) {
             icon={<IconUserCode size={18} stroke={1.5} />}
             link={`https://github.com/${data.author.githubUsername}`}
           >
-            {data.author.name}{" "}
+            {data.author.name}{' '}
             <Text span c="dimmed" inherit>
               (@{data.author.githubUsername})
             </Text>

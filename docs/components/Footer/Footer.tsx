@@ -1,10 +1,10 @@
-import { Button, Center, Container, Divider, Group } from "@mantine/core";
+import { Button, Center, Container, Divider, Group } from '@mantine/core';
 import {
   IconBrandMantine,
   IconComponents,
   IconMailStar,
-} from "@tabler/icons-react";
-import classes from "./Footer.module.css";
+} from '@tabler/icons-react';
+import classes from './Footer.module.css';
 
 interface FooterProps {
   children?: React.ReactNode;
@@ -21,8 +21,8 @@ export function Footer({ children }: FooterProps) {
               title="Sponsor gfazioli"
               height="32"
               width="114"
-              style={{ border: 0, borderRadius: "6px" }}
-            ></iframe>
+              style={{ border: 0, borderRadius: '6px' }}
+            />
             <Divider orientation="vertical" color="dark.5" />
             <Button
               component="a"
@@ -69,7 +69,7 @@ export function Footer({ children }: FooterProps) {
               src="https://undolog.com/embed"
               width="100%"
               height="320"
-              style={{ border: "none", background: "white" }}
+              style={{ border: 'none', background: 'white' }}
             />
           </Center>
         </Container>

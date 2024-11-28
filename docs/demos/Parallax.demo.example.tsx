@@ -25,7 +25,7 @@ function Wrapper(props: any) {
 
   function BoxComponent({ children, ...props }: { children: ReactNode; [key: string]: any }) {
     return (
-      <ThemeIcon {...props} variant="transparent" size={'120px'}>
+      <ThemeIcon {...props} variant="transparent" size="120px">
         {children}
       </ThemeIcon>
     );

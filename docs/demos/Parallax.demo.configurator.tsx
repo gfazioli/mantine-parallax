@@ -1,8 +1,8 @@
-import { Parallax } from "@gfazioli/mantine-parallax";
-import { Box, Title } from "@mantine/core";
-import { MantineDemo } from "@mantinex/demo";
+import { Parallax } from '@gfazioli/mantine-parallax';
+import { Box, Title } from '@mantine/core';
+import { MantineDemo } from '@mantinex/demo';
 
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 function Wrapper(props: any) {
   function BoxComponent({
@@ -18,7 +18,7 @@ function Wrapper(props: any) {
         p="md"
         w="200px"
         c="white"
-        style={{ borderRadius: "8px" }}
+        style={{ borderRadius: '8px' }}
       >
         {children}
       </Box>
@@ -29,11 +29,11 @@ function Wrapper(props: any) {
     <div>
       <Parallax
         threshold={40}
-        lightEffect={true}
+        lightEffect
         perspective={1200}
-        backgroundParallax={true}
+        backgroundParallax
         parallaxDistance={5}
-        parallax={true}
+        parallax
       >
         <Title>Parallax</Title>
       </Parallax>
@@ -65,13 +65,13 @@ function Demo() {
 `;
 
 export const configurator: MantineDemo = {
-  type: "configurator",
+  type: 'configurator',
   component: Wrapper,
   code,
   controls: [
     {
-      prop: "perspective",
-      type: "number",
+      prop: 'perspective',
+      type: 'number',
       initialValue: 1000,
       libraryValue: 1000,
       step: 1,
@@ -79,34 +79,34 @@ export const configurator: MantineDemo = {
       max: 3000,
     },
     {
-      prop: "lightEffect",
-      type: "boolean",
+      prop: 'lightEffect',
+      type: 'boolean',
       initialValue: true,
       libraryValue: true,
     },
     {
-      prop: "backgroundParallax",
-      type: "boolean",
+      prop: 'backgroundParallax',
+      type: 'boolean',
       initialValue: true,
       libraryValue: true,
     },
     {
-      prop: "parallax",
-      type: "boolean",
+      prop: 'parallax',
+      type: 'boolean',
       initialValue: true,
       libraryValue: true,
     },
     {
-      prop: "threshold",
-      type: "number",
+      prop: 'threshold',
+      type: 'number',
       initialValue: 40,
       libraryValue: 40,
       min: 2,
       max: 2000,
     },
     {
-      prop: "parallaxDistance",
-      type: "number",
+      prop: 'parallaxDistance',
+      type: 'number',
       initialValue: 50,
       libraryValue: 50,
       min: 2,

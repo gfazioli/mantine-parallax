@@ -4,6 +4,5 @@ export type {
     ParallaxCssVariables,
     ParallaxFactory,
     ParallaxProps,
-    ParallaxStylesNames
+    ParallaxStylesNames,
 } from './Parallax';
-
