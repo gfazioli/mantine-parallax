@@ -12,15 +12,15 @@ import {
   useMantineTheme,
   useProps,
   useStyles,
-} from '@mantine/core';
-import React, { useEffect, useRef, useState } from 'react';
+} from "@mantine/core";
+import React, { useEffect, useRef, useState } from "react";
 
-import classes from './Parallax.module.css';
+import classes from "./Parallax.module.css";
 
-export type ParallaxStylesNames = 'root';
+export type ParallaxStylesNames = "root";
 
 export type ParallaxCssVariables = {
-  root: '--parallax-padding';
+  root: "--parallax-padding";
 };
 
 /**
@@ -102,7 +102,7 @@ export interface ParallaxBaseProps {
    * The type of gradient for the light effect.
    * @default 'radial'
    */
-  lightGradientType?: 'radial' | 'linear';
+  lightGradientType?: "radial" | "linear";
 
   /**
    * The angle of the light gradient.
@@ -124,10 +124,10 @@ export function useMousePosition() {
       setMousePosition({ x: ev.clientX, y: ev.clientY });
     };
 
-    window.addEventListener('mousemove', updateMousePosition);
+    window.addEventListener("mousemove", updateMousePosition);
 
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener("mousemove", updateMousePosition);
     };
   }, []);
 
@@ -149,11 +149,11 @@ export type ParallaxFactory = Factory<{
 export const defaultProps: Partial<ParallaxProps> = {};
 
 const varsResolver = createVarsResolver<ParallaxFactory>((theme) => ({
-    root: { '--parallax-padding': getSize('xl', 'parallax-padding') },
-  }));
+  root: { "--parallax-padding": getSize("xl", "parallax-padding") },
+}));
 
 export const Parallax = factory<ParallaxFactory>((_props, ref) => {
-  const props = useProps('Parallax', defaultProps, _props);
+  const props = useProps("Parallax", defaultProps, _props);
 
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
@@ -175,8 +175,8 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     lightOverlay = false,
     lightIntensity = 0.2,
     lightSize = 50,
-    lightColor = 'rgba(255, 255, 255, .1)',
-    lightGradientType = 'radial',
+    lightColor = "rgba(255, 255, 255, .1)",
+    lightGradientType = "radial",
     lightGradientAngle = 0,
 
     classNames,
@@ -191,7 +191,7 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
   } = props;
 
   const getStyles = useStyles<ParallaxFactory>({
-    name: 'Parallax',
+    name: "Parallax",
     props,
     classes,
     className,
@@ -232,18 +232,18 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
   const cardStyle: MantineStyleProp = {
     ...props.style,
     transition: isHovering
-      ? 'transform 0.1s ease-out'
-      : 'transform 0.3s ease-out, background-position 0.3s ease-out',
+      ? "transform 0.1s ease-out"
+      : "transform 0.3s ease-out, background-position 0.3s ease-out",
     transform: isHovering
       ? `perspective(${perspective}px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
-      : 'perspective(1000px) rotateX(0deg) rotateY(0deg)',
+      : "perspective(1000px) rotateX(0deg) rotateY(0deg)",
     backgroundImage: backgroundImage || undefined,
     backgroundPosition:
       isHovering && backgroundParallax
         ? `${50 + rotation.y * backgroundParallaxThreshold}% ${50 - rotation.x * backgroundParallaxThreshold}%`
-        : 'center center',
-    transformStyle: 'preserve-3d',
-    overflow: 'visible',
+        : "center center",
+    transformStyle: "preserve-3d",
+    overflow: "visible",
   };
 
   const lightGradientColor = getThemeColor(lightColor, theme);
@@ -256,16 +256,16 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
 
   const lightStyle: React.CSSProperties = lightEffect
     ? {
-        position: 'absolute',
+        position: "absolute",
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        pointerEvents: 'none',
+        pointerEvents: "none",
         zIndex: lightOverlay ? 1 : -1,
         background: gradients[lightGradientType],
-        transition: 'background 0.3s ease-out',
-        borderRadius: 'inherit',
+        transition: "background 0.3s ease-out",
+        borderRadius: "inherit",
       }
     : {};
 
@@ -276,13 +276,13 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
             className: classes.parallaxChildren,
             style: {
               ...child.props.style,
-              position: 'relative',
+              position: "relative",
               zIndex: index + 1,
               transform: isHovering
                 ? `perspective(${perspective}px) translateX(${rotation.y * (index + 1) * parallaxDistance}px) translateY(${rotation.x * (index + 1) * -parallaxDistance}px)`
-                : '',
-              transformStyle: 'preserve-3d',
-              transition: 'transform 0.1s ease-out',
+                : "",
+              transformStyle: "preserve-3d",
+              transition: "transform 0.1s ease-out",
             },
           });
         }
@@ -291,10 +291,10 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     : children;
 
   const childrenContainerStyle: React.CSSProperties = {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    overflow: 'visible',
+    position: "relative",
+    width: "100%",
+    height: "100%",
+    overflow: "visible",
     zIndex: 1,
   };
 
@@ -307,11 +307,11 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
       onMouseLeave={handleMouseLeave}
       style={{
         perspective: `${perspective}px`,
-        position: 'relative',
-        overflow: 'visible',
+        position: "relative",
+        overflow: "visible",
       }}
     >
-      <Box {...getStyles('root')} {...others} style={cardStyle}>
+      <Box {...getStyles("root")} {...others} style={cardStyle}>
         <div style={childrenContainerStyle}>{childrenWithParallax}</div>
         {lightEffect && <div style={lightStyle} />}
       </Box>
@@ -320,4 +320,4 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
 });
 
 Parallax.classes = classes;
-Parallax.displayName = 'Parallax';
+Parallax.displayName = "Parallax";
