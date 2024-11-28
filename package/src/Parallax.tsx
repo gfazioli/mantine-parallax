@@ -34,12 +34,6 @@ export interface ParallaxBaseProps {
   threshold?: number;
 
   /**
-   * If true, applies a light effect to the parallax content.
-   * @default false
-   */
-  lightEffect?: boolean;
-
-  /**
    * The perspective value for the parallax effect.
    * @default 1000
    */
@@ -73,6 +67,18 @@ export interface ParallaxBaseProps {
    * The URL of the background image.
    */
   backgroundImage?: string;
+
+  /**
+   * If true, applies a light effect to the parallax content.
+   * @default false
+   */
+  lightEffect?: boolean;
+
+  /**
+   * If true, applies a light effect to the parallax content.
+   * @default false
+   */
+  lightOverlay?: boolean;
 
   /**
    * The intensity of the light effect.
@@ -160,17 +166,18 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
   const theme = useMantineTheme();
 
   const {
-    threshold = 15,
+    threshold = 40,
     perspective = 1000,
-    lightEffect = true,
-    backgroundParallax = true,
+    backgroundParallax = false,
     backgroundParallaxThreshold = 1,
     parallax = true,
     parallaxDistance = 1,
     backgroundImage,
+    lightEffect = false,
+    lightOverlay = false,
     lightIntensity = 0.2,
     lightSize = 50,
-    lightColor = "white",
+    lightColor = "rgba(255, 255, 255, .1)",
     lightGradientType = "radial",
     lightGradientAngle = 0,
 
@@ -257,9 +264,10 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
         right: 0,
         bottom: 0,
         pointerEvents: "none",
-        zIndex: 999,
+        zIndex: lightOverlay ? 1 : -1,
         background: gradients[lightGradientType],
         transition: "background 0.3s ease-out",
+        borderRadius: "inherit",
       }
     : {};
 
@@ -267,6 +275,7 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     ? React.Children.map(children, (child, index) => {
         if (React.isValidElement(child)) {
           return React.cloneElement(child as React.ReactElement, {
+            className: classes.parallaxChildren,
             style: {
               ...child.props.style,
               position: "relative",
@@ -287,9 +296,8 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     position: "relative",
     width: "100%",
     height: "100%",
-    zIndex: 1,
-    transformStyle: "preserve-3d",
     overflow: "visible",
+    zIndex: 1,
   };
 
   return (

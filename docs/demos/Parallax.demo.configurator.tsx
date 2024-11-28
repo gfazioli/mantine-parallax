@@ -1,5 +1,5 @@
 import { Parallax } from "@gfazioli/mantine-parallax";
-import { Box } from "@mantine/core";
+import { Box, Title } from "@mantine/core";
 import { MantineDemo } from "@mantinex/demo";
 
 import { ReactNode } from "react";
@@ -34,21 +34,8 @@ function Wrapper(props: any) {
         backgroundParallax={true}
         parallaxDistance={5}
         parallax={true}
-        style={{
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80)",
-          backgroundSize: "600px 400px",
-          width: "300px",
-          height: "200px",
-        }}
       >
-        <BoxComponent bg="red">Hello World #1</BoxComponent>
-        <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
-        <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
-        <BoxComponent bg="lime">Goodbye #4</BoxComponent>
-        <BoxComponent bg="orange">Hello World #5</BoxComponent>
-        <BoxComponent bg="dark">Hope you like it #6</BoxComponent>
-        <BoxComponent bg="green">Have a nice day #7</BoxComponent>
+        <Title>Parallax</Title>
       </Parallax>
     </div>
   );
@@ -83,6 +70,15 @@ export const configurator: MantineDemo = {
   code,
   controls: [
     {
+      prop: "perspective",
+      type: "number",
+      initialValue: 1000,
+      libraryValue: 1000,
+      step: 1,
+      min: 1,
+      max: 3000,
+    },
+    {
       prop: "lightEffect",
       type: "boolean",
       initialValue: true,
@@ -115,15 +111,6 @@ export const configurator: MantineDemo = {
       libraryValue: 50,
       min: 2,
       max: 2000,
-    },
-    {
-      prop: "perspective",
-      type: "number",
-      initialValue: 1000,
-      libraryValue: 1000,
-      step: 1,
-      min: 1,
-      max: 3000,
     },
   ],
 };
