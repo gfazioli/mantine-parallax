@@ -10,7 +10,7 @@
 
 [![Latest Stable Version](https://img.shields.io/npm/v/%40gfazioli%2Fmantine-parallax?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-parallax) &nbsp;
 [![NPM Downloads](https://img.shields.io/npm/dm/%40gfazioli%2Fmantine-parallax?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-parallax) &nbsp;
-[![License](https://img.shields.io/npm/l/%40gfazioli%2Fmantine-parallax?style=for-the-badge)](./LICENSE)
+[![License](https://img.shields.io/npm/l/%40gfazioli%2Fmantine-parallax?style=for-the-badge)](https://github.com/gfazioli/mantine-parallax/blob/master/LICENSE)
 
 </div>
 
