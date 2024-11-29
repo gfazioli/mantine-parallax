@@ -4,7 +4,7 @@ import { MantineDemo } from "@mantinex/demo";
 
 function Demo(props: ParallaxProps) {
   return (
-    <Center w="100%" h={300} bg="dark">
+    <Center w="100%" h={300} bg="dark.7">
       <Parallax
         {...props}
         w={400}
@@ -13,6 +13,7 @@ function Demo(props: ParallaxProps) {
         backgroundImage="url(https://picsum.photos/id/352/500/400)"
         style={{
           borderRadius: "16px",
+          border: "1px solid #666",
         }}
       >
         <Title c="gray.2">Parallax</Title>
@@ -26,14 +27,23 @@ function Demo(props: ParallaxProps) {
 
 const code = `
 import { Parallax } from '@gfazioli/mantine-parallax';
-import { PageProps } from "../../../mantine-datatable/.next/types/app/examples/column-resizing/page";
 
 function Demo() {
   return (
-    <Center w="100%" h={300}>
-      <Parallax {{props}} w={300} h={200} p={16} bg="blue">
+    <Center w="100%" h={300} bg="dark.7">
+      <Parallax
+        {{props}}
+        w={400}
+        h={200}
+        p={16}
+        backgroundImage="url(https://picsum.photos/id/352/500/400)"
+        style={{
+          borderRadius: "16px",
+          border: "1px solid #666",
+        }}
+      >
         <Title c="gray.2">Parallax</Title>
-        <Text c="orange.5">
+        <Text c="gray.2" fw="bold">
           Amazing contentParallax effect component. Hover to see the effect.
         </Text>
       </Parallax>

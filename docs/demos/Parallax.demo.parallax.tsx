@@ -17,14 +17,13 @@ function Demo(props: ParallaxProps) {
 
 const code = `
 import { Parallax } from '@gfazioli/mantine-parallax';
-import { PageProps } from "../../../mantine-datatable/.next/types/app/examples/column-resizing/page";
 
 function Demo() {
   return (
     <Center w="100%" h={300}>
-      <Parallax {{props}} w={300} h={200} p={16} bg="blue">
+      <Parallax {{props}} w={300} h={200} p={16} bg="blue.5">
         <Title c="gray.2">Parallax</Title>
-        <Text c="orange.5">
+        <Text c="yellow.5">
           Amazing contentParallax effect component. Hover to see the effect.
         </Text>
       </Parallax>

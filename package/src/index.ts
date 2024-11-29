@@ -1,8 +1,7 @@
-export { Parallax } from './Parallax';
+export { Parallax } from "./Parallax";
 export type {
-    ParallaxBaseProps,
-    ParallaxCssVariables,
-    ParallaxFactory,
-    ParallaxProps,
-    ParallaxStylesNames,
-} from './Parallax';
+  ParallaxBaseProps,
+  ParallaxFactory,
+  ParallaxProps,
+  ParallaxStylesNames,
+} from "./Parallax";

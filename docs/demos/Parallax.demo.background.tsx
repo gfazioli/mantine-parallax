@@ -20,12 +20,12 @@ import { Parallax } from '@gfazioli/mantine-parallax';
 
 function Demo() {
   return (
-    <Center w="100%" h={300}>
+    <Center w="100%" h={400}>
       <Parallax
         {{props}}
-        w={300}
-        h={200}
-        backgroundImage="url(https://picsum.photos/id/2/400/300)"
+        w={400}
+        h={300}
+        backgroundImage="url(https://picsum.photos/500/400?random=2)"
       />
     </Center>
   );

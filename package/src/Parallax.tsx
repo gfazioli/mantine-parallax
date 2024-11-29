@@ -1,14 +1,12 @@
 import {
   Box,
   BoxProps,
-  Factory,
   MantineColor,
   MantineStyleProp,
+  PolymorphicFactory,
   StylesApiProps,
-  createVarsResolver,
-  factory,
-  getSize,
   getThemeColor,
+  polymorphicFactory,
   useMantineTheme,
   useProps,
   useStyles,
@@ -18,10 +16,6 @@ import React, { useEffect, useState } from "react";
 import classes from "./Parallax.module.css";
 
 export type ParallaxStylesNames = "root";
-
-export type ParallaxCssVariables = {
-  root: "--parallax-padding";
-};
 
 /**
  * Props for the Parallax component.
@@ -115,44 +109,21 @@ export interface ParallaxBaseProps {
    */
   children?: React.ReactNode;
 }
-
-export function useMousePosition() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const updateMousePosition = (ev: MouseEvent) => {
-      setMousePosition({ x: ev.clientX, y: ev.clientY });
-    };
-
-    window.addEventListener("mousemove", updateMousePosition);
-
-    return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-    };
-  }, []);
-
-  return mousePosition;
-}
-
 export interface ParallaxProps
   extends BoxProps,
     ParallaxBaseProps,
     StylesApiProps<ParallaxFactory> {}
 
-export type ParallaxFactory = Factory<{
+export type ParallaxFactory = PolymorphicFactory<{
   props: ParallaxProps;
-  ref: HTMLDivElement;
+  defaultRef: HTMLDivElement;
+  defaultComponent: "div";
   stylesNames: ParallaxStylesNames;
-  vars: ParallaxCssVariables;
 }>;
 
 export const defaultProps: Partial<ParallaxProps> = {};
 
-const varsResolver = createVarsResolver<ParallaxFactory>((theme) => ({
-  root: { "--parallax-padding": getSize("xl", "parallax-padding") },
-}));
-
-export const Parallax = factory<ParallaxFactory>((_props, ref) => {
+export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const props = useProps("Parallax", defaultProps, _props);
 
   const { ref: mouseRef, x, y } = useMouse();
@@ -199,7 +170,6 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     styles,
     unstyled,
     vars,
-    varsResolver,
   });
 
   useEffect(() => {
@@ -310,7 +280,7 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
         overflow: "visible",
       }}
     >
-      <Box {...getStyles("root")} {...others} style={cardStyle}>
+      <Box ref={ref} {...getStyles("root")} {...others} style={cardStyle}>
         <div style={childrenContainerStyle}>{childrenWithParallax}</div>
         {lightEffect && <div style={lightStyle} />}
       </Box>
