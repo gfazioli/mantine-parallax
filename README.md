@@ -1,23 +1,18 @@
 # Mantine Parallax Component
 
 <p align="center">
-  <img width="866" alt="image" src="https://github.com/gfazioli/mantine-parallax/assets/432181/d9d37b48-ab49-44c7-9315-4ad9a48e70f8">
+  <img width="100%" alt="image" src="https://github.com/user-attachments/assets/68345b72-c321-4c6f-a52c-85d8aca1cee6" />
 </p>
 
 ---
 
-<p align="center">
-  <a aria-label="NPM version" href="https://www.npmjs.com/package/@gfazioli/mantine-parallax">
-    <img alt="NPM version" src="https://img.shields.io/npm/v/%40gfazioli%2Fmantine-parallax?style=for-the-badge">
-  </a>
-  
-  <a aria-label="NPM version" href="https://www.npmjs.com/package/@gfazioli/mantine-parallax">
-    <img alt="NPM Downloads" src="https://img.shields.io/npm/dm/%40gfazioli%2Fmantine-parallax?style=for-the-badge">
-  </a>
+<div align="center">
 
-  <img alt="NPM License" src="https://img.shields.io/npm/l/%40gfazioli%2Fmantine-parallax?style=for-the-badge">
+[![Latest Stable Version](https://img.shields.io/npm/v/%40gfazioli%2Fmantine-parallax?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-parallax) &nbsp;
+[![NPM Downloads](https://img.shields.io/npm/dm/%40gfazioli%2Fmantine-parallax?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-parallax) &nbsp;
+[![License](https://img.shields.io/npm/l/%40gfazioli%2Fmantine-parallax?style=for-the-badge)](./LICENSE)
 
-</p>
+</div>
 
 ## Overview
 
