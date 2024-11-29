@@ -206,7 +206,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     transform: isHovering
       ? `perspective(${perspective}px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
       : "perspective(1000px) rotateX(0deg) rotateY(0deg)",
-    backgroundImage: backgroundImage || undefined,
+    backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
     backgroundPosition:
       isHovering && backgroundParallax
         ? `${50 + rotation.y * backgroundParallaxThreshold}% ${50 - rotation.x * backgroundParallaxThreshold}%`

@@ -10,7 +10,7 @@ function Demo(props: ParallaxProps) {
         w={400}
         h={200}
         p={16}
-        backgroundImage="url(https://picsum.photos/id/352/500/400)"
+        backgroundImage="https://picsum.photos/id/702/500/400"
         style={{
           borderRadius: "16px",
           border: "1px solid #666",
@@ -36,7 +36,7 @@ function Demo() {
         w={400}
         h={200}
         p={16}
-        backgroundImage="url(https://picsum.photos/id/352/500/400)"
+        backgroundImage="https://picsum.photos/id/352/500/400"
         style={{
           borderRadius: "16px",
           border: "1px solid #666",

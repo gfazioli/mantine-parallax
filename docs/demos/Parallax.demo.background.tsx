@@ -9,7 +9,7 @@ function Demo(props: ParallaxProps) {
         {...props}
         w={400}
         h={300}
-        backgroundImage="url(https://picsum.photos/500/400?random=2)"
+        backgroundImage="https://picsum.photos/500/400?random=2"
       />
     </Center>
   );
@@ -25,7 +25,7 @@ function Demo() {
         {{props}}
         w={400}
         h={300}
-        backgroundImage="url(https://picsum.photos/500/400?random=2)"
+        backgroundImage="https://picsum.photos/500/400?random=2"
       />
     </Center>
   );
