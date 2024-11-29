@@ -1,15 +1,27 @@
 import { Parallax, ParallaxProps } from "@gfazioli/mantine-parallax";
-import { Center, Text, Title } from "@mantine/core";
+import { Box, Center, Paper, Text, Title } from "@mantine/core";
 import { MantineDemo } from "@mantinex/demo";
 
 function Demo(props: ParallaxProps) {
   return (
     <Center w="100%" h={300}>
-      <Parallax {...props} w={300} h={200} p={16} bg="dark.5">
-        <Title c="gray.2">Parallax</Title>
-        <Text c="yellow.5">
-          Amazing contentParallax effect component. Hover to see the effect.
-        </Text>
+      <Parallax {...props} p={32} bg="tomato">
+        <Box
+          w={300}
+          h={200}
+          style={{
+            position: "absolute",
+            boxShadow: "0 0 12px rgba(0, 0, 0, 1)",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            borderRadius: "16px",
+          }}
+        />
+        <Paper w={300} h={200} bg="gray.9" radius={16} p={16}>
+          <Title c="white">Parallax</Title>
+          <Text c="white">
+            Amazing parallax effect component. Hover to see the effect.
+          </Text>
+        </Paper>
       </Parallax>
     </Center>
   );
@@ -17,13 +29,24 @@ function Demo(props: ParallaxProps) {
 
 const code = `
 import { Parallax } from '@gfazioli/mantine-parallax';
+import { AppShellAside } from "../../../mantine/packages/@mantine/core/src/components/AppShell/AppShellAside/AppShellAside";
 
 function Demo() {
   return (
-    <Center w="100%" h={300}>
-      <Parallax {{props}} w={300} h={200} p={16} bg="dark.5">
+    <Center w="100%" h={300} bg="dark.7">
+      <Parallax
+        {{props}}
+        w={400}
+        h={200}
+        p={16}
+        backgroundImage="url(https://picsum.photos/id/352/500/400)"
+        style={{
+          borderRadius: "16px",
+          border: "1px solid #666",
+        }}
+      >
         <Title c="gray.2">Parallax</Title>
-        <Text c="yellow.5">
+        <Text c="gray.2" fw="bold">
           Amazing contentParallax effect component. Hover to see the effect.
         </Text>
       </Parallax>
@@ -32,7 +55,7 @@ function Demo() {
 }
 `;
 
-export const parallax: MantineDemo = {
+export const shadow: MantineDemo = {
   type: "configurator",
   component: Demo,
   code,
@@ -111,6 +134,21 @@ export const parallax: MantineDemo = {
       step: 1,
     },
     {
+      prop: "backgroundParallax",
+      type: "boolean",
+      initialValue: true,
+      libraryValue: false,
+    },
+    {
+      prop: "backgroundParallaxThreshold",
+      type: "number",
+      initialValue: 1,
+      libraryValue: 0,
+      min: -10,
+      max: 10,
+      step: 0.01,
+    },
+    {
       prop: "contentParallax",
       type: "boolean",
       initialValue: true,
@@ -120,7 +158,7 @@ export const parallax: MantineDemo = {
     {
       prop: "contentParallaxDistance",
       type: "number",
-      initialValue: 1,
+      initialValue: 4,
       libraryValue: 0,
       min: 0,
       max: 10,

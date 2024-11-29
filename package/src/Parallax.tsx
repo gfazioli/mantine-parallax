@@ -245,8 +245,6 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
             className: classes.parallaxChildren,
             style: {
               ...child.props.style,
-              position: "relative",
-              zIndex: index + 1,
               transform: isHovering
                 ? `perspective(${perspective}px) translateX(${rotation.y * (index + 1) * contentParallaxDistance}px) translateY(${rotation.x * (index + 1) * -contentParallaxDistance}px)`
                 : "",

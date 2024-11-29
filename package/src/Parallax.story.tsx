@@ -1,5 +1,6 @@
 import {
   Badge,
+  Box,
   Button,
   Card,
   Center,
@@ -62,8 +63,19 @@ export default {
 export function Simple(props: ParallaxProps) {
   return (
     <Center w="100%" h={300}>
-      <Parallax {...props}>
-        <Paper withBorder w={300} h={200} bg="gray">
+      <Parallax {...props} p={82} bg="tomato">
+        <Box
+          w={300}
+          h={200}
+          style={{
+            position: "absolute",
+            boxShadow: "0 0 12px rgba(0, 0, 0, 1)",
+            backgroundColor: "rgba(0, 0, 0, 0.5",
+            borderRadius: "16px",
+          }}
+        />
+
+        <Paper withBorder w={300} h={200} bg="gray" radius={16} p={16}>
           <Title>Parallax</Title>
           <Text>
             Amazing parallax effect component. Hover to see the effect.
