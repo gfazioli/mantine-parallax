@@ -23,7 +23,7 @@
 
 This component is created on top of the [Mantine](https://mantine.dev/) library.
 
-It allows to create a parallax effect with any content.
+It allows to create a parallax effect with any content. In particular, you can use this component to create the typical Apple TV Card effect.
 
 You can find more components on the [Mantine Extensions Hub](https://mantine-extensions.vercel.app/) library.
 
@@ -50,24 +50,14 @@ import '@gfazioli/mantine-parallax/styles.css';
 import { Parallax } from '@gfazioli/mantine-parallax';
 
 function Demo() {
-  function BoxComponent({ children, ...props }: { children: ReactNode; [key: string]: any }) {
-    return (
-      <Box {...props} p="md" w="200px" c="white" style={{ borderRadius: '8px' }}>
-        {children}
-      </Box>
-    );
-  }
 
   return (
-    <Parallax {...props} w={560} h={300}>
-      <BoxComponent bg="red">Hello World #1</BoxComponent>
-      <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
-      <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
-      <BoxComponent bg="lime">Goodbye #4</BoxComponent>
+    <Parallax w={560} h={300}>
+        <Title>Parallax</Title>
+        <Text>
+          Amazing contentParallax effect component. Hover to see the effect.
+        </Text>
     </Parallax>
   );
 }
 ```
-
-
-
