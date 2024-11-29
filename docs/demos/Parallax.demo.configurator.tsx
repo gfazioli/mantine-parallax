@@ -1,15 +1,37 @@
-import { Parallax } from "@gfazioli/mantine-parallax";
-import { Paper, Text, Title } from "@mantine/core";
+import { Parallax, ParallaxProps } from "@gfazioli/mantine-parallax";
+import { Badge, Button, Card, Center, Group, Image, Text } from "@mantine/core";
 import { MantineDemo } from "@mantinex/demo";
 
-function Demo(props: any) {
+function Demo(props: ParallaxProps) {
   return (
-    <Parallax {...props}>
-      <Paper withBorder w={300} h={200}>
-        <Title>Parallax</Title>
-        <Text>Amazing parallax effect component. Hover to see the effect.</Text>
-      </Paper>
-    </Parallax>
+    <Center w="100%" h={500}>
+      <Parallax {...props} w={400}>
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Card.Section>
+            <Image
+              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
+              height={160}
+              alt="Norway"
+            />
+          </Card.Section>
+
+          <Group justify="space-between" mt="md" mb="xs">
+            <Text fw={500}>Norway Fjord Adventures</Text>
+            <Badge color="pink">On Sale</Badge>
+          </Group>
+
+          <Text size="sm" c="dimmed">
+            With Fjord Tours you can explore more of the magical fjord
+            landscapes with tours and activities on and around the fjords of
+            Norway
+          </Text>
+
+          <Button color="blue" fullWidth mt="md" radius="md">
+            Book classic tour now
+          </Button>
+        </Card>
+      </Parallax>
+    </Center>
   );
 }
 
@@ -17,21 +39,35 @@ const code = `
 import { Parallax } from '@gfazioli/mantine-parallax';
 
 function Demo() {
-  function BoxComponent({ children, ...props }: { children: ReactNode; [key: string]: any }) {
-    return (
-      <Box {...props} p="md" w="200px" c="white" style={{ borderRadius: '8px' }}>
-        {children}
-      </Box>
-    );
-  }
-
   return (
-    <Parallax {{props}} w={560} h={300}>
-      <BoxComponent bg="red">Hello World #1</BoxComponent>
-      <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
-      <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
-      <BoxComponent bg="lime">Goodbye #4</BoxComponent>
-    </Parallax>
+    <Center w="100%" h={500}>
+      <Parallax {{props}} w={400}>
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Card.Section>
+            <Image
+              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
+              height={160}
+              alt="Norway"
+            />
+          </Card.Section>
+
+          <Group justify="space-between" mt="md" mb="xs">
+            <Text fw={500}>Norway Fjord Adventures</Text>
+            <Badge color="pink">On Sale</Badge>
+          </Group>
+
+          <Text size="sm" c="dimmed">
+            With Fjord Tours you can explore more of the magical fjord
+            landscapes with tours and activities on and around the fjords of
+            Norway
+          </Text>
+
+          <Button color="blue" fullWidth mt="md" radius="md">
+            Book classic tour now
+          </Button>
+        </Card>
+      </Parallax>
+    </Center>
   );
 }
 `;
@@ -51,38 +87,68 @@ export const configurator: MantineDemo = {
       max: 3000,
     },
     {
-      prop: "lightEffect",
-      type: "boolean",
-      initialValue: true,
-      libraryValue: true,
-    },
-    {
-      prop: "backgroundParallax",
-      type: "boolean",
-      initialValue: true,
-      libraryValue: true,
-    },
-    {
-      prop: "parallax",
-      type: "boolean",
-      initialValue: true,
-      libraryValue: true,
-    },
-    {
       prop: "threshold",
       type: "number",
       initialValue: 40,
       libraryValue: 40,
       min: 2,
-      max: 2000,
+      max: 100,
+      step: 0.1,
     },
     {
-      prop: "parallaxDistance",
+      prop: "lightEffect",
+      type: "boolean",
+      initialValue: true,
+      libraryValue: false,
+    },
+    {
+      prop: "lightOverlay",
+      type: "boolean",
+      initialValue: true,
+      libraryValue: false,
+    },
+    {
+      prop: "lightIntensity",
+      type: "number",
+      initialValue: 0.1,
+      libraryValue: 0.1,
+      min: 0,
+      max: 1,
+      step: 0.1,
+    },
+    {
+      prop: "lightSize",
       type: "number",
       initialValue: 50,
       libraryValue: 50,
-      min: 2,
-      max: 2000,
+      min: 0,
+      max: 100,
+      step: 1,
+    },
+    {
+      type: "color",
+      prop: "lightColor",
+      initialValue: "rgba(255, 255, 255, .5)",
+      libraryValue: "rgba(255, 255, 255, .5)",
+    },
+    {
+      prop: "lightGradientType",
+      type: "segmented",
+      data: [
+        { label: "Radial", value: "radial" },
+        { label: "Linear", value: "linear" },
+      ],
+      initialValue: "radial",
+      libraryValue: "radial",
+    },
+    {
+      prop: "lightGradientAngle",
+      type: "number",
+      initialValue: 0,
+      libraryValue: 0,
+      min: -360,
+      max: 360,
+      step: 1,
     },
   ],
 };

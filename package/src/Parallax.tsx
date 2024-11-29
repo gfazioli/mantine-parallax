@@ -13,8 +13,8 @@ import {
   useProps,
   useStyles,
 } from "@mantine/core";
-import React, { useEffect, useRef, useState } from "react";
-
+import { useMouse } from "@mantine/hooks";
+import React, { useEffect, useState } from "react";
 import classes from "./Parallax.module.css";
 
 export type ParallaxStylesNames = "root";
@@ -55,13 +55,13 @@ export interface ParallaxBaseProps {
    * If true, enables the parallax effect.
    * @default false
    */
-  parallax?: boolean;
+  contentParallax?: boolean;
 
   /**
    * The distance value for the parallax effect.
    * @default 100
    */
-  parallaxDistance?: number;
+  contentParallaxDistance?: number;
 
   /**
    * The URL of the background image.
@@ -155,9 +155,8 @@ const varsResolver = createVarsResolver<ParallaxFactory>((theme) => ({
 export const Parallax = factory<ParallaxFactory>((_props, ref) => {
   const props = useProps("Parallax", defaultProps, _props);
 
-  const cardRef = useRef<HTMLDivElement>(null);
+  const { ref: mouseRef, x, y } = useMouse();
   const [isHovering, setIsHovering] = useState(false);
-  const mousePosition = useMousePosition();
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [lightPosition, setLightPosition] = useState({ x: 50, y: 50 });
 
@@ -168,8 +167,8 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
     perspective = 1000,
     backgroundParallax = false,
     backgroundParallaxThreshold = 1,
-    parallax = true,
-    parallaxDistance = 1,
+    contentParallax = false,
+    contentParallaxDistance = 0,
     backgroundImage,
     lightEffect = false,
     lightOverlay = false,
@@ -204,23 +203,23 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
   });
 
   useEffect(() => {
-    if (isHovering && cardRef.current) {
-      const rect = cardRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+    if (isHovering && mouseRef.current) {
+      const rect = mouseRef.current.getBoundingClientRect();
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
 
-      const rotateY = ((mousePosition.x - centerX) / rect.width) * threshold;
-      const rotateX = -((mousePosition.y - centerY) / rect.height) * threshold;
+      const rotateY = ((x - centerX) / rect.width) * threshold;
+      const rotateX = -((y - centerY) / rect.height) * threshold;
 
       setRotation({ x: rotateX, y: rotateY });
 
       if (lightEffect) {
-        const lightX = ((mousePosition.x - rect.left) / rect.width) * 100;
-        const lightY = ((mousePosition.y - rect.top) / rect.height) * 100;
+        const lightX = (x / rect.width) * 100;
+        const lightY = (y / rect.height) * 100;
         setLightPosition({ x: lightX, y: lightY });
       }
     }
-  }, [mousePosition, isHovering, threshold, lightEffect]);
+  }, [x, y, isHovering, threshold, lightEffect]);
 
   const handleMouseEnter = () => {
     setIsHovering(true);
@@ -269,7 +268,7 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
       }
     : {};
 
-  const childrenWithParallax = parallax
+  const childrenWithParallax = contentParallax
     ? React.Children.map(children, (child, index) => {
         if (React.isValidElement(child)) {
           return React.cloneElement(child as React.ReactElement, {
@@ -279,7 +278,7 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
               position: "relative",
               zIndex: index + 1,
               transform: isHovering
-                ? `perspective(${perspective}px) translateX(${rotation.y * (index + 1) * parallaxDistance}px) translateY(${rotation.x * (index + 1) * -parallaxDistance}px)`
+                ? `perspective(${perspective}px) translateX(${rotation.y * (index + 1) * contentParallaxDistance}px) translateY(${rotation.x * (index + 1) * -contentParallaxDistance}px)`
                 : "",
               transformStyle: "preserve-3d",
               transition: "transform 0.1s ease-out",
@@ -300,7 +299,7 @@ export const Parallax = factory<ParallaxFactory>((_props, ref) => {
 
   return (
     <Box
-      ref={cardRef}
+      ref={mouseRef}
       w={props.w}
       h={props.h}
       onMouseEnter={handleMouseEnter}

@@ -9,7 +9,7 @@ function Demo() {
         <Paper withBorder w={300} h={200}>
           <Title>Parallax</Title>
           <Text>
-            Amazing parallax effect component. Hover to see the effect.
+            Amazing contentParallax effect component. Hover to see the effect.
           </Text>
         </Paper>
       </Parallax>
@@ -26,7 +26,7 @@ function Demo() {
       <Paper withBorder w={300} h={200}>
         <Title>Parallax</Title>
         <Text>
-          Amazing parallax effect component. Hover to see the effect.
+          Amazing contentParallax effect component. Hover to see the effect.
         </Text>
       </Paper>
     </Parallax>
