@@ -22,12 +22,10 @@ function Demo() {
   return (
     <Center w="100%" h={300}>
       <Parallax w={300} h={200}>
-        <Paper withBorder w={300} h={200}>
-          <Title>Parallax</Title>
-          <Text>
-            Amazing contentParallax effect component. Hover to see the effect.
-          </Text>
-        </Paper>
+        <Title>Parallax</Title>
+        <Text>
+          Amazing contentParallax effect component. Hover to see the effect.
+        </Text>
       </Parallax>
     </Center>
   );

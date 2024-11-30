@@ -29,26 +29,27 @@ function Demo(props: ParallaxProps) {
 
 const code = `
 import { Parallax } from '@gfazioli/mantine-parallax';
-import { AppShellAside } from "../../../mantine/packages/@mantine/core/src/components/AppShell/AppShellAside/AppShellAside";
 
 function Demo() {
   return (
-    <Center w="100%" h={300} bg="dark.7">
-      <Parallax
-        {{props}}
-        w={400}
-        h={200}
-        p={16}
-        backgroundImage="url(https://picsum.photos/id/352/500/400)"
-        style={{
-          borderRadius: "16px",
-          border: "1px solid #666",
-        }}
-      >
-        <Title c="gray.2">Parallax</Title>
-        <Text c="gray.2" fw="bold">
-          Amazing contentParallax effect component. Hover to see the effect.
-        </Text>
+    <Center w="100%" h={300}>
+      <Parallax {{props}} p={32} bg="tomato">
+        <Box
+          w={300}
+          h={200}
+          style={{
+            position: "absolute",
+            boxShadow: "0 0 12px rgba(0, 0, 0, 1)",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            borderRadius: "16px",
+          }}
+        />
+        <Paper w={300} h={200} bg="gray.9" radius={16} p={16}>
+          <Title c="white">Parallax</Title>
+          <Text c="white">
+            Amazing parallax effect component. Hover to see the effect.
+          </Text>
+        </Paper>
       </Parallax>
     </Center>
   );
