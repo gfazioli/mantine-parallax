@@ -217,10 +217,15 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
   const lightGradientColor = getThemeColor(lightColor, theme);
 
+  // define lightPercentageStart position start by using lightSize.
+  // If lightSize is 100 lightPercentageStart will be 0, if lightSize is 0 lightPercentageStart will be 100
+  // lightSize = 50, lightPercentageStart = 50
+  const lightPercentageStart = lightPosition.x - lightSize;
+
   const gradients = {
     radial: `radial-gradient(circle at ${lightPosition.x}% ${lightPosition.y}%, ${lightGradientColor} ${lightIntensity * 100}%, rgba(255,255,255,0) ${lightSize}%)`,
 
-    linear: `linear-gradient(${lightGradientAngle}deg, rgba(255,255,255,0) 0%, ${lightGradientColor} ${lightPosition.x}%, rgba(255,255,255,0) 100%)`,
+    linear: `linear-gradient(${lightGradientAngle}deg, rgba(255,255,255,0) ${lightPercentageStart}%, ${lightGradientColor} ${lightPosition.x}%, rgba(255,255,255,0) ${lightPosition.x + lightSize}%)`,
   };
 
   const lightStyle: React.CSSProperties = lightEffect
