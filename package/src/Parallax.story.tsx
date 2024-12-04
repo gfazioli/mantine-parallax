@@ -18,6 +18,8 @@ export default {
   args: {
     threshold: 40,
     perspective: 1000,
+    initialRotationX: 0,
+    initialRotationY: 0,
     lightEffect: false,
     lightOverlay: false,
     lightIntensity: 0.2,
@@ -46,6 +48,12 @@ export default {
       control: { type: "range", min: -10, max: 10, step: 0.01 },
     },
     lightGradientAngle: {
+      control: { type: "range", min: -360, max: 360, step: 0.1 },
+    },
+    initialRotationX: {
+      control: { type: "range", min: -360, max: 360, step: 0.1 },
+    },
+    initialRotationY: {
       control: { type: "range", min: -360, max: 360, step: 0.1 },
     },
     lightEffect: { control: { type: "boolean" } },

@@ -105,6 +105,16 @@ export interface ParallaxBaseProps {
   lightGradientAngle?: number;
 
   /**
+   * The initial rotation X of the parallax component.
+   */
+  initialRotationX?: number;
+
+  /**
+   * The initial rotation Y of the parallax component.
+   */
+  initialRotationY?: number;
+
+  /**
    * The content to be rendered inside the parallax component.
    */
   children?: React.ReactNode;
@@ -148,6 +158,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     lightColor = "rgba(255, 255, 255, .1)",
     lightGradientType = "radial",
     lightGradientAngle = 0,
+    initialRotationX = 0,
+    initialRotationY = 0,
 
     classNames,
     style,
@@ -189,7 +201,15 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         setLightPosition({ x: lightX, y: lightY });
       }
     }
-  }, [x, y, isHovering, threshold, lightEffect]);
+  }, [
+    x,
+    y,
+    isHovering,
+    threshold,
+    lightEffect,
+    initialRotationX,
+    initialRotationY,
+  ]);
 
   const handleMouseEnter = () => {
     setIsHovering(true);
@@ -205,7 +225,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       : "transform 0.3s ease-out, background-position 0.3s ease-out",
     transform: isHovering
       ? `perspective(${perspective}px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
-      : "perspective(1000px) rotateX(0deg) rotateY(0deg)",
+      : `perspective(1000px) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg)`,
     backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
     backgroundPosition:
       isHovering && backgroundParallax
