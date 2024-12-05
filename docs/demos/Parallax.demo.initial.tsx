@@ -1,16 +1,36 @@
 import { Parallax, ParallaxProps } from "@gfazioli/mantine-parallax";
-import { Center } from "@mantine/core";
+import { Badge, Button, Card, Center, Group, Image, Text } from "@mantine/core";
 import { MantineDemo } from "@mantinex/demo";
 
 function Demo(props: ParallaxProps) {
   return (
-    <Center w="100%" h={400}>
-      <Parallax
-        {...props}
-        w={400}
-        h={300}
-        backgroundImage="https://picsum.photos/500/400?random=2"
-      />
+    <Center w="100%" h={500}>
+      <Parallax {...props} w={400}>
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Card.Section>
+            <Image
+              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
+              height={160}
+              alt="Norway"
+            />
+          </Card.Section>
+
+          <Group justify="space-between" mt="md" mb="xs">
+            <Text fw={500}>Norway Fjord Adventures</Text>
+            <Badge color="pink">On Sale</Badge>
+          </Group>
+
+          <Text size="sm" c="dimmed">
+            With Fjord Tours you can explore more of the magical fjord
+            landscapes with tours and activities on and around the fjords of
+            Norway
+          </Text>
+
+          <Button color="blue" fullWidth mt="md" radius="md">
+            Book classic tour now
+          </Button>
+        </Card>
+      </Parallax>
     </Center>
   );
 }
@@ -20,20 +40,39 @@ import { Parallax } from '@gfazioli/mantine-parallax';
 
 function Demo() {
   return (
-    <Center w="100%" h={400}>
-      <Parallax
-        {{props}}
-        w={400}
-        h={300}
-        backgroundImage="https://picsum.photos/500/400?random=2"
-      />
+    <Center w="100%" h={500}>
+      <Parallax {{props}} w={400}>
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Card.Section>
+            <Image
+              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
+              height={160}
+              alt="Norway"
+            />
+          </Card.Section>
+
+          <Group justify="space-between" mt="md" mb="xs">
+            <Text fw={500}>Norway Fjord Adventures</Text>
+            <Badge color="pink">On Sale</Badge>
+          </Group>
+
+          <Text size="sm" c="dimmed">
+            With Fjord Tours you can explore more of the magical fjord
+            landscapes with tours and activities on and around the fjords of
+            Norway
+          </Text>
+
+          <Button color="blue" fullWidth mt="md" radius="md">
+            Book classic tour now
+          </Button>
+        </Card>
+      </Parallax>
     </Center>
-  );
   );
 }
 `;
 
-export const background: MantineDemo = {
+export const initial: MantineDemo = {
   type: "configurator",
   component: Demo,
   code,
@@ -56,7 +95,7 @@ export const background: MantineDemo = {
     {
       prop: "initialPerspective",
       type: "number",
-      initialValue: 1000,
+      initialValue: 10000,
       libraryValue: 1000,
       step: 1,
       min: 1,
@@ -65,7 +104,7 @@ export const background: MantineDemo = {
     {
       prop: "initialRotationX",
       type: "number",
-      initialValue: 0,
+      initialValue: 60,
       libraryValue: 0,
       min: -360,
       max: 360,
@@ -92,7 +131,7 @@ export const background: MantineDemo = {
     {
       prop: "initialSkewX",
       type: "number",
-      initialValue: 0,
+      initialValue: -30,
       libraryValue: 0,
       min: -360,
       max: 360,
@@ -101,7 +140,7 @@ export const background: MantineDemo = {
     {
       prop: "initialSkewY",
       type: "number",
-      initialValue: 0,
+      initialValue: 30,
       libraryValue: 0,
       min: -360,
       max: 360,
@@ -125,7 +164,7 @@ export const background: MantineDemo = {
     {
       prop: "lightOverlay",
       type: "boolean",
-      initialValue: false,
+      initialValue: true,
       libraryValue: false,
     },
     {
@@ -159,32 +198,17 @@ export const background: MantineDemo = {
         { label: "Radial", value: "radial" },
         { label: "Linear", value: "linear" },
       ],
-      initialValue: "linear",
+      initialValue: "radial",
       libraryValue: "radial",
     },
     {
       prop: "lightGradientAngle",
       type: "number",
-      initialValue: -120,
+      initialValue: 0,
       libraryValue: 0,
       min: -360,
       max: 360,
       step: 1,
-    },
-    {
-      prop: "backgroundParallax",
-      type: "boolean",
-      initialValue: true,
-      libraryValue: false,
-    },
-    {
-      prop: "backgroundParallaxThreshold",
-      type: "number",
-      initialValue: 1,
-      libraryValue: 0,
-      min: -10,
-      max: 10,
-      step: 0.01,
     },
   ],
 };

@@ -18,7 +18,7 @@
 
 This component is created on top of the [Mantine](https://mantine.dev/) library.
 
-It allows to create a parallax effect with any content. In particular, you can use this component to create the typical Apple TV Card effect.
+Despite the `Parallax` component allowing you to create the famous **Apple TV Card** effect, you can use this component to manipulate the perspective and rotation of an element. It is also possible to act on the skew of the element and disable the parallax effect when hovering with the mouse.
 
 You can find more components on the [Mantine Extensions Hub](https://mantine-extensions.vercel.app/) library.
 

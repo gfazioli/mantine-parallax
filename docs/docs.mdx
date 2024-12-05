@@ -19,9 +19,20 @@ import '@gfazioli/mantine-parallax/styles.layer.css';
 
 ## Usage
 
-First of all, the `Parallax` component allows you to create the famous Apple TV Card effect. 
+Despite the `Parallax` component allowing you to create the famous Apple TV Card effect, you can use this component to manipulate the perspective and rotation of an element. It is also possible to act on the skew of the element and disable the parallax effect when hovering with the mouse. [See Initial values and Skew](#initial-values-and-skew) below.
+
+
+The `disabled` prop allows you to disable the effect. Both `perspective` and `initialPerspective` props will be disabled if the value is greater or equal to `10000`.
+
 
 <Demo data={demos.configurator} />
+
+## Initial values and Skew
+
+You can set the initial rotation of the card using the `initialPerspective`, `initialRotationX`, `initialRotationY`, and `initialRotationZ` props.
+You may also use the `initialSkewX` and `initialSkewY` props to set the initial skew of the card.
+
+<Demo data={demos.initial} />
 
 
 ## Simple usage

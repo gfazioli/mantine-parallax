@@ -16,10 +16,15 @@ import { Parallax, ParallaxProps } from "./Parallax";
 export default {
   title: "Parallax",
   args: {
+    disabled: false,
     threshold: 40,
     perspective: 1000,
+    initialPerspective: 1000,
     initialRotationX: 0,
     initialRotationY: 0,
+    initialRotationZ: 0,
+    initialSkewX: 0,
+    initialSkewY: 0,
     lightEffect: false,
     lightOverlay: false,
     lightIntensity: 0.2,
@@ -34,7 +39,7 @@ export default {
   },
   argTypes: {
     threshold: { control: { type: "range", min: 2, max: 100, step: 1 } },
-    perspective: { control: { type: "range", min: 1, max: 2000, step: 1 } },
+    perspective: { control: { type: "range", min: 0, max: 15000, step: 1 } },
     contentParallaxDistance: {
       control: { type: "range", min: 0, max: 10, step: 0.01 },
     },
@@ -56,7 +61,20 @@ export default {
     initialRotationY: {
       control: { type: "range", min: -360, max: 360, step: 0.1 },
     },
+    initialRotationZ: {
+      control: { type: "range", min: -360, max: 360, step: 0.1 },
+    },
+    initialPerspective: {
+      control: { type: "range", min: 0, max: 15000, step: 1 },
+    },
+    initialSkewX: {
+      control: { type: "range", min: -360, max: 360, step: 0.1 },
+    },
+    initialSkewY: {
+      control: { type: "range", min: -360, max: 360, step: 0.1 },
+    },
     lightEffect: { control: { type: "boolean" } },
+    disabled: { control: { type: "boolean" } },
     lightOverlay: { control: { type: "boolean" } },
     backgroundParallax: { control: { type: "boolean" } },
     contentParallax: { control: { type: "boolean" } },
@@ -112,10 +130,7 @@ export function Background(props: ParallaxProps) {
         {...props}
         w={300}
         h={200}
-        style={{
-          borderRadius: "32px",
-          backgroundColor: "rgba(0, 0, 0, 1)",
-        }}
+        backgroundImage="https://picsum.photos/500/400?random=2"
       >
         <Title c="blue">Parallax Card Parallax</Title>
         <Text c="white">Hover to see the effect</Text>

@@ -29,6 +29,7 @@ export interface ParallaxBaseProps {
 
   /**
    * The perspective value for the parallax effect.
+   * With value >= 10000, the perspective is set to 'none'.
    * @default 1000
    */
   perspective?: number;
@@ -115,6 +116,34 @@ export interface ParallaxBaseProps {
   initialRotationY?: number;
 
   /**
+   * The initial rotation Z of the parallax component.
+   */
+  initialRotationZ?: number;
+
+  /**
+   * The initial perspective of the parallax component.
+   * With value >= 10000, the perspective is set to 'none'.
+   * @default 1000
+   */
+  initialPerspective?: number;
+
+  /**
+   * The initial skew X of the parallax component.
+   */
+  initialSkewX?: number;
+
+  /**
+   * The initial skew Y of the parallax component.
+   */
+  initialSkewY?: number;
+
+  /**
+   * If true, disables the parallax component.
+   * @default false
+   */
+  disabled?: boolean;
+
+  /**
    * The content to be rendered inside the parallax component.
    */
   children?: React.ReactNode;
@@ -160,6 +189,11 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     lightGradientAngle = 0,
     initialRotationX = 0,
     initialRotationY = 0,
+    initialRotationZ = 0,
+    initialPerspective = 1000,
+    initialSkewX = 0,
+    initialSkewY = 0,
+    disabled,
 
     classNames,
     style,
@@ -209,14 +243,22 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     lightEffect,
     initialRotationX,
     initialRotationY,
+    initialRotationZ,
+    initialPerspective,
+    initialSkewX,
+    initialSkewY,
   ]);
 
   const handleMouseEnter = () => {
-    setIsHovering(true);
+    setIsHovering(!disabled);
   };
   const handleMouseLeave = () => {
     setIsHovering(false);
   };
+
+  const initialPerspectiveValue =
+    initialPerspective < 10000 ? `${initialPerspective}px` : "none";
+  const perspectiveValue = perspective < 10000 ? `${perspective}px` : "none";
 
   const cardStyle: MantineStyleProp = {
     ...props.style,
@@ -224,13 +266,15 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       ? "transform 0.1s ease-out"
       : "transform 0.3s ease-out, background-position 0.3s ease-out",
     transform: isHovering
-      ? `perspective(${perspective}px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
-      : `perspective(1000px) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg)`,
+      ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
+      : `perspective(${initialPerspectiveValue}) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`,
     backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
     backgroundPosition:
       isHovering && backgroundParallax
         ? `${50 + rotation.y * backgroundParallaxThreshold}% ${50 - rotation.x * backgroundParallaxThreshold}%`
-        : "center center",
+        : backgroundParallax
+          ? `${50 + initialRotationY * backgroundParallaxThreshold}% ${50 - initialRotationX * backgroundParallaxThreshold}%`
+          : "center center",
     transformStyle: "preserve-3d",
     overflow: "visible",
   };
@@ -271,7 +315,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
             style: {
               ...child.props.style,
               transform: isHovering
-                ? `perspective(${perspective}px) translateX(${rotation.y * (index + 1) * contentParallaxDistance}px) translateY(${rotation.x * (index + 1) * -contentParallaxDistance}px)`
+                ? `perspective(${perspectiveValue}) translateX(${rotation.y * (index + 1) * contentParallaxDistance}px) translateY(${rotation.x * (index + 1) * -contentParallaxDistance}px)`
                 : "",
               transformStyle: "preserve-3d",
               transition: "transform 0.1s ease-out",
@@ -298,7 +342,6 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
-        perspective: `${perspective}px`,
         position: "relative",
         overflow: "visible",
       }}
