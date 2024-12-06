@@ -89,7 +89,20 @@ export default {
 export function Simple(props: ParallaxProps) {
   return (
     <Center w="100%" h={300}>
-      <Parallax {...props} p={82} bg="tomato">
+      <Parallax
+        {...props}
+        p={82}
+        bg="tomato"
+        styles={{
+          root: {
+            border: "2px solid green",
+          },
+          content: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            boxShadow: "0 0 12px rgba(0, 0, 0, 1)",
+          },
+        }}
+      >
         <Box
           w={300}
           h={200}

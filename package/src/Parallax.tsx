@@ -15,7 +15,7 @@ import { useMouse } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
 import classes from "./Parallax.module.css";
 
-export type ParallaxStylesNames = "root";
+export type ParallaxStylesNames = "root" | "content" | "light";
 
 /**
  * Props for the Parallax component.
@@ -346,9 +346,11 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         overflow: "visible",
       }}
     >
-      <Box ref={ref} {...getStyles("root")} {...others} style={cardStyle}>
-        <div style={childrenContainerStyle}>{childrenWithParallax}</div>
-        {lightEffect && <div style={lightStyle} />}
+      <Box ref={ref} {...others} {...getStyles("root", { style: cardStyle })}>
+        <div {...getStyles("content", { style: childrenContainerStyle })}>
+          {childrenWithParallax}
+        </div>
+        {lightEffect && <div {...getStyles("light", { style: lightStyle })} />}
       </Box>
     </Box>
   );
