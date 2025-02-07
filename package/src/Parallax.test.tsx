@@ -1,5 +1,5 @@
-import React from 'react';
 import { render, tests } from '@mantine-tests/core';
+import React from 'react';
 import { Parallax, ParallaxProps, ParallaxStylesNames } from './Parallax';
 
 const defaultProps: ParallaxProps = {};
@@ -18,7 +18,7 @@ describe('@mantine/core/Parallax', () => {
   });
 
   it('supports perspective prop', () => {
-    const { container } = render(<Parallax gap="500px" />);
+    const { container } = render(<Parallax />);
     expect(container.querySelector('.mantine-Parallax-root')).toHaveStyle({ perspective: '500px' });
   });
 });
