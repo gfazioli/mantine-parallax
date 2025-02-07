@@ -1,20 +1,9 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Card,
-  Center,
-  Group,
-  Image,
-  Paper,
-  Text,
-  Title,
-} from "@mantine/core";
-import React from "react";
-import { Parallax, ParallaxProps } from "./Parallax";
+import React from 'react';
+import { Badge, Box, Button, Card, Center, Group, Image, Paper, Text, Title } from '@mantine/core';
+import { Parallax, ParallaxProps } from './Parallax';
 
 export default {
-  title: "Parallax",
+  title: 'Parallax',
   args: {
     disabled: false,
     threshold: 40,
@@ -29,8 +18,8 @@ export default {
     lightOverlay: false,
     lightIntensity: 0.2,
     lightSize: 50,
-    lightColor: "rgba(255, 255, 255, .1)",
-    lightGradientType: "radial",
+    lightColor: 'rgba(255, 255, 255, .1)',
+    lightGradientType: 'radial',
     lightGradientAngle: 0,
     backgroundParallax: false,
     backgroundParallaxThreshold: 0,
@@ -38,50 +27,50 @@ export default {
     contentParallaxDistance: 0,
   },
   argTypes: {
-    threshold: { control: { type: "range", min: 2, max: 100, step: 1 } },
-    perspective: { control: { type: "range", min: 0, max: 15000, step: 1 } },
+    threshold: { control: { type: 'range', min: 2, max: 100, step: 1 } },
+    perspective: { control: { type: 'range', min: 0, max: 15000, step: 1 } },
     contentParallaxDistance: {
-      control: { type: "range", min: 0, max: 10, step: 0.01 },
+      control: { type: 'range', min: 0, max: 10, step: 0.01 },
     },
     lightIntensity: {
-      control: { type: "range", min: 0, max: 1, step: 0.01 },
+      control: { type: 'range', min: 0, max: 1, step: 0.01 },
     },
     lightSize: {
-      control: { type: "range", min: 0, max: 100, step: 0.1 },
+      control: { type: 'range', min: 0, max: 100, step: 0.1 },
     },
     backgroundParallaxThreshold: {
-      control: { type: "range", min: -10, max: 10, step: 0.01 },
+      control: { type: 'range', min: -10, max: 10, step: 0.01 },
     },
     lightGradientAngle: {
-      control: { type: "range", min: -360, max: 360, step: 0.1 },
+      control: { type: 'range', min: -360, max: 360, step: 0.1 },
     },
     initialRotationX: {
-      control: { type: "range", min: -360, max: 360, step: 0.1 },
+      control: { type: 'range', min: -360, max: 360, step: 0.1 },
     },
     initialRotationY: {
-      control: { type: "range", min: -360, max: 360, step: 0.1 },
+      control: { type: 'range', min: -360, max: 360, step: 0.1 },
     },
     initialRotationZ: {
-      control: { type: "range", min: -360, max: 360, step: 0.1 },
+      control: { type: 'range', min: -360, max: 360, step: 0.1 },
     },
     initialPerspective: {
-      control: { type: "range", min: 0, max: 15000, step: 1 },
+      control: { type: 'range', min: 0, max: 15000, step: 1 },
     },
     initialSkewX: {
-      control: { type: "range", min: -360, max: 360, step: 0.1 },
+      control: { type: 'range', min: -360, max: 360, step: 0.1 },
     },
     initialSkewY: {
-      control: { type: "range", min: -360, max: 360, step: 0.1 },
+      control: { type: 'range', min: -360, max: 360, step: 0.1 },
     },
-    lightEffect: { control: { type: "boolean" } },
-    disabled: { control: { type: "boolean" } },
-    lightOverlay: { control: { type: "boolean" } },
-    backgroundParallax: { control: { type: "boolean" } },
-    contentParallax: { control: { type: "boolean" } },
-    lightColor: { control: { type: "color" } },
+    lightEffect: { control: { type: 'boolean' } },
+    disabled: { control: { type: 'boolean' } },
+    lightOverlay: { control: { type: 'boolean' } },
+    backgroundParallax: { control: { type: 'boolean' } },
+    contentParallax: { control: { type: 'boolean' } },
+    lightColor: { control: { type: 'color' } },
     lightGradientType: {
-      control: { type: "inline-radio" },
-      options: ["radial", "linear"],
+      control: { type: 'inline-radio' },
+      options: ['radial', 'linear'],
     },
   },
 };
@@ -95,11 +84,11 @@ export function Simple(props: ParallaxProps) {
         bg="tomato"
         styles={{
           root: {
-            border: "2px solid green",
+            border: '2px solid green',
           },
           content: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            boxShadow: "0 0 12px rgba(0, 0, 0, 1)",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            boxShadow: '0 0 12px rgba(0, 0, 0, 1)',
           },
         }}
       >
@@ -107,18 +96,16 @@ export function Simple(props: ParallaxProps) {
           w={300}
           h={200}
           style={{
-            position: "absolute",
-            boxShadow: "0 0 12px rgba(0, 0, 0, 1)",
-            backgroundColor: "rgba(0, 0, 0, 0.5",
-            borderRadius: "16px",
+            position: 'absolute',
+            boxShadow: '0 0 12px rgba(0, 0, 0, 1)',
+            backgroundColor: 'rgba(0, 0, 0, 0.5',
+            borderRadius: '16px',
           }}
         />
 
         <Paper withBorder w={300} h={200} bg="gray" radius={16} p={16}>
           <Title>Parallax</Title>
-          <Text>
-            Amazing parallax effect component. Hover to see the effect.
-          </Text>
+          <Text>Amazing parallax effect component. Hover to see the effect.</Text>
         </Paper>
       </Parallax>
     </Center>
@@ -139,12 +126,7 @@ export function Usage(props: ParallaxProps) {
 export function Background(props: ParallaxProps) {
   return (
     <Center w="100%" h={400}>
-      <Parallax
-        {...props}
-        w={300}
-        h={200}
-        backgroundImage="https://picsum.photos/500/400?random=2"
-      >
+      <Parallax {...props} w={300} h={200} backgroundImage="https://picsum.photos/500/400?random=2">
         <Title c="blue">Parallax Card Parallax</Title>
         <Text c="white">Hover to see the effect</Text>
       </Parallax>
@@ -160,7 +142,7 @@ export function Shadow(props: ParallaxProps) {
         w={300}
         h={200}
         style={{
-          backgroundColor: "rgba(255,255,255, 1)",
+          backgroundColor: 'rgba(255,255,255, 1)',
         }}
       >
         <Title data-shadow c="blue">
@@ -210,9 +192,8 @@ export function CardExample(props: ParallaxProps) {
           </Group>
 
           <Text size="sm" c="dimmed">
-            With Fjord Tours you can explore more of the magical fjord
-            landscapes with tours and activities on and around the fjords of
-            Norway
+            With Fjord Tours you can explore more of the magical fjord landscapes with tours and
+            activities on and around the fjords of Norway
           </Text>
 
           <Button color="blue" fullWidth mt="md" radius="md">
@@ -226,13 +207,13 @@ export function CardExample(props: ParallaxProps) {
 
 export function Nested(props: ParallaxProps) {
   return (
-    <div style={{ padding: "2rem", display: "block" }}>
+    <div style={{ padding: '2rem', display: 'block' }}>
       <Parallax
         {...props}
         w={300}
         h={200}
         style={{
-          backgroundColor: "rgba(0, 0, 0, 1)",
+          backgroundColor: 'rgba(0, 0, 0, 1)',
         }}
       >
         <Title c="blue">Parallax Card Parallax</Title>
@@ -242,7 +223,7 @@ export function Nested(props: ParallaxProps) {
           w={300}
           h={200}
           style={{
-            backgroundColor: "rgba(255, 0, 0, 1)",
+            backgroundColor: 'rgba(255, 0, 0, 1)',
           }}
         >
           <Title c="blue">Parallax Card Parallax</Title>

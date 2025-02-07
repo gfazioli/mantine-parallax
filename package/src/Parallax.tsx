@@ -1,21 +1,21 @@
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   BoxProps,
+  getThemeColor,
   MantineColor,
   MantineStyleProp,
   PolymorphicFactory,
-  StylesApiProps,
-  getThemeColor,
   polymorphicFactory,
+  StylesApiProps,
   useMantineTheme,
   useProps,
   useStyles,
-} from "@mantine/core";
-import { useMouse } from "@mantine/hooks";
-import React, { useEffect, useState } from "react";
-import classes from "./Parallax.module.css";
+} from '@mantine/core';
+import { useMouse } from '@mantine/hooks';
+import classes from './Parallax.module.css';
 
-export type ParallaxStylesNames = "root" | "content" | "light";
+export type ParallaxStylesNames = 'root' | 'content' | 'light';
 
 /**
  * Props for the Parallax component.
@@ -97,7 +97,7 @@ export interface ParallaxBaseProps {
    * The type of gradient for the light effect.
    * @default 'radial'
    */
-  lightGradientType?: "radial" | "linear";
+  lightGradientType?: 'radial' | 'linear';
 
   /**
    * The angle of the light gradient.
@@ -156,14 +156,14 @@ export interface ParallaxProps
 export type ParallaxFactory = PolymorphicFactory<{
   props: ParallaxProps;
   defaultRef: HTMLDivElement;
-  defaultComponent: "div";
+  defaultComponent: 'div';
   stylesNames: ParallaxStylesNames;
 }>;
 
 export const defaultProps: Partial<ParallaxProps> = {};
 
 export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
-  const props = useProps("Parallax", defaultProps, _props);
+  const props = useProps('Parallax', defaultProps, _props);
 
   const { ref: mouseRef, x, y } = useMouse();
   const [isHovering, setIsHovering] = useState(false);
@@ -184,8 +184,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     lightOverlay = false,
     lightIntensity = 0.2,
     lightSize = 50,
-    lightColor = "rgba(255, 255, 255, .1)",
-    lightGradientType = "radial",
+    lightColor = 'rgba(255, 255, 255, .1)',
+    lightGradientType = 'radial',
     lightGradientAngle = 0,
     initialRotationX = 0,
     initialRotationY = 0,
@@ -207,7 +207,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   } = props;
 
   const getStyles = useStyles<ParallaxFactory>({
-    name: "Parallax",
+    name: 'Parallax',
     props,
     classes,
     className,
@@ -256,15 +256,14 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     setIsHovering(false);
   };
 
-  const initialPerspectiveValue =
-    initialPerspective < 10000 ? `${initialPerspective}px` : "none";
-  const perspectiveValue = perspective < 10000 ? `${perspective}px` : "none";
+  const initialPerspectiveValue = initialPerspective < 10000 ? `${initialPerspective}px` : 'none';
+  const perspectiveValue = perspective < 10000 ? `${perspective}px` : 'none';
 
   const cardStyle: MantineStyleProp = {
     ...props.style,
     transition: isHovering
-      ? "transform 0.1s ease-out"
-      : "transform 0.3s ease-out, background-position 0.3s ease-out",
+      ? 'transform 0.1s ease-out'
+      : 'transform 0.3s ease-out, background-position 0.3s ease-out',
     transform: isHovering
       ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
       : `perspective(${initialPerspectiveValue}) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`,
@@ -274,9 +273,9 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         ? `${50 + rotation.y * backgroundParallaxThreshold}% ${50 - rotation.x * backgroundParallaxThreshold}%`
         : backgroundParallax
           ? `${50 + initialRotationY * backgroundParallaxThreshold}% ${50 - initialRotationX * backgroundParallaxThreshold}%`
-          : "center center",
-    transformStyle: "preserve-3d",
-    overflow: "visible",
+          : 'center center',
+    transformStyle: 'preserve-3d',
+    overflow: 'visible',
   };
 
   const lightGradientColor = getThemeColor(lightColor, theme);
@@ -294,31 +293,33 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
   const lightStyle: React.CSSProperties = lightEffect
     ? {
-        position: "absolute",
+        position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        pointerEvents: "none",
+        pointerEvents: 'none',
         zIndex: lightOverlay ? 1 : -1,
         background: gradients[lightGradientType],
-        transition: "background 0.3s ease-out",
-        borderRadius: "inherit",
+        transition: 'background 0.3s ease-out',
+        borderRadius: 'inherit',
       }
     : {};
 
   const childrenWithParallax = contentParallax
     ? React.Children.map(children, (child, index) => {
         if (React.isValidElement(child)) {
-          return React.cloneElement(child as React.ReactElement, {
-            className: classes.parallaxChildren,
+          return React.cloneElement(child as React.ReactElement<any>, {
+            className: (child as React.ReactElement<any>).props?.className
+              ? `${(child as React.ReactElement<any>).props.className} ${classes.parallaxChildren}`
+              : classes.parallaxChildren,
             style: {
-              ...child.props.style,
+              ...(child as React.ReactElement<any>).props.style,
               transform: isHovering
                 ? `perspective(${perspectiveValue}) translateX(${rotation.y * (index + 1) * contentParallaxDistance}px) translateY(${rotation.x * (index + 1) * -contentParallaxDistance}px)`
-                : "",
-              transformStyle: "preserve-3d",
-              transition: "transform 0.1s ease-out",
+                : '',
+              transformStyle: 'preserve-3d',
+              transition: 'transform 0.1s ease-out',
             },
           });
         }
@@ -327,10 +328,10 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     : children;
 
   const childrenContainerStyle: React.CSSProperties = {
-    position: "relative",
-    width: "100%",
-    height: "100%",
-    overflow: "visible",
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    overflow: 'visible',
     zIndex: 1,
   };
 
@@ -342,19 +343,19 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
-        position: "relative",
-        overflow: "visible",
+        position: 'relative',
+        overflow: 'visible',
       }}
     >
-      <Box ref={ref} {...others} {...getStyles("root", { style: cardStyle })}>
-        <div {...getStyles("content", { style: childrenContainerStyle })}>
+      <Box ref={ref} {...others} {...getStyles('root', { style: cardStyle })}>
+        <div {...getStyles('content', { style: childrenContainerStyle })}>
           {childrenWithParallax}
         </div>
-        {lightEffect && <div {...getStyles("light", { style: lightStyle })} />}
+        {lightEffect && <div {...getStyles('light', { style: lightStyle })} />}
       </Box>
     </Box>
   );
 });
 
 Parallax.classes = classes;
-Parallax.displayName = "Parallax";
+Parallax.displayName = 'Parallax';

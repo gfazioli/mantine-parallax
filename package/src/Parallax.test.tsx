@@ -1,5 +1,5 @@
-import { render, tests } from '@mantine-tests/core';
 import React from 'react';
+import { render, tests } from '@mantine-tests/core';
 import { Parallax, ParallaxProps, ParallaxStylesNames } from './Parallax';
 
 const defaultProps: ParallaxProps = {};

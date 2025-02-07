@@ -1,7 +1,7 @@
-import { Parallax, ParallaxProps } from "@gfazioli/mantine-parallax";
-import { Badge, Button, Card, Center, Group, Image, Text } from "@mantine/core";
-import { useWindowScroll } from "@mantine/hooks";
-import { MantineDemo } from "@mantinex/demo";
+import { Parallax, ParallaxProps } from '@gfazioli/mantine-parallax';
+import { Badge, Button, Card, Center, Group, Image, Text } from '@mantine/core';
+import { useWindowScroll } from '@mantine/hooks';
+import { MantineDemo } from '@mantinex/demo';
 
 function Demo(props: ParallaxProps) {
   const [scroll] = useWindowScroll();
@@ -24,9 +24,8 @@ function Demo(props: ParallaxProps) {
           </Group>
 
           <Text size="sm" c="dimmed">
-            With Fjord Tours you can explore more of the magical fjord
-            landscapes with tours and activities on and around the fjords of
-            Norway
+            With Fjord Tours you can explore more of the magical fjord landscapes with tours and
+            activities on and around the fjords of Norway
           </Text>
 
           <Button color="blue" fullWidth mt="md" radius="md">
@@ -79,7 +78,7 @@ function Demo() {
 `;
 
 export const scroll: MantineDemo = {
-  type: "code",
+  type: 'code',
   component: Demo,
   code,
   // controls: [

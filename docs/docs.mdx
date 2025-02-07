@@ -11,7 +11,7 @@ After installation import package styles at the root of your application:
 import '@gfazioli/mantine-parallax/styles.css';
 ```
 
-You can import styles within a layer `@layer mantine-parallax` by importing `@gfazioli/mantine-parallax/styles.layer.css` file. 
+You can import styles within a layer `@layer mantine-parallax` by importing `@gfazioli/mantine-parallax/styles.layer.css` file.
 
 ```tsx
 import '@gfazioli/mantine-parallax/styles.layer.css';
@@ -21,9 +21,7 @@ import '@gfazioli/mantine-parallax/styles.layer.css';
 
 Despite the `Parallax` component allowing you to create the famous Apple TV Card effect, you can use this component to manipulate the perspective and rotation of an element. It is also possible to act on the skew of the element and disable the parallax effect when hovering with the mouse. [See Initial values and Skew](#initial-values-and-skew) below.
 
-
 The `disabled` prop allows you to disable the effect. Both `perspective` and `initialPerspective` props will be disabled if the value is greater or equal to `10000`.
-
 
 <Demo data={demos.configurator} />
 
@@ -38,9 +36,7 @@ You may also use the `initialSkewX` and `initialSkewY` props to set the initial 
 
 The initial values of the `Parallax` component can be set based on the scroll position. You can use the `useWindowScroll()` hook to get the scroll position and pass it to the `Parallax` component.
 
-
 <Demo data={demos.scroll} />
-
 
 ## Simple usage
 
@@ -60,7 +56,7 @@ Here is an example of the parallax effect used for the background.
 
 ### Content
 
-Of course, you can also use the parallax effect for the content. You may use the `contentParallax` and `contentParallaxDistance` props to enable and manage the parallax effect.   
+Of course, you can also use the parallax effect for the content. You may use the `contentParallax` and `contentParallaxDistance` props to enable and manage the parallax effect.
 
 <Demo data={demos.parallax} />
 
@@ -75,5 +71,3 @@ Below a more complex example of how to use the `Parallax` component.
 Give free rein to your creativity. You can use the `Parallax` component to create shading effects.
 
 <Demo data={demos.shadow} />
-
-

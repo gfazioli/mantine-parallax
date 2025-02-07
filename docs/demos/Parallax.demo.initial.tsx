@@ -1,6 +1,6 @@
-import { Parallax, ParallaxProps } from "@gfazioli/mantine-parallax";
-import { Badge, Button, Card, Center, Group, Image, Text } from "@mantine/core";
-import { MantineDemo } from "@mantinex/demo";
+import { Parallax, ParallaxProps } from '@gfazioli/mantine-parallax';
+import { Badge, Button, Card, Center, Group, Image, Text } from '@mantine/core';
+import { MantineDemo } from '@mantinex/demo';
 
 function Demo(props: ParallaxProps) {
   return (
@@ -21,9 +21,8 @@ function Demo(props: ParallaxProps) {
           </Group>
 
           <Text size="sm" c="dimmed">
-            With Fjord Tours you can explore more of the magical fjord
-            landscapes with tours and activities on and around the fjords of
-            Norway
+            With Fjord Tours you can explore more of the magical fjord landscapes with tours and
+            activities on and around the fjords of Norway
           </Text>
 
           <Button color="blue" fullWidth mt="md" radius="md">
@@ -73,19 +72,19 @@ function Demo() {
 `;
 
 export const initial: MantineDemo = {
-  type: "configurator",
+  type: 'configurator',
   component: Demo,
   code,
   controls: [
     {
-      prop: "disabled",
-      type: "boolean",
+      prop: 'disabled',
+      type: 'boolean',
       initialValue: false,
       libraryValue: false,
     },
     {
-      prop: "perspective",
-      type: "number",
+      prop: 'perspective',
+      type: 'number',
       initialValue: 1000,
       libraryValue: 1000,
       step: 1,
@@ -93,8 +92,8 @@ export const initial: MantineDemo = {
       max: 10000,
     },
     {
-      prop: "initialPerspective",
-      type: "number",
+      prop: 'initialPerspective',
+      type: 'number',
       initialValue: 10000,
       libraryValue: 1000,
       step: 1,
@@ -102,8 +101,8 @@ export const initial: MantineDemo = {
       max: 10000,
     },
     {
-      prop: "initialRotationX",
-      type: "number",
+      prop: 'initialRotationX',
+      type: 'number',
       initialValue: 60,
       libraryValue: 0,
       min: -360,
@@ -111,8 +110,8 @@ export const initial: MantineDemo = {
       step: 0.1,
     },
     {
-      prop: "initialRotationY",
-      type: "number",
+      prop: 'initialRotationY',
+      type: 'number',
       initialValue: 0,
       libraryValue: 0,
       min: -360,
@@ -120,8 +119,8 @@ export const initial: MantineDemo = {
       step: 0.1,
     },
     {
-      prop: "initialRotationZ",
-      type: "number",
+      prop: 'initialRotationZ',
+      type: 'number',
       initialValue: 0,
       libraryValue: 0,
       min: -360,
@@ -129,8 +128,8 @@ export const initial: MantineDemo = {
       step: 0.1,
     },
     {
-      prop: "initialSkewX",
-      type: "number",
+      prop: 'initialSkewX',
+      type: 'number',
       initialValue: -30,
       libraryValue: 0,
       min: -360,
@@ -138,8 +137,8 @@ export const initial: MantineDemo = {
       step: 0.1,
     },
     {
-      prop: "initialSkewY",
-      type: "number",
+      prop: 'initialSkewY',
+      type: 'number',
       initialValue: 30,
       libraryValue: 0,
       min: -360,
@@ -147,8 +146,8 @@ export const initial: MantineDemo = {
       step: 0.1,
     },
     {
-      prop: "threshold",
-      type: "number",
+      prop: 'threshold',
+      type: 'number',
       initialValue: 40,
       libraryValue: 40,
       min: 2,
@@ -156,20 +155,20 @@ export const initial: MantineDemo = {
       step: 0.1,
     },
     {
-      prop: "lightEffect",
-      type: "boolean",
+      prop: 'lightEffect',
+      type: 'boolean',
       initialValue: true,
       libraryValue: false,
     },
     {
-      prop: "lightOverlay",
-      type: "boolean",
+      prop: 'lightOverlay',
+      type: 'boolean',
       initialValue: true,
       libraryValue: false,
     },
     {
-      prop: "lightIntensity",
-      type: "number",
+      prop: 'lightIntensity',
+      type: 'number',
       initialValue: 0.1,
       libraryValue: 0.1,
       min: 0,
@@ -177,8 +176,8 @@ export const initial: MantineDemo = {
       step: 0.1,
     },
     {
-      prop: "lightSize",
-      type: "number",
+      prop: 'lightSize',
+      type: 'number',
       initialValue: 50,
       libraryValue: 50,
       min: 0,
@@ -186,24 +185,24 @@ export const initial: MantineDemo = {
       step: 1,
     },
     {
-      type: "color",
-      prop: "lightColor",
-      initialValue: "rgba(255, 255, 255, .5)",
-      libraryValue: "rgba(255, 255, 255, .5)",
+      type: 'color',
+      prop: 'lightColor',
+      initialValue: 'rgba(255, 255, 255, .5)',
+      libraryValue: 'rgba(255, 255, 255, .5)',
     },
     {
-      prop: "lightGradientType",
-      type: "segmented",
+      prop: 'lightGradientType',
+      type: 'segmented',
       data: [
-        { label: "Radial", value: "radial" },
-        { label: "Linear", value: "linear" },
+        { label: 'Radial', value: 'radial' },
+        { label: 'Linear', value: 'linear' },
       ],
-      initialValue: "radial",
-      libraryValue: "radial",
+      initialValue: 'radial',
+      libraryValue: 'radial',
     },
     {
-      prop: "lightGradientAngle",
-      type: "number",
+      prop: 'lightGradientAngle',
+      type: 'number',
       initialValue: 0,
       libraryValue: 0,
       min: -360,
