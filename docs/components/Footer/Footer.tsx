@@ -1,9 +1,5 @@
+import { IconBrandMantine, IconComponents, IconMailStar } from '@tabler/icons-react';
 import { Button, Center, Container, Divider, Group } from '@mantine/core';
-import {
-  IconBrandMantine,
-  IconComponents,
-  IconMailStar,
-} from '@tabler/icons-react';
 import classes from './Footer.module.css';
 
 interface FooterProps {
@@ -22,7 +18,7 @@ export function Footer({ children }: FooterProps) {
               height="32"
               width="114"
               style={{ border: 0, borderRadius: '6px' }}
-            />
+            ></iframe>
             <Divider orientation="vertical" color="dark.5" />
             <Button
               component="a"

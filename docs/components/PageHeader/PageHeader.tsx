@@ -1,5 +1,3 @@
-import { Badge, Container, Text, Title } from "@mantine/core";
-import { GithubIcon, NpmIcon } from "@mantinex/dev-icons";
 import {
   IconEdit,
   IconHeartFilled,
@@ -7,17 +5,17 @@ import {
   IconPackage,
   IconUserCode,
   IconVersions,
-} from "@tabler/icons-react";
-import pack from "../../../package/package.json";
-import type { PackageData } from "../../data";
-import classes from "./PageHeader.module.css";
-import { PageHeaderLink } from "./PageHeaderLink/PageHeaderLink";
+} from '@tabler/icons-react';
+import { Badge, Container, Text, Title } from '@mantine/core';
+import { GithubIcon, NpmIcon } from '@mantinex/dev-icons';
+import pack from '../../../package/package.json';
+import type { PackageData } from '../../data';
+import { PageHeaderLink } from './PageHeaderLink/PageHeaderLink';
+import classes from './PageHeader.module.css';
 
 interface PageHeaderProps {
   data: PackageData;
 }
-
-// https://github.com/gfazioli/mantine-flip/releases/tag/1.0.23
 
 export function PageHeader({ data }: PageHeaderProps) {
   return (
@@ -27,26 +25,20 @@ export function PageHeader({ data }: PageHeaderProps) {
         <Text className={classes.description}>{data.packageDescription}</Text>
 
         <div className={classes.links}>
-          <PageHeaderLink
-            label="Version"
-            icon={<IconVersions size={18} stroke={1.5} />}
-          >
+          <PageHeaderLink label="Version" icon={<IconVersions size={18} stroke={1.5} />}>
             <Badge>v{pack.version}</Badge>
           </PageHeaderLink>
           <PageHeaderLink
             label="Changelog"
             icon={<GithubIcon size={16} />}
-            link={data.repositoryUrl + "/releases/tag/" + pack.version}
+            link={data.repositoryUrl + '/releases/tag/' + pack.version}
           >
             View the Changelog
           </PageHeaderLink>
-          <PageHeaderLink
-            label="Source"
-            icon={<GithubIcon size={16} />}
-            link={data.repositoryUrl}
-          >
+          <PageHeaderLink label="Source" icon={<GithubIcon size={16} />} link={data.repositoryUrl}>
             View source code
           </PageHeaderLink>
+
           <PageHeaderLink
             label="Package"
             icon={<NpmIcon size={16} />}
@@ -57,7 +49,7 @@ export function PageHeader({ data }: PageHeaderProps) {
           <PageHeaderLink
             label="See More"
             icon={<IconPackage size={16} />}
-            link="https://mantine-extensions.vercel.app/"
+            link={`https://mantine-extensions.vercel.app/`}
           >
             Mantine Extensions
           </PageHeaderLink>
@@ -73,7 +65,7 @@ export function PageHeader({ data }: PageHeaderProps) {
             icon={<IconUserCode size={18} stroke={1.5} />}
             link={`https://github.com/${data.author.githubUsername}`}
           >
-            {data.author.name}{" "}
+            {data.author.name}{' '}
             <Text span c="dimmed" inherit>
               (@{data.author.githubUsername})
             </Text>
@@ -88,7 +80,7 @@ export function PageHeader({ data }: PageHeaderProps) {
           <PageHeaderLink
             label="Support"
             icon={<IconHeartFilled color="red" size={18} stroke={1.5} />}
-            link={"https://github.com/sponsors/gfazioli?o=esb"}
+            link={'https://github.com/sponsors/gfazioli?o=esb'}
           >
             Become a sponsor
           </PageHeaderLink>
