@@ -34,4 +34,5 @@ export const usage: MantineDemo = {
   type: 'code',
   component: Demo,
   code,
+  defaultExpanded: false,
 };

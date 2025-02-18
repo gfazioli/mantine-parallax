@@ -1,8 +1,10 @@
 # Mantine Parallax Component
 
-<p align="center">
-  <img width="100%" alt="image" src="https://github.com/user-attachments/assets/68345b72-c321-4c6f-a52c-85d8aca1cee6" />
-</p>
+<div align="center">
+  
+  ![image](https://github.com/user-attachments/assets/68345b72-c321-4c6f-a52c-85d8aca1cee6)
+
+</div>
 
 ---
 
