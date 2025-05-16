@@ -1,5 +1,18 @@
 import React from 'react';
-import { Badge, Box, Button, Card, Center, Group, Image, Paper, Text, Title } from '@mantine/core';
+import {
+  Badge,
+  Box,
+  Button,
+  Card,
+  Center,
+  Group,
+  Image,
+  Paper,
+  Stack,
+  Text,
+  Title,
+} from '@mantine/core';
+import { useIntersection } from '@mantine/hooks';
 import { Parallax, ParallaxProps } from './Parallax';
 
 export default {
@@ -231,5 +244,83 @@ export function Nested(props: ParallaxProps) {
         </Parallax>
       </Parallax>
     </div>
+  );
+}
+
+function PresentationCard() {
+  const random = Math.floor(Math.random() * 8) + 1;
+
+  return (
+    <Card
+      shadow="xl"
+      padding="lg"
+      radius="md"
+      withBorder
+      style={{
+        boxShadow: '12px 6px 6px 6px rgba(0, 0, 0, 0.3)',
+      }}
+    >
+      <Card.Section>
+        <Image
+          src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random}.png`}
+          height={160}
+          alt="Norway"
+        />
+      </Card.Section>
+
+      <Group justify="space-between" mt="md" mb="xs">
+        <Text fw={500}>Norway Fjord Adventures</Text>
+        <Badge color="pink">On Sale</Badge>
+      </Group>
+
+      <Text size="sm" c="dimmed">
+        With Fjord Tours you can explore more of the magical fjord landscapes with tours and
+        activities on and around the fjords of Norway
+      </Text>
+
+      <Button color="blue" fullWidth mt="md" radius="md">
+        Book classic tour now
+      </Button>
+    </Card>
+  );
+}
+
+export function Presentation() {
+  const { ref, entry } = useIntersection({
+    // root: containerRef.current,
+    // threshold: 1,
+  });
+
+  const presentationProps = {
+    initialRotationX: 60,
+    initialSkewX: -30,
+    initialSkewY: 30,
+    initialPerspective: 10000,
+    disabled: true,
+  };
+
+  return (
+    <Box h={3000}>
+      <p>{entry ? 'In view' : 'Out of view'}</p>
+      <Stack ref={ref} w="100%" h={500} align="center">
+        <Parallax
+          w={400}
+          {...presentationProps}
+          style={{ position: 'absolute', top: entry ? 160 : 0 }}
+        >
+          <PresentationCard />
+        </Parallax>
+        <Parallax
+          w={400}
+          {...presentationProps}
+          style={{ position: 'absolute', top: entry ? 80 : 0 }}
+        >
+          <PresentationCard />
+        </Parallax>
+        <Parallax w={400} {...presentationProps} style={{ position: 'absolute', top: 0 }}>
+          <PresentationCard />
+        </Parallax>
+      </Stack>
+    </Box>
   );
 }
