@@ -1,5 +1,3 @@
 .root {
-} /* styles.css */
-
-.parallaxChildren {
+  display: flex;
 }
