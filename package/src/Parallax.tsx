@@ -160,7 +160,27 @@ export type ParallaxFactory = PolymorphicFactory<{
   stylesNames: ParallaxStylesNames;
 }>;
 
-export const defaultProps: Partial<ParallaxProps> = {};
+export const defaultProps: Partial<ParallaxProps> = {
+  threshold: 40,
+  perspective: 1000,
+  backgroundParallax: false,
+  backgroundParallaxThreshold: 1,
+  contentParallax: false,
+  contentParallaxDistance: 0,
+  lightEffect: false,
+  lightOverlay: false,
+  lightIntensity: 0.2,
+  lightSize: 50,
+  lightColor: 'rgba(255, 255, 255, .1)',
+  lightGradientType: 'radial',
+  lightGradientAngle: 0,
+  initialRotationX: 0,
+  initialRotationY: 0,
+  initialRotationZ: 0,
+  initialPerspective: 1000,
+  initialSkewX: 0,
+  initialSkewY: 0,
+};
 
 export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const props = useProps('Parallax', defaultProps, _props);
@@ -173,26 +193,26 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const theme = useMantineTheme();
 
   const {
-    threshold = 40,
-    perspective = 1000,
-    backgroundParallax = false,
-    backgroundParallaxThreshold = 1,
-    contentParallax = false,
-    contentParallaxDistance = 0,
+    threshold,
+    perspective,
+    backgroundParallax,
+    backgroundParallaxThreshold,
+    contentParallax,
+    contentParallaxDistance,
     backgroundImage,
-    lightEffect = false,
-    lightOverlay = false,
-    lightIntensity = 0.2,
-    lightSize = 50,
-    lightColor = 'rgba(255, 255, 255, .1)',
-    lightGradientType = 'radial',
-    lightGradientAngle = 0,
-    initialRotationX = 0,
-    initialRotationY = 0,
-    initialRotationZ = 0,
-    initialPerspective = 1000,
-    initialSkewX = 0,
-    initialSkewY = 0,
+    lightEffect,
+    lightOverlay,
+    lightIntensity,
+    lightSize,
+    lightColor,
+    lightGradientType,
+    lightGradientAngle,
+    initialRotationX,
+    initialRotationY,
+    initialRotationZ,
+    initialPerspective,
+    initialSkewX,
+    initialSkewY,
     disabled,
 
     classNames,
@@ -262,8 +282,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const cardStyle: MantineStyleProp = {
     ...props.style,
     transition: isHovering
-      ? 'transform 0.1s ease-out'
-      : 'transform 0.3s ease-out, background-position 0.3s ease-out',
+      ? 'all 0.1s ease-out'
+      : 'all 0.3s ease-out, background-position 0.3s ease-out',
     transform: isHovering
       ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
       : `perspective(${initialPerspectiveValue}) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`,
@@ -279,10 +299,6 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   };
 
   const lightGradientColor = getThemeColor(lightColor, theme);
-
-  // define lightPercentageStart position start by using lightSize.
-  // If lightSize is 100 lightPercentageStart will be 0, if lightSize is 0 lightPercentageStart will be 100
-  // lightSize = 50, lightPercentageStart = 50
   const lightPercentageStart = lightPosition.x - lightSize;
 
   const gradients = {
@@ -310,9 +326,6 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     ? React.Children.map(children, (child, index) => {
         if (React.isValidElement(child)) {
           return React.cloneElement(child as React.ReactElement<any>, {
-            className: (child as React.ReactElement<any>).props?.className
-              ? `${(child as React.ReactElement<any>).props.className} ${classes.parallaxChildren}`
-              : classes.parallaxChildren,
             style: {
               ...(child as React.ReactElement<any>).props.style,
               transform: isHovering
@@ -347,7 +360,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         overflow: 'visible',
       }}
     >
-      <Box ref={ref} {...others} {...getStyles('root', { style: cardStyle })}>
+      <Box ref={ref} {...others} {...getStyles('root', { style: cardStyle, ...style })}>
         <div {...getStyles('content', { style: childrenContainerStyle })}>
           {childrenWithParallax}
         </div>
