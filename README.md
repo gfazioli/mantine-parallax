@@ -2,11 +2,7 @@
 
 <div align="center">
   
-
-
 https://github.com/user-attachments/assets/a44d9e9f-e3bc-4ff4-9f47-a4fde13c048b
-
-
 
 </div>
 
@@ -73,3 +69,9 @@ function Demo() {
   );
 }
 ```
+
+<div align="center">
+  
+[![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-parallax&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-parallax&Timeline)
+
+</div>
