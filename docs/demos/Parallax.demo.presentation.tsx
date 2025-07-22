@@ -141,10 +141,12 @@ export const presentation: MantineDemo = {
     {
       fileName: 'Demo.tsx',
       code,
+      language: 'tsx',
     },
     {
       fileName: 'PresentationCard.tsx',
       code: cardCode,
+      language: 'tsx',
     },
   ],
   defaultExpanded: false,
