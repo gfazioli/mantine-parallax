@@ -2,10 +2,8 @@ import { Parallax } from '@gfazioli/mantine-parallax';
 import { Badge, Button, Card, Group, Image, Stack, Text } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
-function PresentationCard() {
-  const random = Math.floor(Math.random() * 8) + 1;
-
-  const img = `https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${random}.png`;
+function PresentationCard({ imgIndex = 1 }: { imgIndex?: number }) {
+  const img = `https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-${imgIndex}.png`;
 
   return (
     <Card
@@ -50,13 +48,13 @@ function Demo() {
   return (
     <Stack w="100%" h={500} align="center">
       <Parallax w={400} {...presentationProps} style={{ position: 'absolute', top: 160 }}>
-        <PresentationCard />
+        <PresentationCard imgIndex={1} />
       </Parallax>
       <Parallax w={400} {...presentationProps} style={{ position: 'absolute', top: 80 }}>
-        <PresentationCard />
+        <PresentationCard imgIndex={2} />
       </Parallax>
       <Parallax w={400} {...presentationProps} style={{ position: 'absolute', top: 0 }}>
-        <PresentationCard />
+        <PresentationCard imgIndex={3} />
       </Parallax>
     </Stack>
   );
@@ -79,13 +77,13 @@ function Demo() {
   return (
     <Stack w="100%" h={500} align="center">
       <Parallax w={400} {...presentationProps} style={{ position: 'absolute', top: 160 }}>
-        <PresentationCard />
+        <PresentationCard imgIndex={1} />
       </Parallax>
       <Parallax w={400} {...presentationProps} style={{ position: 'absolute', top: 80 }}>
-        <PresentationCard />
+        <PresentationCard imgIndex={2} />
       </Parallax>
       <Parallax w={400} {...presentationProps} style={{ position: 'absolute', top: 0 }}>
-        <PresentationCard />
+        <PresentationCard imgIndex={3} />
       </Parallax>
     </Stack>
   );
@@ -93,10 +91,10 @@ function Demo() {
 `;
 
 const cardCode = `
-export function PresentationCard() {
-  const random = Math.floor(Math.random() * 8) + 1;
+export function PresentationCard({ imgIndex = 1 }: { imgIndex?: number }) {
 
-  const img = \`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-\${random}.png\`;
+  const img = \`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-\${imgIndex}.png\`;
+
 
   return (
     <Card

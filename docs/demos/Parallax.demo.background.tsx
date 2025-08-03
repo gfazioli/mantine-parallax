@@ -9,7 +9,7 @@ function Demo(props: ParallaxProps) {
         {...props}
         w={400}
         h={300}
-        backgroundImage="https://picsum.photos/500/400?random=2"
+        backgroundImage="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-1.png"
       />
     </Center>
   );
@@ -25,7 +25,7 @@ function Demo() {
         {{props}}
         w={400}
         h={300}
-        backgroundImage="https://picsum.photos/500/400?random=2"
+        backgroundImage=""https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-1.png"
       />
     </Center>
   );
