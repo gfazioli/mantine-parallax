@@ -6,6 +6,10 @@
     {
       "matchPackagePatterns": ["*"],
       "groupName": "all dependencies"
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "labels": ["UPDATE-PATCH"]
     }
   ],
   "prHourlyLimit": 0,
