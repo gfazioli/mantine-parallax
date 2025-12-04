@@ -1,12 +1,6 @@
 # Mantine Parallax Component
 
-<div align="center">
-  
-https://github.com/user-attachments/assets/a44d9e9f-e3bc-4ff4-9f47-a4fde13c048b
-
-</div>
-
----
+<img width="2752" height="1536" alt="Gemini_Generated_Image_ru5b4yru5b4yru5b" src="https://github.com/user-attachments/assets/9248f9eb-3ce4-4841-be3e-2801d6fe2d4b" />
 
 <div align="center">
 
@@ -73,5 +67,13 @@ function Demo() {
 <div align="center">
   
 [![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-parallax&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-parallax&Timeline)
+
+</div>
+
+---
+
+<div align="center">
+  
+https://github.com/user-attachments/assets/a44d9e9f-e3bc-4ff4-9f47-a4fde13c048b
 
 </div>
