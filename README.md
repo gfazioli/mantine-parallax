@@ -1,6 +1,6 @@
 # Mantine Parallax Component
 
-<img width="2752" height="1536" alt="Gemini_Generated_Image_ru5b4yru5b4yru5b" src="https://github.com/user-attachments/assets/9248f9eb-3ce4-4841-be3e-2801d6fe2d4b" />
+<img width="2752" height="1536" alt="Mantine Parallax" src="https://github.com/user-attachments/assets/1424a67d-43f7-423b-b7f0-15b3c579ebe3" />
 
 <div align="center">
 
@@ -70,10 +70,4 @@ function Demo() {
 
 </div>
 
----
-
-<div align="center">
-  
 https://github.com/user-attachments/assets/a44d9e9f-e3bc-4ff4-9f47-a4fde13c048b
-
-</div>
