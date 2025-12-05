@@ -1,6 +1,6 @@
 {
   "name": "@gfazioli/mantine-parallax",
-  "version": "2.5.7",
+  "version": "2.5.8",
   "description": "A Mantine UI Library Extension Parallax component to replicate the Apple TV Card",
   "homepage": "https://gfazioli.github.io/mantine-parallax/",
   "packageManager": "yarn@4.0.1",
