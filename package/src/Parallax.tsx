@@ -149,9 +149,7 @@ export interface ParallaxBaseProps {
   children?: React.ReactNode;
 }
 export interface ParallaxProps
-  extends BoxProps,
-    ParallaxBaseProps,
-    StylesApiProps<ParallaxFactory> {}
+  extends BoxProps, ParallaxBaseProps, StylesApiProps<ParallaxFactory> {}
 
 export type ParallaxFactory = PolymorphicFactory<{
   props: ParallaxProps;
