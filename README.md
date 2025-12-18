@@ -15,19 +15,15 @@
 
 This component is created on top of the [Mantine](https://mantine.dev/) library.
 
-[![Mantine UI Library](https://img.shields.io/badge/-MANTINE_UI_LIBRARY-blue?style=for-the-badge&labelColor=black&logo=mantine
-)](https://mantine.dev/)
+[Mantine Parallax](https://gfazioli.github.io/mantine-parallax/) provides a flexible way to create rich, interactive motion effects for UI elements, ranging from the classic Apple TV card tilt to custom 3D transformations. 
 
-Despite the `Parallax` component allowing you to create the famous **Apple TV Card** effect, you can use this component to manipulate the perspective and rotation of an element. It is also possible to act on the skew of the element and disable the parallax effect when hovering with the mouse.
+Through props like perspective, initialPerspective, rotation (X/Y/Z), skew (X/Y), and lightEffect/lightOverlay, you can fine-tune both the visual depth and the response to user hover. It also offers guardrails—setting disabled or using large initialPerspective values (≥ 10000) effectively turns off perspective—to maintain control over extreme configurations. 
 
-[![Mantine Extensions](https://img.shields.io/badge/-Watch_the_Video-blue?style=for-the-badge&labelColor=black&logo=youtube
-)](https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4)
-[![Demo and Documentation](https://img.shields.io/badge/-Demo_%26_Documentation-blue?style=for-the-badge&labelColor=black&logo=typescript
-)](https://gfazioli.github.io/mantine-parallax/)
-[![Mantine Extensions HUB](https://img.shields.io/badge/-Mantine_Extensions_Hub-blue?style=for-the-badge&labelColor=blue
-)](https://mantine-extensions.vercel.app/)
+Beyond hover, Parallax integrates with scroll-driven interactions by feeding values from useWindowScroll to initial transformation props, enabling dynamic transitions tied to page position. For layered scenes, backgroundParallax and backgroundParallaxThreshold add independent parallax to backgrounds, making it simple to create immersive cards, banners, and panels that feel responsive and dimensional while remaining straightforward to integrate and style via the provided CSS layers.
 
-You can find more components on the [Mantine Extensions Hub](https://mantine-extensions.vercel.app/) library.
+> [!note]
+>
+> → [Demo and Documentation](https://gfazioli.github.io/mantine-parallax/) → [Youtube Video](https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4) → [More Mantine Components](https://mantine-extensions.vercel.app/)
 
 ## Installation
 
@@ -64,10 +60,8 @@ function Demo() {
 }
 ```
 
-<div align="center">
-  
-[![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-parallax&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-parallax&Timeline)
-
-</div>
-
+---
 https://github.com/user-attachments/assets/a44d9e9f-e3bc-4ff4-9f47-a4fde13c048b
+
+---  
+[![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-parallax&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-parallax&Timeline)
