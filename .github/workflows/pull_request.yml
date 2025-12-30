@@ -13,10 +13,10 @@ jobs:
   test_pull_request:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: '20.9.0'
+          node-version: '24.12.0'
           cache: 'yarn'
           cache-dependency-path: '**/yarn.lock'
       - name: Install dependencies
