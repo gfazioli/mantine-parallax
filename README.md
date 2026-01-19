@@ -1,6 +1,6 @@
 # Mantine Parallax Component
 
-<img width="2752" height="1536" alt="Mantine Parallax" src="https://github.com/user-attachments/assets/1424a67d-43f7-423b-b7f0-15b3c579ebe3" />
+<img alt="Mantine Parallax" src="https://github.com/gfazioli/mantine-parallax/blob/master/logo.png" />
 
 <div align="center">
 
