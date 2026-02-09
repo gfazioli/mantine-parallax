@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  BoxProps,
   getThemeColor,
-  MantineColor,
-  MantineStyleProp,
-  PolymorphicFactory,
   polymorphicFactory,
-  StylesApiProps,
   useMantineTheme,
   useProps,
   useStyles,
+  type BoxProps,
+  type MantineColor,
+  type MantineStyleProp,
+  type PolymorphicFactory,
+  type StylesApiProps,
 } from '@mantine/core';
 import { useMouse } from '@mantine/hooks';
 import classes from './Parallax.module.css';
@@ -153,12 +153,12 @@ export interface ParallaxProps
 
 export type ParallaxFactory = PolymorphicFactory<{
   props: ParallaxProps;
-  defaultRef: HTMLDivElement;
   defaultComponent: 'div';
+  defaultRef: HTMLDivElement;
   stylesNames: ParallaxStylesNames;
 }>;
 
-export const defaultProps: Partial<ParallaxProps> = {
+export const defaultProps = {
   threshold: 40,
   perspective: 1000,
   backgroundParallax: false,
@@ -178,7 +178,7 @@ export const defaultProps: Partial<ParallaxProps> = {
   initialPerspective: 1000,
   initialSkewX: 0,
   initialSkewY: 0,
-};
+} satisfies Partial<ParallaxProps>;
 
 export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const props = useProps('Parallax', defaultProps, _props);
