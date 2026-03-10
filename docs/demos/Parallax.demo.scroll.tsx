@@ -46,7 +46,7 @@ function Demo() {
 
   return (
     <Center w="100%" h={500}>
-      <Parallax {...props} initialRotationX={(scroll.y - 4400) / 10} w={400}>
+      <Parallax initialRotationX={(scroll.y - 4400) / 10} w={400}>
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Card.Section>
             <Image

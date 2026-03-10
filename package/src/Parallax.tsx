@@ -23,7 +23,7 @@ export type ParallaxStylesNames = 'root' | 'content' | 'light';
 export interface ParallaxBaseProps {
   /**
    * The threshold value for triggering the parallax effect.
-   * @default 0
+   * @default 40
    */
   threshold?: number;
 
@@ -42,7 +42,7 @@ export interface ParallaxBaseProps {
 
   /**
    * The threshold value for triggering the background parallax effect.
-   * @default 0
+   * @default 1
    */
   backgroundParallaxThreshold?: number;
 
@@ -54,7 +54,7 @@ export interface ParallaxBaseProps {
 
   /**
    * The distance value for the parallax effect.
-   * @default 100
+   * @default 0
    */
   contentParallaxDistance?: number;
 
@@ -89,7 +89,7 @@ export interface ParallaxBaseProps {
 
   /**
    * The color of the light effect.
-   * @default 'white'
+   * @default 'rgba(255, 255, 255, .1)'
    */
   lightColor?: MantineColor;
 
@@ -253,19 +253,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         setLightPosition({ x: lightX, y: lightY });
       }
     }
-  }, [
-    x,
-    y,
-    isHovering,
-    threshold,
-    lightEffect,
-    initialRotationX,
-    initialRotationY,
-    initialRotationZ,
-    initialPerspective,
-    initialSkewX,
-    initialSkewY,
-  ]);
+  }, [x, y, isHovering, threshold, lightEffect]);
 
   const handleMouseEnter = () => {
     setIsHovering(!disabled);
@@ -278,7 +266,6 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const perspectiveValue = perspective < 10000 ? `${perspective}px` : 'none';
 
   const cardStyle: MantineStyleProp = {
-    ...props.style,
     transition: isHovering
       ? 'all 0.1s ease-out'
       : 'all 0.3s ease-out, background-position 0.3s ease-out',
@@ -358,7 +345,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         overflow: 'visible',
       }}
     >
-      <Box ref={ref} {...others} {...getStyles('root', { style: cardStyle, ...style })}>
+      <Box ref={ref} {...others} {...getStyles('root', { style: cardStyle })}>
         <div {...getStyles('content', { style: childrenContainerStyle })}>
           {childrenWithParallax}
         </div>

@@ -7,7 +7,7 @@ function Demo() {
     <Center w="100%" h={300}>
       <Parallax w={300} h={200}>
         <Title>Parallax</Title>
-        <Text>Amazing contentParallax effect component. Hover to see the effect.</Text>
+        <Text>Amazing parallax effect component. Hover to see the effect.</Text>
       </Parallax>
     </Center>
   );
@@ -22,7 +22,7 @@ function Demo() {
       <Parallax w={300} h={200}>
         <Title>Parallax</Title>
         <Text>
-          Amazing contentParallax effect component. Hover to see the effect.
+          Amazing parallax effect component. Hover to see the effect.
         </Text>
       </Parallax>
     </Center>

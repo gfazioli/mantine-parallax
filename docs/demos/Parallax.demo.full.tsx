@@ -18,7 +18,7 @@ function Demo(props: ParallaxProps) {
       >
         <Title c="gray.2">Parallax</Title>
         <Text c="gray.2" fw="bold">
-          Amazing contentParallax effect component. Hover to see the effect.
+          Amazing parallax effect component. Hover to see the effect.
         </Text>
       </Parallax>
     </Center>
@@ -44,7 +44,7 @@ function Demo() {
       >
         <Title c="gray.2">Parallax</Title>
         <Text c="gray.2" fw="bold">
-          Amazing contentParallax effect component. Hover to see the effect.
+          Amazing parallax effect component. Hover to see the effect.
         </Text>
       </Parallax>
     </Center>

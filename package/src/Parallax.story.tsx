@@ -111,7 +111,7 @@ export function Simple(props: ParallaxProps) {
           style={{
             position: 'absolute',
             boxShadow: '0 0 12px rgba(0, 0, 0, 1)',
-            backgroundColor: 'rgba(0, 0, 0, 0.5',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
             borderRadius: '16px',
           }}
         />
@@ -170,12 +170,7 @@ export function Shadow(props: ParallaxProps) {
 export function Complex(props: ParallaxProps) {
   return (
     <Center w="100%" h={400}>
-      <Parallax
-        {...props}
-        backgroundImage="url(https://picsum.photos/id/2/400/300)"
-        w={300}
-        h={200}
-      >
+      <Parallax {...props} backgroundImage="https://picsum.photos/id/2/400/300" w={300} h={200}>
         <Title c="blue">Parallax Card Parallax</Title>
         <Text c="white">Hover to see the effect</Text>
         <Button color="blue" radius="md" mt="md">
