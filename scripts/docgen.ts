@@ -5,7 +5,7 @@ const getComponentPath = (componentPath: string) =>
   path.join(process.cwd(), 'package/src', componentPath);
 
 generateDeclarations({
-  componentsPaths: [getComponentPath('Parallax.tsx')],
+  componentsPaths: [getComponentPath('Parallax.tsx'), getComponentPath('ParallaxLayer.tsx')],
   tsConfigPath: path.join(process.cwd(), 'tsconfig.json'),
   outputPath: path.join(process.cwd(), 'docs'),
 });

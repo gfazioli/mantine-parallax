@@ -53,14 +53,24 @@ Rollup builds both ESM (`.mjs`) and CJS (`.cjs`) outputs with:
 
 - Next.js 15 site deployed to GitHub Pages
 - `docs/demos/` — interactive demo files following `Parallax.demo.<name>.tsx` naming
-- `docs/pages/index.tsx` — single-page docs
+- `docs/pages/index.tsx` — single-page docs, `componentsProps` array controls which components appear in the Props tab
 - `docs/components/` — shared shell components (Shell, Footer, Logo)
+- `docs/styles-api/` — Styles API definitions (selectors, vars, modifiers) per component
+- `scripts/docgen.ts` — generates `docs/docgen.json` from component TSDoc via `mantine-docgen-script`. When adding new components, add them to `componentsPaths` array.
+
+### Important: When adding new components or compound components
+
+1. Add the source file to `scripts/docgen.ts` → `componentsPaths` array
+2. Run `yarn docgen` to regenerate `docs/docgen.json`
+3. Add the component name to `componentsProps` in `docs/pages/index.tsx`
+4. If the component uses `useStyles`/CSS modules, add a styles-api entry in `docs/styles-api/`
+5. Run `yarn build` before `yarn test` so docs typecheck picks up new types
 
 ### Testing
 
 - Jest with `jsdom` environment and `@mantine-tests/core` render utilities
 - Tests in `package/src/Parallax.test.tsx`
-- Note: hover/mouse interaction tests are limited in jsdom because `useMouse` requires a real DOM — full interaction testing needs E2E (Playwright/Cypress)
+- Note: hover/mouse interaction tests are limited in jsdom — `useMediaQuery` may return unexpected values and `matchMedia` is mocked. Full interaction testing needs E2E (Playwright/Cypress)
 
 ## Key Patterns
 
