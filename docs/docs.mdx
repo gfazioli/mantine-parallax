@@ -23,6 +23,10 @@ Despite the `Parallax` component allowing you to create the famous Apple TV Card
 
 The `disabled` prop allows you to disable the effect. Both `perspective` and `initialPerspective` props will be disabled if the value is greater or equal to `10000`.
 
+The component supports **touch interactions** on mobile devices out of the box. You can disable touch support by setting `touchEnabled={false}`.
+
+The component automatically respects the `prefers-reduced-motion` media query. When the user has enabled reduced motion in their OS settings, all animations and hover/touch effects are disabled.
+
 <Demo data={demos.configurator} />
 
 ## Initial values and Skew
