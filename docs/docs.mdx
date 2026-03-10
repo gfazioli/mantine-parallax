@@ -27,6 +27,8 @@ The component supports **touch interactions** on mobile devices out of the box. 
 
 The component automatically respects the `prefers-reduced-motion` media query. When the user has enabled reduced motion in their OS settings, all animations and hover/touch effects are disabled.
 
+You can customize the transition behavior with `transitionDuration` (in milliseconds, default `300`) and `transitionEasing` (default `'ease-out'`). The `hoverScale` prop (default `1`) applies a scale transform when hovering — try values like `1.05` for a subtle zoom effect.
+
 <Demo data={demos.configurator} />
 
 ## Initial values and Skew

@@ -5,7 +5,8 @@
       "Bash(cd \"/Users/giovambattistafazioli/Lavoro/GitHub/Mantine Extensions/mantine-parallax\" && yarn jest 2>&1)",
       "Bash(cd \"/Users/giovambattistafazioli/Lavoro/GitHub/Mantine Extensions/mantine-parallax\" && yarn test 2>&1)",
       "Bash(cd \"/Users/giovambattistafazioli/Lavoro/GitHub/Mantine Extensions/mantine-parallax\" && yarn prettier:write --log-level warn 2>&1)",
-      "Bash(cd \"/Users/giovambattistafazioli/Lavoro/GitHub/Mantine Extensions/mantine-parallax\" && yarn prettier:write --log-level warn 2>&1 && yarn test 2>&1)"
+      "Bash(cd \"/Users/giovambattistafazioli/Lavoro/GitHub/Mantine Extensions/mantine-parallax\" && yarn prettier:write --log-level warn 2>&1 && yarn test 2>&1)",
+      "Bash(cd \"/Users/giovambattistafazioli/Lavoro/GitHub/Mantine Extensions/mantine-parallax\" && yarn prettier:write 2>&1)"
     ]
   }
 }

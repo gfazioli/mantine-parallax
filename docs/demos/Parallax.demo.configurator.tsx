@@ -152,6 +152,15 @@ export const configurator: MantineDemo = {
       step: 0.1,
     },
     {
+      prop: 'hoverScale',
+      type: 'number',
+      initialValue: 1,
+      libraryValue: 1,
+      min: 0.5,
+      max: 1.5,
+      step: 0.01,
+    },
+    {
       prop: 'threshold',
       type: 'number',
       initialValue: 40,
@@ -159,6 +168,21 @@ export const configurator: MantineDemo = {
       min: 2,
       max: 100,
       step: 0.1,
+    },
+    {
+      prop: 'transitionDuration',
+      type: 'number',
+      initialValue: 300,
+      libraryValue: 300,
+      min: 0,
+      max: 2000,
+      step: 50,
+    },
+    {
+      prop: 'transitionEasing',
+      type: 'string',
+      initialValue: 'ease-out',
+      libraryValue: 'ease-out',
     },
     {
       prop: 'lightEffect',
