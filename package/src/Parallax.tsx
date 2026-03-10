@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Box,
   getThemeColor,
@@ -12,7 +12,6 @@ import {
   type PolymorphicFactory,
   type StylesApiProps,
 } from '@mantine/core';
-import { useMouse } from '@mantine/hooks';
 import classes from './Parallax.module.css';
 
 export type ParallaxStylesNames = 'root' | 'content' | 'light';
@@ -183,7 +182,8 @@ export const defaultProps = {
 export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const props = useProps('Parallax', defaultProps, _props);
 
-  const { ref: mouseRef, x, y } = useMouse();
+  const rafRef = useRef<number>(0);
+  const isHoveringRef = useRef(false);
   const [isHovering, setIsHovering] = useState(false);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [lightPosition, setLightPosition] = useState({ x: 50, y: 50 });
@@ -236,31 +236,64 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     vars,
   });
 
-  useEffect(() => {
-    if (isHovering && mouseRef.current) {
-      const rect = mouseRef.current.getBoundingClientRect();
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      const rotateY = ((x - centerX) / rect.width) * threshold;
-      const rotateX = -((y - centerY) / rect.height) * threshold;
-
-      setRotation({ x: rotateX, y: rotateY });
-
-      if (lightEffect) {
-        const lightX = (x / rect.width) * 100;
-        const lightY = (y / rect.height) * 100;
-        setLightPosition({ x: lightX, y: lightY });
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      if (!isHoveringRef.current) {
+        return;
       }
-    }
-  }, [x, y, isHovering, threshold, lightEffect]);
 
-  const handleMouseEnter = () => {
-    setIsHovering(!disabled);
-  };
-  const handleMouseLeave = () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+
+      const rect = e.currentTarget.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = 0;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateY = ((mouseX - centerX) / rect.width) * threshold;
+        const rotateX = -((mouseY - centerY) / rect.height) * threshold;
+
+        setRotation({ x: rotateX, y: rotateY });
+
+        if (lightEffect) {
+          setLightPosition({
+            x: (mouseX / rect.width) * 100,
+            y: (mouseY / rect.height) * 100,
+          });
+        }
+      });
+    },
+    [threshold, lightEffect]
+  );
+
+  const handleMouseEnter = useCallback(() => {
+    if (!disabled) {
+      isHoveringRef.current = true;
+      setIsHovering(true);
+    }
+  }, [disabled]);
+
+  const handleMouseLeave = useCallback(() => {
+    isHoveringRef.current = false;
     setIsHovering(false);
-  };
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
 
   const initialPerspectiveValue = initialPerspective < 10000 ? `${initialPerspective}px` : 'none';
   const perspectiveValue = perspective < 10000 ? `${perspective}px` : 'none';
@@ -336,11 +369,11 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
   return (
     <Box
-      ref={mouseRef}
       w={props.w}
       h={props.h}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
       style={{
         position: 'relative',
         overflow: 'visible',

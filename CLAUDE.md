@@ -58,11 +58,21 @@ Rollup builds both ESM (`.mjs`) and CJS (`.cjs`) outputs with:
 
 - Jest with `jsdom` environment and `@mantine-tests/core` render utilities
 - Tests in `package/src/Parallax.test.tsx`
+- Note: hover/mouse interaction tests are limited in jsdom because `useMouse` requires a real DOM — full interaction testing needs E2E (Playwright/Cypress)
 
 ## Key Patterns
 
-- The component uses Mantine's `polymorphicFactory` pattern — it accepts an `component` prop for custom root elements and forwards refs.
+- The component uses Mantine's `polymorphicFactory` pattern — it accepts a `component` prop for custom root elements and forwards refs.
 - Props interface is split: `ParallaxBaseProps` (parallax-specific) + `BoxProps` + `StylesApiProps` = `ParallaxProps`.
 - Default props are defined as a `defaultProps` object with `satisfies Partial<ParallaxProps>` and consumed via `useProps`.
 - Perspective values >= 10000 are treated as `'none'` (effectively disabling perspective).
-- The component wraps content in a double-Box structure: outer Box captures mouse events, inner Box applies transforms.
+- The component wraps content in a double-Box structure: outer Box captures mouse events via `useMouse` ref, inner Box applies transforms via `getStyles('root')`.
+- `backgroundPosition` is only set when `backgroundImage` is provided, to avoid React 19 shorthand/longhand CSS conflicts with Mantine's `bg` prop.
+- `contentParallax` uses `React.Children.map` + `cloneElement` to inject per-child transform styles based on child index.
+
+## Known Limitations
+
+- Mouse-only: no touch/gyroscope support for mobile devices.
+- No `prefers-reduced-motion` support.
+- `transition: 'all ...'` on root can cause unintended transitions on properties changed by the consumer.
+- `useEffect` with `useMouse` coordinates triggers `setRotation`/`setLightPosition` on every mouse move (no throttle/RAF).
