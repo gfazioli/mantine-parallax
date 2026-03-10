@@ -34,10 +34,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Component Source (`package/src/`)
 
-Single component architecture — all source lives in `package/src/`:
-- `Parallax.tsx` — main component using `polymorphicFactory` from Mantine. Uses native `onMouseMove`/`onTouchMove` events with `requestAnimationFrame` throttling to compute 3D transforms. Supports `prefers-reduced-motion` via `useMediaQuery`. Three style layers: `root` (the card with transforms), `content` (children wrapper), `light` (gradient overlay).
+All source lives in `package/src/`:
+- `Parallax.tsx` — main component using `polymorphicFactory` from Mantine. Uses native `onMouseMove`/`onTouchMove` events with `requestAnimationFrame` throttling to compute 3D transforms. Supports `prefers-reduced-motion` via `useMediaQuery`. Three style layers: `root` (the card with transforms), `content` (children wrapper), `light` (gradient overlay). Exposes `Parallax.Layer` compound component.
+- `ParallaxLayer.tsx` — compound component (`Parallax.Layer`) with `depth` prop for per-element parallax. Consumes `ParallaxContext` for rotation/transition data.
+- `ParallaxContext.ts` — React context providing rotation state, transition config, and hover status to `Parallax.Layer` children.
 - `Parallax.module.css` — CSS modules (hashed with `hash-css-selector` via `me` prefix)
-- `index.ts` — public exports: `Parallax` component + types (`ParallaxBaseProps`, `ParallaxProps`, `ParallaxFactory`, `ParallaxStylesNames`)
+- `index.ts` — public exports: `Parallax`, `ParallaxLayer`, `ParallaxContext`, `useParallaxContext` + all types
 
 ### Build Pipeline
 
@@ -70,7 +72,9 @@ Rollup builds both ESM (`.mjs`) and CJS (`.cjs`) outputs with:
 - Touch support is enabled by default (`touchEnabled` prop). The outer Box sets `touch-action: none` to prevent scroll interference.
 - `prefers-reduced-motion` is respected: all transitions and hover/touch effects are disabled when the OS setting is active.
 - `backgroundPosition` is only set when `backgroundImage` is provided, to avoid React 19 shorthand/longhand CSS conflicts with Mantine's `bg` prop.
-- `contentParallax` uses `React.Children.map` + `cloneElement` to inject per-child transform styles based on child index.
+- `contentParallax` (legacy) uses `React.Children.map` + `cloneElement` to inject per-child transform styles based on child index. Prefer `Parallax.Layer` for new code.
+- `Parallax.Layer` uses React Context to read rotation/transition state — no `cloneElement` needed. The `depth` prop controls parallax intensity per layer.
+- `staticComponents` in `ParallaxFactory` type enables typed `Parallax.Layer` access.
 
 ## Known Limitations
 

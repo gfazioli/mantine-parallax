@@ -5,3 +5,7 @@ export type {
   ParallaxProps,
   ParallaxStylesNames,
 } from './Parallax';
+export { ParallaxLayer } from './ParallaxLayer';
+export type { ParallaxLayerProps } from './ParallaxLayer';
+export { ParallaxProvider, useParallaxContext } from './ParallaxContext';
+export type { ParallaxContextValue } from './ParallaxContext';
