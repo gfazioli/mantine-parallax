@@ -173,6 +173,32 @@ export interface ParallaxBaseProps {
   transitionEasing?: string;
 
   /**
+   * If true, enables a dynamic shadow that moves opposite to the card rotation.
+   * @default false
+   */
+  shadowEffect?: boolean;
+
+  /**
+   * The color of the dynamic shadow.
+   * Supports any Mantine color value (e.g., 'dark.4', 'blue', 'rgba(0,0,0,0.4)').
+   * @default 'rgba(0, 0, 0, 0.4)'
+   */
+  shadowColor?: MantineColor;
+
+  /**
+   * The blur radius of the dynamic shadow in pixels.
+   * @default 30
+   */
+  shadowBlur?: number;
+
+  /**
+   * The multiplier for the shadow offset relative to rotation.
+   * Higher values make the shadow move further.
+   * @default 0.8
+   */
+  shadowOffset?: number;
+
+  /**
    * Callback fired whenever the rotation changes.
    * Receives the current rotation values and hover state.
    */
@@ -220,6 +246,10 @@ export const defaultProps = {
   hoverScale: 1,
   transitionDuration: 300,
   transitionEasing: 'ease-out',
+  shadowEffect: false,
+  shadowColor: 'rgba(0, 0, 0, 0.4)',
+  shadowBlur: 30,
+  shadowOffset: 0.8,
 } satisfies Partial<ParallaxProps>;
 
 export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
@@ -260,6 +290,10 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     hoverScale,
     transitionDuration,
     transitionEasing,
+    shadowEffect,
+    shadowColor,
+    shadowBlur,
+    shadowOffset,
     onRotationChange,
     w,
     h,
@@ -392,15 +426,28 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
   const scaleValue = isHovering && hoverScale !== 1 ? ` scale(${hoverScale})` : '';
 
+  const shadowX = isHovering ? -rotation.y * shadowOffset : 0;
+  const shadowY = isHovering ? rotation.x * shadowOffset : 0;
+
+  const shadowTransition = shadowEffect
+    ? `, box-shadow ${hoverDuration}ms ${transitionEasing}`
+    : '';
+  const restShadowTransition = shadowEffect
+    ? `, box-shadow ${restDuration}ms ${transitionEasing}`
+    : '';
+
   const cardStyle: MantineStyleProp = {
     transition: prefersReducedMotion
       ? 'none'
       : isHovering
-        ? `transform ${hoverDuration}ms ${transitionEasing}`
-        : `transform ${restDuration}ms ${transitionEasing}, background-position ${restDuration}ms ${transitionEasing}`,
+        ? `transform ${hoverDuration}ms ${transitionEasing}${shadowTransition}`
+        : `transform ${restDuration}ms ${transitionEasing}, background-position ${restDuration}ms ${transitionEasing}${restShadowTransition}`,
     transform: isHovering
       ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)${scaleValue}`
       : `perspective(${initialPerspectiveValue}) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`,
+    boxShadow: shadowEffect
+      ? `${shadowX}px ${shadowY}px ${shadowBlur}px ${getThemeColor(shadowColor, theme)}`
+      : undefined,
     backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
     backgroundPosition: backgroundImage
       ? isHovering && backgroundParallax
