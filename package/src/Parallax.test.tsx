@@ -381,6 +381,25 @@ describe('Parallax', () => {
     expect(container).toBeTruthy();
   });
 
+  it('light effect div persists after mouse enter and leave', () => {
+    const { container } = render(
+      <Parallax lightEffect>
+        <div>Test</div>
+      </Parallax>
+    );
+    const outerBox = container.firstElementChild as HTMLElement;
+
+    act(() => {
+      fireEvent.mouseEnter(outerBox);
+    });
+    act(() => {
+      fireEvent.mouseLeave(outerBox);
+    });
+
+    const lightDiv = container.querySelector('[class*="light"]');
+    expect(lightDiv).toBeInTheDocument();
+  });
+
   it('Parallax.Layer throws when used outside Parallax', () => {
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => {
