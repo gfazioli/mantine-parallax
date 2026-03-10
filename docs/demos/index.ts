@@ -2,6 +2,7 @@ export { background } from './Parallax.demo.background';
 export { configurator } from './Parallax.demo.configurator';
 export { dynamicShadow } from './Parallax.demo.dynamicShadow';
 export { full } from './Parallax.demo.full';
+export { glare } from './Parallax.demo.glare';
 export { layer } from './Parallax.demo.layer';
 export { onRotationChange } from './Parallax.demo.onRotationChange';
 export { initial } from './Parallax.demo.initial';

@@ -17,7 +17,7 @@ import { ParallaxProvider } from './ParallaxContext';
 import { ParallaxLayer } from './ParallaxLayer';
 import classes from './Parallax.module.css';
 
-export type ParallaxStylesNames = 'root' | 'content' | 'light';
+export type ParallaxStylesNames = 'root' | 'content' | 'light' | 'glare';
 
 /**
  * Props for the Parallax component.
@@ -199,6 +199,36 @@ export interface ParallaxBaseProps {
   shadowOffset?: number;
 
   /**
+   * If true, enables a glare reflection effect that follows the cursor.
+   * @default false
+   */
+  glareEffect?: boolean;
+
+  /**
+   * The color of the glare highlight.
+   * @default 'rgba(255, 255, 255, 0.4)'
+   */
+  glareColor?: MantineColor;
+
+  /**
+   * The maximum opacity of the glare effect (0 to 1).
+   * @default 0.4
+   */
+  glareMaxOpacity?: number;
+
+  /**
+   * The size of the glare band as a percentage (0 to 100).
+   * @default 30
+   */
+  glareSize?: number;
+
+  /**
+   * If true, renders the glare on top of the content. If false, renders behind.
+   * @default true
+   */
+  glareOverlay?: boolean;
+
+  /**
    * Callback fired whenever the rotation changes.
    * Receives the current rotation values and hover state.
    */
@@ -250,6 +280,11 @@ export const defaultProps = {
   shadowColor: 'rgba(0, 0, 0, 0.4)',
   shadowBlur: 30,
   shadowOffset: 0.8,
+  glareEffect: false,
+  glareColor: 'rgba(255, 255, 255, 0.4)',
+  glareMaxOpacity: 0.4,
+  glareSize: 30,
+  glareOverlay: true,
 } satisfies Partial<ParallaxProps>;
 
 export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
@@ -294,6 +329,11 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     shadowColor,
     shadowBlur,
     shadowOffset,
+    glareEffect,
+    glareColor,
+    glareMaxOpacity,
+    glareSize,
+    glareOverlay,
     onRotationChange,
     w,
     h,
@@ -343,7 +383,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         setRotation({ x: rotateX, y: rotateY });
         onRotationChange?.({ rotateX, rotateY, isHovering: true });
 
-        if (lightEffect) {
+        if (lightEffect || glareEffect) {
           setLightPosition({
             x: (mouseX / rect.width) * 100,
             y: (mouseY / rect.height) * 100,
@@ -351,7 +391,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         }
       });
     },
-    [threshold, lightEffect, onRotationChange]
+    [threshold, lightEffect, glareEffect, onRotationChange]
   );
 
   const handleMouseMove = useCallback(
@@ -486,6 +526,30 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       }
     : {};
 
+  const glareGradientColor = getThemeColor(glareColor, theme);
+  const glareAngle = isHovering
+    ? Math.atan2(lightPosition.y - 50, lightPosition.x - 50) * (180 / Math.PI) + 90
+    : 225;
+  const glareOpacity = isHovering ? glareMaxOpacity : 0;
+
+  const glareStyle: React.CSSProperties = glareEffect
+    ? {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        pointerEvents: 'none',
+        zIndex: glareOverlay ? 2 : -1,
+        background: `linear-gradient(${glareAngle}deg, rgba(255,255,255,0) 0%, ${glareGradientColor} ${50 - glareSize / 2}%, ${glareGradientColor} ${50 + glareSize / 2}%, rgba(255,255,255,0) 100%)`,
+        opacity: glareOpacity,
+        transition: prefersReducedMotion
+          ? 'none'
+          : `opacity ${restDuration}ms ${transitionEasing}, background ${hoverDuration}ms ${transitionEasing}`,
+        borderRadius: 'inherit',
+      }
+    : {};
+
   const childrenWithParallax = contentParallax
     ? React.Children.map(children, (child, index) => {
         if (React.isValidElement(child)) {
@@ -563,6 +627,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
             {childrenWithParallax}
           </div>
           {lightEffect && <div {...getStyles('light', { style: lightStyle })} />}
+          {glareEffect && <div {...getStyles('glare', { style: glareStyle })} />}
         </Box>
       </Box>
     </ParallaxProvider>
