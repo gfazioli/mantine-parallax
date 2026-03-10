@@ -62,9 +62,15 @@ Here is an example of the parallax effect used for the background.
 
 <Demo data={demos.background} />
 
-### Content
+### Parallax.Layer
 
-Of course, you can also use the parallax effect for the content. You may use the `contentParallax` and `contentParallaxDistance` props to enable and manage the parallax effect.
+The `Parallax.Layer` compound component provides a cleaner way to create content parallax effects. Each layer has a `depth` prop that controls how much it moves relative to the card rotation — higher values move more.
+
+<Demo data={demos.layer} />
+
+### Content (legacy)
+
+You can also use the `contentParallax` and `contentParallaxDistance` props to enable content parallax. This approach uses `cloneElement` internally and applies depth based on child index. For more control, prefer `Parallax.Layer`.
 
 <Demo data={demos.parallax} />
 

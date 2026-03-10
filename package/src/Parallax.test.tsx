@@ -347,4 +347,49 @@ describe('Parallax', () => {
     );
     expect(onRotationChange).not.toHaveBeenCalled();
   });
+
+  it('has Layer static property', () => {
+    expect(Parallax.Layer).toBeDefined();
+    expect(Parallax.Layer.displayName).toBe('ParallaxLayer');
+  });
+
+  it('renders Parallax.Layer inside Parallax', () => {
+    const { container } = render(
+      <Parallax>
+        <Parallax.Layer depth={2}>
+          <span data-testid="layer-child">Layer content</span>
+        </Parallax.Layer>
+      </Parallax>
+    );
+    expect(screen.getByTestId('layer-child')).toHaveTextContent('Layer content');
+    expect(container).toBeTruthy();
+  });
+
+  it('renders multiple Parallax.Layer with different depths', () => {
+    const { container } = render(
+      <Parallax>
+        <Parallax.Layer depth={1}>
+          <span data-testid="layer-1">Layer 1</span>
+        </Parallax.Layer>
+        <Parallax.Layer depth={3}>
+          <span data-testid="layer-2">Layer 2</span>
+        </Parallax.Layer>
+      </Parallax>
+    );
+    expect(screen.getByTestId('layer-1')).toBeInTheDocument();
+    expect(screen.getByTestId('layer-2')).toBeInTheDocument();
+    expect(container).toBeTruthy();
+  });
+
+  it('Parallax.Layer throws when used outside Parallax', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    expect(() => {
+      render(
+        <Parallax.Layer depth={1}>
+          <div>Orphan</div>
+        </Parallax.Layer>
+      );
+    }).toThrow('Parallax.Layer must be used within a Parallax component');
+    consoleSpy.mockRestore();
+  });
 });

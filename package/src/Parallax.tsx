@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Box,
   getThemeColor,
@@ -13,6 +13,8 @@ import {
   type StylesApiProps,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { ParallaxProvider } from './ParallaxContext';
+import { ParallaxLayer } from './ParallaxLayer';
 import classes from './Parallax.module.css';
 
 export type ParallaxStylesNames = 'root' | 'content' | 'light';
@@ -187,6 +189,9 @@ export type ParallaxFactory = PolymorphicFactory<{
   defaultComponent: 'div';
   defaultRef: HTMLDivElement;
   stylesNames: ParallaxStylesNames;
+  staticComponents: {
+    Layer: typeof ParallaxLayer;
+  };
 }>;
 
 export const defaultProps = {
@@ -459,37 +464,61 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     zIndex: 1,
   };
 
+  const contextValue = useMemo(
+    () => ({
+      rotation,
+      isHovering,
+      perspectiveValue,
+      hoverDuration,
+      restDuration,
+      transitionEasing,
+      prefersReducedMotion,
+    }),
+    [
+      rotation,
+      isHovering,
+      perspectiveValue,
+      hoverDuration,
+      restDuration,
+      transitionEasing,
+      prefersReducedMotion,
+    ]
+  );
+
   return (
-    <Box
-      w={w}
-      h={h}
-      onMouseEnter={activate}
-      onMouseLeave={deactivate}
-      onMouseMove={handleMouseMove}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      onTouchCancel={handleTouchEnd}
-      style={{
-        position: 'relative',
-        overflow: 'visible',
-        touchAction: touchEnabled ? 'none' : undefined,
-      }}
-    >
+    <ParallaxProvider value={contextValue}>
       <Box
-        ref={ref}
-        h={h ? '100%' : undefined}
-        {...others}
-        {...getStyles('root', { style: cardStyle })}
+        w={w}
+        h={h}
+        onMouseEnter={activate}
+        onMouseLeave={deactivate}
+        onMouseMove={handleMouseMove}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
+        style={{
+          position: 'relative',
+          overflow: 'visible',
+          touchAction: touchEnabled ? 'none' : undefined,
+        }}
       >
-        <div {...getStyles('content', { style: childrenContainerStyle })}>
-          {childrenWithParallax}
-        </div>
-        {lightEffect && <div {...getStyles('light', { style: lightStyle })} />}
+        <Box
+          ref={ref}
+          h={h ? '100%' : undefined}
+          {...others}
+          {...getStyles('root', { style: cardStyle })}
+        >
+          <div {...getStyles('content', { style: childrenContainerStyle })}>
+            {childrenWithParallax}
+          </div>
+          {lightEffect && <div {...getStyles('light', { style: lightStyle })} />}
+        </Box>
       </Box>
-    </Box>
+    </ParallaxProvider>
   );
 });
 
 Parallax.classes = classes;
 Parallax.displayName = 'Parallax';
+Parallax.Layer = ParallaxLayer;
