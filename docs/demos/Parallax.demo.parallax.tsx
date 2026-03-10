@@ -7,7 +7,7 @@ function Demo(props: ParallaxProps) {
     <Center w="100%" h={300}>
       <Parallax {...props} w={300} h={200} p={16} bg="dark.5">
         <Title c="gray.2">Parallax</Title>
-        <Text c="yellow.5">Amazing contentParallax effect component. Hover to see the effect.</Text>
+        <Text c="yellow.5">Amazing parallax effect component. Hover to see the effect.</Text>
       </Parallax>
     </Center>
   );
@@ -22,7 +22,7 @@ function Demo() {
       <Parallax {{props}} w={300} h={200} p={16} bg="dark.5">
         <Title c="gray.2">Parallax</Title>
         <Text c="yellow.5">
-          Amazing contentParallax effect component. Hover to see the effect.
+          Amazing parallax effect component. Hover to see the effect.
         </Text>
       </Parallax>
     </Center>

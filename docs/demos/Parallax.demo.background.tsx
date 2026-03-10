@@ -25,10 +25,9 @@ function Demo() {
         {{props}}
         w={400}
         h={300}
-        backgroundImage=""https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-1.png"
+        backgroundImage="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-1.png"
       />
     </Center>
-  );
   );
 }
 `;
