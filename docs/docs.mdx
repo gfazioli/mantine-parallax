@@ -82,9 +82,15 @@ Below a more complex example of how to use the `Parallax` component.
 
 ## Example: Dynamic Shadow
 
-The `onRotationChange` callback allows you to synchronize external effects with the parallax rotation. In this example, a `boxShadow` moves in the opposite direction of the card tilt, simulating a light source from above.
+The `shadowEffect` prop enables a dynamic shadow that moves opposite to the card rotation, simulating a light source from above. You can customize it with `shadowColor`, `shadowBlur`, and `shadowOffset`.
 
 <Demo data={demos.dynamicShadow} />
+
+## Example: onRotationChange
+
+The `onRotationChange` callback receives `{ rotateX, rotateY, isHovering }` on every rotation update. You can use it to synchronize external UI elements, drive animations, or display debug info.
+
+<Demo data={demos.onRotationChange} />
 
 ## Example: Shadow
 

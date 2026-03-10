@@ -411,4 +411,34 @@ describe('Parallax', () => {
     }).toThrow('Parallax.Layer must be used within a Parallax component');
     consoleSpy.mockRestore();
   });
+
+  it('applies boxShadow when shadowEffect is true', () => {
+    const { container } = render(
+      <Parallax shadowEffect shadowColor="rgba(0,0,0,0.5)" shadowBlur={20}>
+        <div>Test</div>
+      </Parallax>
+    );
+    const root = container.querySelector('[class*="root"]') as HTMLElement;
+    expect(root?.style.boxShadow).toContain('20px');
+    expect(root?.style.boxShadow).toContain('rgba(0,0,0,0.5)');
+  });
+
+  it('does not apply boxShadow when shadowEffect is false', () => {
+    const { container } = render(
+      <Parallax>
+        <div>Test</div>
+      </Parallax>
+    );
+    const root = container.querySelector('[class*="root"]') as HTMLElement;
+    expect(root?.style.boxShadow).toBe('');
+  });
+
+  it('renders with all shadow props without crashing', () => {
+    const { container } = render(
+      <Parallax shadowEffect shadowColor="red" shadowBlur={40} shadowOffset={1.5}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
 });

@@ -1,37 +1,12 @@
-import { useState } from 'react';
-import { Parallax } from '@gfazioli/mantine-parallax';
+import { Parallax, ParallaxProps } from '@gfazioli/mantine-parallax';
 import { Center, Group, Image, Paper, Text, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
-function Demo() {
-  const [shadow, setShadow] = useState({ x: 0, y: 0 });
-
+function Demo(props: ParallaxProps) {
   return (
     <Center w="100%" h={400}>
-      <Parallax
-        w={340}
-        lightEffect
-        lightOverlay
-        lightIntensity={0.05}
-        lightSize={60}
-        onRotationChange={({ rotateX, rotateY, isHovering }) => {
-          if (isHovering) {
-            setShadow({ x: -rotateY * 0.8, y: rotateX * 0.8 });
-          } else {
-            setShadow({ x: 0, y: 0 });
-          }
-        }}
-      >
-        <Paper
-          shadow="none"
-          radius="md"
-          p="lg"
-          style={{
-            overflow: 'hidden',
-            boxShadow: `${shadow.x}px ${shadow.y}px 30px rgba(0, 0, 0, 0.4)`,
-            transition: 'box-shadow 0.1s ease-out',
-          }}
-        >
+      <Parallax {...props} w={340} lightEffect lightOverlay lightIntensity={0.05} lightSize={60}>
+        <Paper shadow="none" radius="md" p="lg" style={{ overflow: 'hidden' }}>
           <Image
             src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-2.png"
             height={160}
@@ -42,8 +17,7 @@ function Demo() {
             <Title order={4}>Dynamic Shadow</Title>
           </Group>
           <Text size="sm" c="dimmed">
-            This card uses onRotationChange to sync an external box-shadow with the parallax
-            rotation. Tilt the card and watch the shadow follow.
+            Enable shadowEffect and tilt the card to see the shadow follow the rotation.
           </Text>
         </Paper>
       </Parallax>
@@ -52,38 +26,20 @@ function Demo() {
 }
 
 const code = `
-import { useState } from 'react';
 import { Parallax } from '@gfazioli/mantine-parallax';
 
 function Demo() {
-  const [shadow, setShadow] = useState({ x: 0, y: 0 });
-
   return (
     <Center w="100%" h={400}>
       <Parallax
+        {{props}}
         w={340}
         lightEffect
         lightOverlay
         lightIntensity={0.05}
         lightSize={60}
-        onRotationChange={({ rotateX, rotateY, isHovering }) => {
-          if (isHovering) {
-            setShadow({ x: -rotateY * 0.8, y: rotateX * 0.8 });
-          } else {
-            setShadow({ x: 0, y: 0 });
-          }
-        }}
       >
-        <Paper
-          shadow="none"
-          radius="md"
-          p="lg"
-          style={{
-            overflow: 'hidden',
-            boxShadow: \`\${shadow.x}px \${shadow.y}px 30px rgba(0, 0, 0, 0.4)\`,
-            transition: 'box-shadow 0.1s ease-out',
-          }}
-        >
+        <Paper shadow="none" radius="md" p="lg" style={{ overflow: 'hidden' }}>
           <Image
             src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-2.png"
             height={160}
@@ -94,8 +50,8 @@ function Demo() {
             <Title order={4}>Dynamic Shadow</Title>
           </Group>
           <Text size="sm" c="dimmed">
-            This card uses onRotationChange to sync an external box-shadow
-            with the parallax rotation. Tilt the card and watch the shadow follow.
+            Enable shadowEffect and tilt the card to see the shadow
+            follow the rotation.
           </Text>
         </Paper>
       </Parallax>
@@ -105,8 +61,39 @@ function Demo() {
 `;
 
 export const dynamicShadow: MantineDemo = {
-  type: 'code',
+  type: 'configurator',
   component: Demo,
   code,
-  defaultExpanded: false,
+  controls: [
+    {
+      prop: 'shadowEffect',
+      type: 'boolean',
+      initialValue: true,
+      libraryValue: false,
+    },
+    {
+      type: 'color',
+      prop: 'shadowColor',
+      initialValue: 'rgba(0, 0, 0, 0.4)',
+      libraryValue: 'rgba(0, 0, 0, 0.4)',
+    },
+    {
+      prop: 'shadowBlur',
+      type: 'number',
+      initialValue: 30,
+      libraryValue: 30,
+      min: 0,
+      max: 100,
+      step: 1,
+    },
+    {
+      prop: 'shadowOffset',
+      type: 'number',
+      initialValue: 0.8,
+      libraryValue: 0.8,
+      min: 0,
+      max: 5,
+      step: 0.1,
+    },
+  ],
 };
