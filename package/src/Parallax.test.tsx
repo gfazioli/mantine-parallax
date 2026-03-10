@@ -327,4 +327,24 @@ describe('Parallax', () => {
     );
     expect(container).toBeTruthy();
   });
+
+  it('renders with onRotationChange without crashing', () => {
+    const onRotationChange = jest.fn();
+    const { container } = render(
+      <Parallax onRotationChange={onRotationChange}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('does not call onRotationChange on mount', () => {
+    const onRotationChange = jest.fn();
+    render(
+      <Parallax onRotationChange={onRotationChange}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(onRotationChange).not.toHaveBeenCalled();
+  });
 });

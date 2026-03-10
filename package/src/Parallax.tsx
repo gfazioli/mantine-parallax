@@ -169,6 +169,12 @@ export interface ParallaxBaseProps {
   transitionEasing?: string;
 
   /**
+   * Callback fired whenever the rotation changes.
+   * Receives the current rotation values and hover state.
+   */
+  onRotationChange?: (values: { rotateX: number; rotateY: number; isHovering: boolean }) => void;
+
+  /**
    * The content to be rendered inside the parallax component.
    */
   children?: React.ReactNode;
@@ -247,6 +253,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     hoverScale,
     transitionDuration,
     transitionEasing,
+    onRotationChange,
     w,
     h,
 
@@ -293,6 +300,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         const rotateX = -((mouseY - centerY) / rect.height) * threshold;
 
         setRotation({ x: rotateX, y: rotateY });
+        onRotationChange?.({ rotateX, rotateY, isHovering: true });
 
         if (lightEffect) {
           setLightPosition({
@@ -302,7 +310,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         }
       });
     },
-    [threshold, lightEffect]
+    [threshold, lightEffect, onRotationChange]
   );
 
   const handleMouseMove = useCallback(
@@ -336,13 +344,17 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   }, [isDisabled]);
 
   const deactivate = useCallback(() => {
+    const wasHovering = isHoveringRef.current;
     isHoveringRef.current = false;
     setIsHovering(false);
+    if (wasHovering) {
+      onRotationChange?.({ rotateX: 0, rotateY: 0, isHovering: false });
+    }
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = 0;
     }
-  }, []);
+  }, [onRotationChange]);
 
   const handleTouchStart = useCallback(() => {
     if (touchEnabled) {
