@@ -56,6 +56,7 @@ export interface ParallaxBaseProps {
 
   /**
    * The distance value for the parallax effect.
+   * Only effective when `contentParallax` is true.
    * @default 0
    */
   contentParallaxDistance?: number;
@@ -103,6 +104,7 @@ export interface ParallaxBaseProps {
 
   /**
    * The angle of the light gradient.
+   * Only effective when `lightGradientType` is `'linear'`.
    * @default 0
    */
   lightGradientAngle?: number;
@@ -352,6 +354,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     const wasHovering = isHoveringRef.current;
     isHoveringRef.current = false;
     setIsHovering(false);
+    setLightPosition({ x: 50, y: 50 });
     if (wasHovering) {
       onRotationChange?.({ rotateX: 0, rotateY: 0, isHovering: false });
     }
