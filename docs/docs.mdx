@@ -29,6 +29,8 @@ The component automatically respects the `prefers-reduced-motion` media query. W
 
 You can customize the transition behavior with `transitionDuration` (in milliseconds, default `300`) and `transitionEasing` (default `'ease-out'`). The `hoverScale` prop (default `1`) applies a scale transform when hovering — try values like `1.05` for a subtle zoom effect.
 
+The `onRotationChange` callback fires whenever the rotation changes, receiving `{ rotateX, rotateY, isHovering }`. Use it to synchronize external effects (shadows, text, other components) with the parallax rotation.
+
 <Demo data={demos.configurator} />
 
 ## Initial values and Skew
@@ -71,6 +73,12 @@ Of course, you can also use the parallax effect for the content. You may use the
 Below a more complex example of how to use the `Parallax` component.
 
 <Demo data={demos.full} />
+
+## Example: Dynamic Shadow
+
+The `onRotationChange` callback allows you to synchronize external effects with the parallax rotation. In this example, a `boxShadow` moves in the opposite direction of the card tilt, simulating a light source from above.
+
+<Demo data={demos.dynamicShadow} />
 
 ## Example: Shadow
 
