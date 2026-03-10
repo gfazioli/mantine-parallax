@@ -6,6 +6,7 @@ export const ParallaxStylesApi: StylesApiData<ParallaxFactory> = {
     root: 'Root element',
     content: 'Content element',
     light: 'Light effect',
+    glare: 'Glare reflection effect',
   },
 
   vars: {},

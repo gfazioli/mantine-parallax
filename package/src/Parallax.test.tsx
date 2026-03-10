@@ -441,4 +441,53 @@ describe('Parallax', () => {
     );
     expect(container).toBeTruthy();
   });
+
+  it('renders glare div when glareEffect is true', () => {
+    const { container } = render(
+      <Parallax glareEffect>
+        <div>Test</div>
+      </Parallax>
+    );
+    const glareDiv = container.querySelector('[class*="glare"]');
+    expect(glareDiv).toBeInTheDocument();
+  });
+
+  it('does not render glare div when glareEffect is false', () => {
+    const { container } = render(
+      <Parallax>
+        <div>Test</div>
+      </Parallax>
+    );
+    const glareDiv = container.querySelector('[class*="glare"]');
+    expect(glareDiv).not.toBeInTheDocument();
+  });
+
+  it('glare overlay sets zIndex to 2', () => {
+    const { container } = render(
+      <Parallax glareEffect glareOverlay>
+        <div>Test</div>
+      </Parallax>
+    );
+    const glareDiv = container.querySelector('[class*="glare"]') as HTMLElement;
+    expect(glareDiv?.style.zIndex).toBe('2');
+  });
+
+  it('glare without overlay sets zIndex to -1', () => {
+    const { container } = render(
+      <Parallax glareEffect glareOverlay={false}>
+        <div>Test</div>
+      </Parallax>
+    );
+    const glareDiv = container.querySelector('[class*="glare"]') as HTMLElement;
+    expect(glareDiv?.style.zIndex).toBe('-1');
+  });
+
+  it('renders with all glare props without crashing', () => {
+    const { container } = render(
+      <Parallax glareEffect glareColor="blue" glareMaxOpacity={0.6} glareSize={40}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
 });
