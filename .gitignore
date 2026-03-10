@@ -150,3 +150,6 @@ docs/docgen.json
 
 CHANGELOG.md
 POST.md
+
+# Claude Code
+.claude/settings.local.json
