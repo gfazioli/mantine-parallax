@@ -212,6 +212,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     initialSkewX,
     initialSkewY,
     disabled,
+    w,
+    h,
 
     classNames,
     style,
@@ -300,10 +302,10 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
   const cardStyle: MantineStyleProp = {
     transition: isHovering
-      ? 'all 0.1s ease-out'
-      : 'all 0.3s ease-out, background-position 0.3s ease-out',
+      ? 'transform 0.1s ease-out'
+      : 'transform 0.3s ease-out, background-position 0.3s ease-out',
     transform: isHovering
-      ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
+      ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`
       : `perspective(${initialPerspectiveValue}) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`,
     backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
     backgroundPosition: backgroundImage
@@ -369,8 +371,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
   return (
     <Box
-      w={props.w}
-      h={props.h}
+      w={w}
+      h={h}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
@@ -379,7 +381,12 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         overflow: 'visible',
       }}
     >
-      <Box ref={ref} {...others} {...getStyles('root', { style: cardStyle })}>
+      <Box
+        ref={ref}
+        h={h ? '100%' : undefined}
+        {...others}
+        {...getStyles('root', { style: cardStyle })}
+      >
         <div {...getStyles('content', { style: childrenContainerStyle })}>
           {childrenWithParallax}
         </div>
