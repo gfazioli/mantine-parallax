@@ -148,6 +148,25 @@ export interface ParallaxBaseProps {
   disabled?: boolean;
 
   /**
+   * If true, resets rotation to initial values when mouse/touch leaves.
+   * If false, keeps the last rotation position.
+   * @default true
+   */
+  resetOnLeave?: boolean;
+
+  /**
+   * If true, inverts the rotation direction (card tilts away from the cursor).
+   * @default false
+   */
+  invertRotation?: boolean;
+
+  /**
+   * Clamps the rotation to a maximum degree value.
+   * When set, rotation will not exceed this value in any direction.
+   */
+  maxRotation?: number;
+
+  /**
    * If true, enables touch interactions on mobile devices.
    * @default true
    */
@@ -272,6 +291,8 @@ export const defaultProps = {
   initialPerspective: 1000,
   initialSkewX: 0,
   initialSkewY: 0,
+  resetOnLeave: true,
+  invertRotation: false,
   touchEnabled: true,
   hoverScale: 1,
   transitionDuration: 300,
@@ -321,6 +342,9 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     initialSkewX,
     initialSkewY,
     disabled,
+    resetOnLeave,
+    invertRotation,
+    maxRotation,
     touchEnabled,
     hoverScale,
     transitionDuration,
@@ -363,6 +387,16 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     vars,
   });
 
+  const clampRotation = useCallback(
+    (value: number) => {
+      if (maxRotation === undefined) {
+        return value;
+      }
+      return Math.max(-maxRotation, Math.min(maxRotation, value));
+    },
+    [maxRotation]
+  );
+
   const scheduleUpdate = useCallback(
     (clientX: number, clientY: number, rect: DOMRect) => {
       if (rafRef.current) {
@@ -377,8 +411,9 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        const rotateY = ((mouseX - centerX) / rect.width) * threshold;
-        const rotateX = -((mouseY - centerY) / rect.height) * threshold;
+        const sign = invertRotation ? -1 : 1;
+        const rotateY = clampRotation(sign * ((mouseX - centerX) / rect.width) * threshold);
+        const rotateX = clampRotation(sign * -((mouseY - centerY) / rect.height) * threshold);
 
         setRotation({ x: rotateX, y: rotateY });
         onRotationChange?.({ rotateX, rotateY, isHovering: true });
@@ -391,7 +426,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         }
       });
     },
-    [threshold, lightEffect, glareEffect, onRotationChange]
+    [threshold, lightEffect, glareEffect, onRotationChange, invertRotation, clampRotation]
   );
 
   const handleMouseMove = useCallback(
@@ -429,14 +464,20 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     isHoveringRef.current = false;
     setIsHovering(false);
     setLightPosition({ x: 50, y: 50 });
+    if (resetOnLeave) {
+      setRotation({ x: 0, y: 0 });
+    }
     if (wasHovering) {
-      onRotationChange?.({ rotateX: 0, rotateY: 0, isHovering: false });
+      const resetValues = resetOnLeave
+        ? { rotateX: 0, rotateY: 0 }
+        : { rotateX: rotation.x, rotateY: rotation.y };
+      onRotationChange?.({ ...resetValues, isHovering: false });
     }
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = 0;
     }
-  }, [onRotationChange]);
+  }, [onRotationChange, resetOnLeave, rotation]);
 
   const handleTouchStart = useCallback(() => {
     if (touchEnabled) {
@@ -466,8 +507,9 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
   const scaleValue = isHovering && hoverScale !== 1 ? ` scale(${hoverScale})` : '';
 
-  const shadowX = isHovering ? -rotation.y * shadowOffset : 0;
-  const shadowY = isHovering ? rotation.x * shadowOffset : 0;
+  const hasShadowRotation = isHovering || (!resetOnLeave && (rotation.x !== 0 || rotation.y !== 0));
+  const shadowX = hasShadowRotation ? -rotation.y * shadowOffset : 0;
+  const shadowY = hasShadowRotation ? rotation.x * shadowOffset : 0;
 
   const shadowTransition = shadowEffect
     ? `, box-shadow ${hoverDuration}ms ${transitionEasing}`
@@ -484,7 +526,9 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         : `transform ${restDuration}ms ${transitionEasing}, background-position ${restDuration}ms ${transitionEasing}${restShadowTransition}`,
     transform: isHovering
       ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)${scaleValue}`
-      : `perspective(${initialPerspectiveValue}) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`,
+      : !resetOnLeave && (rotation.x !== 0 || rotation.y !== 0)
+        ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`
+        : `perspective(${initialPerspectiveValue}) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`,
     boxShadow: shadowEffect
       ? `${shadowX}px ${shadowY}px ${shadowBlur}px ${getThemeColor(shadowColor, theme)}`
       : undefined,

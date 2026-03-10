@@ -89,6 +89,27 @@ export const configurator: MantineDemo = {
       libraryValue: true,
     },
     {
+      prop: 'resetOnLeave',
+      type: 'boolean',
+      initialValue: true,
+      libraryValue: true,
+    },
+    {
+      prop: 'invertRotation',
+      type: 'boolean',
+      initialValue: false,
+      libraryValue: false,
+    },
+    {
+      prop: 'maxRotation',
+      type: 'number',
+      initialValue: 40,
+      libraryValue: 40,
+      min: 1,
+      max: 90,
+      step: 1,
+    },
+    {
       prop: 'perspective',
       type: 'number',
       initialValue: 1000,

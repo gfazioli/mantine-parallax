@@ -490,4 +490,58 @@ describe('Parallax', () => {
     );
     expect(container).toBeTruthy();
   });
+
+  it('renders with resetOnLeave false without crashing', () => {
+    const { container } = render(
+      <Parallax resetOnLeave={false}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with resetOnLeave true (default) without crashing', () => {
+    const { container } = render(
+      <Parallax>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with invertRotation without crashing', () => {
+    const { container } = render(
+      <Parallax invertRotation>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with invertRotation false without crashing', () => {
+    const { container } = render(
+      <Parallax invertRotation={false}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with maxRotation without crashing', () => {
+    const { container } = render(
+      <Parallax maxRotation={15}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with all minor props combined without crashing', () => {
+    const { container } = render(
+      <Parallax resetOnLeave={false} invertRotation maxRotation={20}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
 });
