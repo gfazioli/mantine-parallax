@@ -150,6 +150,25 @@ export interface ParallaxBaseProps {
   touchEnabled?: boolean;
 
   /**
+   * The scale factor applied when hovering.
+   * Set to 1 for no scaling.
+   * @default 1
+   */
+  hoverScale?: number;
+
+  /**
+   * The duration of the transition in milliseconds.
+   * @default 300
+   */
+  transitionDuration?: number;
+
+  /**
+   * The easing function for the transition.
+   * @default 'ease-out'
+   */
+  transitionEasing?: string;
+
+  /**
    * The content to be rendered inside the parallax component.
    */
   children?: React.ReactNode;
@@ -185,6 +204,9 @@ export const defaultProps = {
   initialSkewX: 0,
   initialSkewY: 0,
   touchEnabled: true,
+  hoverScale: 1,
+  transitionDuration: 300,
+  transitionEasing: 'ease-out',
 } satisfies Partial<ParallaxProps>;
 
 export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
@@ -222,6 +244,9 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     initialSkewY,
     disabled,
     touchEnabled,
+    hoverScale,
+    transitionDuration,
+    transitionEasing,
     w,
     h,
 
@@ -342,14 +367,19 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const initialPerspectiveValue = initialPerspective < 10000 ? `${initialPerspective}px` : 'none';
   const perspectiveValue = perspective < 10000 ? `${perspective}px` : 'none';
 
+  const hoverDuration = Math.round(transitionDuration / 3);
+  const restDuration = transitionDuration;
+
+  const scaleValue = isHovering && hoverScale !== 1 ? ` scale(${hoverScale})` : '';
+
   const cardStyle: MantineStyleProp = {
     transition: prefersReducedMotion
       ? 'none'
       : isHovering
-        ? 'transform 0.1s ease-out'
-        : 'transform 0.3s ease-out, background-position 0.3s ease-out',
+        ? `transform ${hoverDuration}ms ${transitionEasing}`
+        : `transform ${restDuration}ms ${transitionEasing}, background-position ${restDuration}ms ${transitionEasing}`,
     transform: isHovering
-      ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`
+      ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)${scaleValue}`
       : `perspective(${initialPerspectiveValue}) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`,
     backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
     backgroundPosition: backgroundImage
@@ -382,7 +412,9 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         pointerEvents: 'none',
         zIndex: lightOverlay ? 1 : -1,
         background: gradients[lightGradientType],
-        transition: prefersReducedMotion ? 'none' : 'background 0.3s ease-out',
+        transition: prefersReducedMotion
+          ? 'none'
+          : `background ${restDuration}ms ${transitionEasing}`,
         borderRadius: 'inherit',
       }
     : {};
@@ -397,7 +429,9 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
                 ? `perspective(${perspectiveValue}) translateX(${rotation.y * (index + 1) * contentParallaxDistance}px) translateY(${rotation.x * (index + 1) * -contentParallaxDistance}px)`
                 : '',
               transformStyle: 'preserve-3d',
-              transition: prefersReducedMotion ? 'none' : 'transform 0.1s ease-out',
+              transition: prefersReducedMotion
+                ? 'none'
+                : `transform ${hoverDuration}ms ${transitionEasing}`,
             },
           });
         }

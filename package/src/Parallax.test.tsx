@@ -221,7 +221,7 @@ describe('Parallax', () => {
     });
     const root = container.querySelector('[class*="root"]') as HTMLElement;
     expect(root?.style.transition).toBe(
-      'transform 0.3s ease-out, background-position 0.3s ease-out'
+      'transform 300ms ease-out, background-position 300ms ease-out'
     );
   });
 
@@ -275,7 +275,7 @@ describe('Parallax', () => {
     });
     const root = container.querySelector('[class*="root"]') as HTMLElement;
     expect(root?.style.transition).toBe(
-      'transform 0.3s ease-out, background-position 0.3s ease-out'
+      'transform 300ms ease-out, background-position 300ms ease-out'
     );
   });
 
@@ -291,6 +291,37 @@ describe('Parallax', () => {
   it('renders with touchEnabled false without crashing', () => {
     const { container } = render(
       <Parallax touchEnabled={false}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('applies custom transitionDuration and transitionEasing', () => {
+    const { container } = render(
+      <Parallax transitionDuration={500} transitionEasing="cubic-bezier(0.4, 0, 0.2, 1)">
+        <div>Test</div>
+      </Parallax>
+    );
+    const root = container.querySelector('[class*="root"]') as HTMLElement;
+    expect(root?.style.transition).toBe(
+      'transform 500ms cubic-bezier(0.4, 0, 0.2, 1), background-position 500ms cubic-bezier(0.4, 0, 0.2, 1)'
+    );
+  });
+
+  it('applies default hoverScale of 1 (no scale in transform)', () => {
+    const { container } = render(
+      <Parallax>
+        <div>Test</div>
+      </Parallax>
+    );
+    const root = container.querySelector('[class*="root"]') as HTMLElement;
+    expect(root?.style.transform).not.toContain('scale');
+  });
+
+  it('renders with hoverScale without crashing', () => {
+    const { container } = render(
+      <Parallax hoverScale={1.05}>
         <div>Test</div>
       </Parallax>
     );
