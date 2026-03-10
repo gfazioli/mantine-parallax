@@ -273,12 +273,13 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
       : `perspective(${initialPerspectiveValue}) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`,
     backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
-    backgroundPosition:
-      isHovering && backgroundParallax
+    backgroundPosition: backgroundImage
+      ? isHovering && backgroundParallax
         ? `${50 + rotation.y * backgroundParallaxThreshold}% ${50 - rotation.x * backgroundParallaxThreshold}%`
         : backgroundParallax
           ? `${50 + initialRotationY * backgroundParallaxThreshold}% ${50 - initialRotationX * backgroundParallaxThreshold}%`
-          : 'center center',
+          : 'center center'
+      : undefined,
     transformStyle: 'preserve-3d',
     overflow: 'visible',
   };
