@@ -35,7 +35,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Component Source (`package/src/`)
 
 Single component architecture — all source lives in `package/src/`:
-- `Parallax.tsx` — main component using `polymorphicFactory` from Mantine. Uses `useMouse` hook to track cursor position and compute 3D transforms via inline styles. Three style layers: `root` (the card with transforms), `content` (children wrapper), `light` (gradient overlay).
+- `Parallax.tsx` — main component using `polymorphicFactory` from Mantine. Uses native `onMouseMove`/`onTouchMove` events with `requestAnimationFrame` throttling to compute 3D transforms. Supports `prefers-reduced-motion` via `useMediaQuery`. Three style layers: `root` (the card with transforms), `content` (children wrapper), `light` (gradient overlay).
 - `Parallax.module.css` — CSS modules (hashed with `hash-css-selector` via `me` prefix)
 - `index.ts` — public exports: `Parallax` component + types (`ParallaxBaseProps`, `ParallaxProps`, `ParallaxFactory`, `ParallaxStylesNames`)
 
@@ -66,13 +66,13 @@ Rollup builds both ESM (`.mjs`) and CJS (`.cjs`) outputs with:
 - Props interface is split: `ParallaxBaseProps` (parallax-specific) + `BoxProps` + `StylesApiProps` = `ParallaxProps`.
 - Default props are defined as a `defaultProps` object with `satisfies Partial<ParallaxProps>` and consumed via `useProps`.
 - Perspective values >= 10000 are treated as `'none'` (effectively disabling perspective).
-- The component wraps content in a double-Box structure: outer Box captures mouse events via `useMouse` ref, inner Box applies transforms via `getStyles('root')`.
+- The component wraps content in a double-Box structure: outer Box captures mouse/touch events, inner Box applies transforms via `getStyles('root')`.
+- Touch support is enabled by default (`touchEnabled` prop). The outer Box sets `touch-action: none` to prevent scroll interference.
+- `prefers-reduced-motion` is respected: all transitions and hover/touch effects are disabled when the OS setting is active.
 - `backgroundPosition` is only set when `backgroundImage` is provided, to avoid React 19 shorthand/longhand CSS conflicts with Mantine's `bg` prop.
 - `contentParallax` uses `React.Children.map` + `cloneElement` to inject per-child transform styles based on child index.
 
 ## Known Limitations
 
-- Mouse-only: no touch/gyroscope support for mobile devices.
-- No `prefers-reduced-motion` support.
-- `transition: 'all ...'` on root can cause unintended transitions on properties changed by the consumer.
-- `useEffect` with `useMouse` coordinates triggers `setRotation`/`setLightPosition` on every mouse move (no throttle/RAF).
+- No gyroscope support for mobile device orientation.
+- `contentParallax` uses `React.Children.map` + `cloneElement` — does not work with Fragment or non-element children.

@@ -12,6 +12,7 @@ import {
   type PolymorphicFactory,
   type StylesApiProps,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import classes from './Parallax.module.css';
 
 export type ParallaxStylesNames = 'root' | 'content' | 'light';
@@ -143,6 +144,12 @@ export interface ParallaxBaseProps {
   disabled?: boolean;
 
   /**
+   * If true, enables touch interactions on mobile devices.
+   * @default true
+   */
+  touchEnabled?: boolean;
+
+  /**
    * The content to be rendered inside the parallax component.
    */
   children?: React.ReactNode;
@@ -177,6 +184,7 @@ export const defaultProps = {
   initialPerspective: 1000,
   initialSkewX: 0,
   initialSkewY: 0,
+  touchEnabled: true,
 } satisfies Partial<ParallaxProps>;
 
 export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
@@ -188,6 +196,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [lightPosition, setLightPosition] = useState({ x: 50, y: 50 });
 
+  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const theme = useMantineTheme();
 
   const {
@@ -212,6 +221,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     initialSkewX,
     initialSkewY,
     disabled,
+    touchEnabled,
     w,
     h,
 
@@ -226,6 +236,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     ...others
   } = props;
 
+  const isDisabled = disabled || prefersReducedMotion;
+
   const getStyles = useStyles<ParallaxFactory>({
     name: 'Parallax',
     props,
@@ -238,19 +250,14 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     vars,
   });
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLElement>) => {
-      if (!isHoveringRef.current) {
-        return;
-      }
-
+  const scheduleUpdate = useCallback(
+    (clientX: number, clientY: number, rect: DOMRect) => {
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
       }
 
-      const rect = e.currentTarget.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
+      const mouseX = clientX - rect.left;
+      const mouseY = clientY - rect.top;
 
       rafRef.current = requestAnimationFrame(() => {
         rafRef.current = 0;
@@ -273,14 +280,37 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     [threshold, lightEffect]
   );
 
-  const handleMouseEnter = useCallback(() => {
-    if (!disabled) {
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      if (!isHoveringRef.current) {
+        return;
+      }
+      scheduleUpdate(e.clientX, e.clientY, e.currentTarget.getBoundingClientRect());
+    },
+    [scheduleUpdate]
+  );
+
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent<HTMLElement>) => {
+      if (!isHoveringRef.current || !touchEnabled) {
+        return;
+      }
+      const touch = e.touches[0];
+      if (touch) {
+        scheduleUpdate(touch.clientX, touch.clientY, e.currentTarget.getBoundingClientRect());
+      }
+    },
+    [scheduleUpdate, touchEnabled]
+  );
+
+  const activate = useCallback(() => {
+    if (!isDisabled) {
       isHoveringRef.current = true;
       setIsHovering(true);
     }
-  }, [disabled]);
+  }, [isDisabled]);
 
-  const handleMouseLeave = useCallback(() => {
+  const deactivate = useCallback(() => {
     isHoveringRef.current = false;
     setIsHovering(false);
     if (rafRef.current) {
@@ -288,6 +318,18 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       rafRef.current = 0;
     }
   }, []);
+
+  const handleTouchStart = useCallback(() => {
+    if (touchEnabled) {
+      activate();
+    }
+  }, [touchEnabled, activate]);
+
+  const handleTouchEnd = useCallback(() => {
+    if (touchEnabled) {
+      deactivate();
+    }
+  }, [touchEnabled, deactivate]);
 
   useEffect(() => {
     return () => {
@@ -301,9 +343,11 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const perspectiveValue = perspective < 10000 ? `${perspective}px` : 'none';
 
   const cardStyle: MantineStyleProp = {
-    transition: isHovering
-      ? 'transform 0.1s ease-out'
-      : 'transform 0.3s ease-out, background-position 0.3s ease-out',
+    transition: prefersReducedMotion
+      ? 'none'
+      : isHovering
+        ? 'transform 0.1s ease-out'
+        : 'transform 0.3s ease-out, background-position 0.3s ease-out',
     transform: isHovering
       ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`
       : `perspective(${initialPerspectiveValue}) rotateX(${initialRotationX}deg) rotateY(${initialRotationY}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)`,
@@ -338,7 +382,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         pointerEvents: 'none',
         zIndex: lightOverlay ? 1 : -1,
         background: gradients[lightGradientType],
-        transition: 'background 0.3s ease-out',
+        transition: prefersReducedMotion ? 'none' : 'background 0.3s ease-out',
         borderRadius: 'inherit',
       }
     : {};
@@ -353,7 +397,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
                 ? `perspective(${perspectiveValue}) translateX(${rotation.y * (index + 1) * contentParallaxDistance}px) translateY(${rotation.x * (index + 1) * -contentParallaxDistance}px)`
                 : '',
               transformStyle: 'preserve-3d',
-              transition: 'transform 0.1s ease-out',
+              transition: prefersReducedMotion ? 'none' : 'transform 0.1s ease-out',
             },
           });
         }
@@ -373,12 +417,17 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     <Box
       w={w}
       h={h}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={activate}
+      onMouseLeave={deactivate}
       onMouseMove={handleMouseMove}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       style={{
         position: 'relative',
         overflow: 'visible',
+        touchAction: touchEnabled ? 'none' : undefined,
       }}
     >
       <Box

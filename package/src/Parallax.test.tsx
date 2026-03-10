@@ -244,4 +244,56 @@ describe('Parallax', () => {
     const outerBox = container.firstElementChild as HTMLElement;
     expect(outerBox).toBeInTheDocument();
   });
+
+  it('registers touch event handlers on outer wrapper', () => {
+    const { container } = render(
+      <Parallax>
+        <div>Test</div>
+      </Parallax>
+    );
+    const outerBox = container.firstElementChild as HTMLElement;
+    expect(() => {
+      act(() => {
+        fireEvent.touchStart(outerBox);
+      });
+      act(() => {
+        fireEvent.touchEnd(outerBox);
+      });
+    }).not.toThrow();
+  });
+
+  it('does not activate touch when touchEnabled is false', () => {
+    const { container } = render(
+      <Parallax touchEnabled={false}>
+        <div>Test</div>
+      </Parallax>
+    );
+    const outerBox = container.firstElementChild as HTMLElement;
+
+    act(() => {
+      fireEvent.touchStart(outerBox);
+    });
+    const root = container.querySelector('[class*="root"]') as HTMLElement;
+    expect(root?.style.transition).toBe(
+      'transform 0.3s ease-out, background-position 0.3s ease-out'
+    );
+  });
+
+  it('renders with touchEnabled without crashing', () => {
+    const { container } = render(
+      <Parallax touchEnabled>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with touchEnabled false without crashing', () => {
+    const { container } = render(
+      <Parallax touchEnabled={false}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
 });

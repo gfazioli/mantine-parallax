@@ -83,6 +83,12 @@ export const configurator: MantineDemo = {
       libraryValue: false,
     },
     {
+      prop: 'touchEnabled',
+      type: 'boolean',
+      initialValue: true,
+      libraryValue: true,
+    },
+    {
       prop: 'perspective',
       type: 'number',
       initialValue: 1000,
