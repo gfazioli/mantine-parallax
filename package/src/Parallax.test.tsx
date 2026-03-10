@@ -220,7 +220,9 @@ describe('Parallax', () => {
       fireEvent.mouseEnter(outerBox);
     });
     const root = container.querySelector('[class*="root"]') as HTMLElement;
-    expect(root?.style.transition).toBe('all 0.3s ease-out, background-position 0.3s ease-out');
+    expect(root?.style.transition).toBe(
+      'transform 0.3s ease-out, background-position 0.3s ease-out'
+    );
   });
 
   it('renders with contentParallax without crashing', () => {
