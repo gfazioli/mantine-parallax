@@ -12,7 +12,7 @@ export default function HomePage() {
       <PageHeader data={PACKAGE_DATA} />
       <DocsTabs
         docgen={docgen}
-        componentsProps={['Parallax']}
+        componentsProps={['Parallax', 'ParallaxLayer']}
         componentsStyles={['Parallax']}
         stylesApiData={STYLES_API_DATA}
       >
