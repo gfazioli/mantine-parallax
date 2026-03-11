@@ -81,6 +81,7 @@ Rollup builds both ESM (`.mjs`) and CJS (`.cjs`) outputs with:
 - The component wraps content in a double-Box structure: outer Box captures mouse/touch events, inner Box applies transforms via `getStyles('root')`.
 - Touch support is enabled by default (`touchEnabled` prop). The outer Box sets `touch-action: none` to prevent scroll interference.
 - `prefers-reduced-motion` is respected: all transitions and hover/touch effects are disabled when the OS setting is active.
+- `keyboardEnabled` adds `tabIndex={0}`, `role="group"`, `aria-roledescription`, and `aria-label` to the outer Box. Arrow keys control tilt, Escape resets. Works with `springEffect` for bouncy keyboard-driven movement.
 - `backgroundPosition` is only set when `backgroundImage` is provided, to avoid React 19 shorthand/longhand CSS conflicts with Mantine's `bg` prop.
 - `contentParallax` (legacy) uses `React.Children.map` + `cloneElement` to inject per-child transform styles based on child index. Prefer `Parallax.Layer` for new code.
 - `Parallax.Layer` uses React Context to read rotation/transition state — no `cloneElement` needed. The `depth` prop controls parallax intensity per layer.

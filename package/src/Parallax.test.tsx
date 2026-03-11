@@ -645,4 +645,74 @@ describe('Parallax', () => {
     );
     expect(container).toBeTruthy();
   });
+
+  it('renders with keyboardEnabled without crashing', () => {
+    const { container } = render(
+      <Parallax keyboardEnabled>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('adds tabIndex when keyboardEnabled is true', () => {
+    const { container } = render(
+      <Parallax keyboardEnabled>
+        <div>Test</div>
+      </Parallax>
+    );
+    const el = container.querySelector('[tabindex]');
+    expect(el).toBeTruthy();
+    expect(el?.getAttribute('tabindex')).toBe('0');
+  });
+
+  it('does not add tabIndex when keyboardEnabled is false', () => {
+    const { container } = render(
+      <Parallax>
+        <div>Test</div>
+      </Parallax>
+    );
+    const el = container.querySelector('[tabindex="0"]');
+    expect(el).toBeNull();
+  });
+
+  it('adds ARIA attributes when keyboardEnabled is true', () => {
+    const { container } = render(
+      <Parallax keyboardEnabled>
+        <div>Test</div>
+      </Parallax>
+    );
+    const el = container.querySelector('[role="group"]');
+    expect(el).toBeTruthy();
+    expect(el?.getAttribute('aria-roledescription')).toBe('parallax card');
+    expect(el?.getAttribute('aria-label')).toContain('arrow keys');
+  });
+
+  it('does not add ARIA attributes when keyboardEnabled is false', () => {
+    const { container } = render(
+      <Parallax>
+        <div>Test</div>
+      </Parallax>
+    );
+    const el = container.querySelector('[role="group"]');
+    expect(el).toBeNull();
+  });
+
+  it('renders with keyboardStep without crashing', () => {
+    const { container } = render(
+      <Parallax keyboardEnabled keyboardStep={10}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with keyboard and spring combined without crashing', () => {
+    const { container } = render(
+      <Parallax keyboardEnabled springEffect>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
 });

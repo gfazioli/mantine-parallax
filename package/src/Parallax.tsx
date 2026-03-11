@@ -209,6 +209,20 @@ export interface ParallaxBaseProps {
   springDamping?: number;
 
   /**
+   * If true, enables keyboard interaction (arrow keys to tilt, Escape to reset).
+   * Adds tabIndex, focus styles, and ARIA attributes for accessibility.
+   * @default false
+   */
+  keyboardEnabled?: boolean;
+
+  /**
+   * The number of degrees the card rotates per arrow key press.
+   * Only effective when `keyboardEnabled` is true.
+   * @default 5
+   */
+  keyboardStep?: number;
+
+  /**
    * The scale factor applied when hovering.
    * Set to 1 for no scaling.
    * @default 1
@@ -335,6 +349,8 @@ export const defaultProps = {
   springEffect: false,
   springStiffness: 150,
   springDamping: 12,
+  keyboardEnabled: false,
+  keyboardStep: 5,
   hoverScale: 1,
   transitionDuration: 300,
   transitionEasing: 'ease-out',
@@ -399,6 +415,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     springEffect,
     springStiffness,
     springDamping,
+    keyboardEnabled,
+    keyboardStep,
     hoverScale,
     transitionDuration,
     transitionEasing,
@@ -759,6 +777,82 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     }
   }, [gyroscopeEnabled, requestGyroscopePermission]);
 
+  // Keyboard interaction
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLElement>) => {
+      if (!keyboardEnabled || isDisabled) {
+        return;
+      }
+
+      const sign = invertRotation ? -1 : 1;
+      let newX = rotation.x;
+      let newY = rotation.y;
+
+      switch (e.key) {
+        case 'ArrowUp':
+          e.preventDefault();
+          newX = clampRotation(rotation.x + sign * keyboardStep);
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          newX = clampRotation(rotation.x - sign * keyboardStep);
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          newY = clampRotation(rotation.y - sign * keyboardStep);
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          newY = clampRotation(rotation.y + sign * keyboardStep);
+          break;
+        case 'Escape':
+          e.preventDefault();
+          newX = 0;
+          newY = 0;
+          break;
+        default:
+          return;
+      }
+
+      if (!isHoveringRef.current) {
+        isHoveringRef.current = true;
+        setIsHovering(true);
+      }
+
+      if (springEffect) {
+        targetRotationRef.current = { x: newX, y: newY };
+        startSpringLoop();
+      } else {
+        setRotation({ x: newX, y: newY });
+        onRotationChange?.({ rotateX: newX, rotateY: newY, isHovering: true });
+      }
+    },
+    [
+      keyboardEnabled,
+      isDisabled,
+      invertRotation,
+      rotation,
+      keyboardStep,
+      clampRotation,
+      springEffect,
+      startSpringLoop,
+      onRotationChange,
+    ]
+  );
+
+  const handleFocus = useCallback(() => {
+    if (keyboardEnabled && !isDisabled) {
+      isHoveringRef.current = true;
+      setIsHovering(true);
+    }
+  }, [keyboardEnabled, isDisabled]);
+
+  const handleBlur = useCallback(() => {
+    if (keyboardEnabled) {
+      deactivate();
+    }
+  }, [keyboardEnabled, deactivate]);
+
   useEffect(() => {
     return () => {
       if (rafRef.current) {
@@ -931,6 +1025,14 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       <Box
         w={w}
         h={h}
+        tabIndex={keyboardEnabled ? 0 : undefined}
+        role={keyboardEnabled ? 'group' : undefined}
+        aria-roledescription={keyboardEnabled ? 'parallax card' : undefined}
+        aria-label={
+          keyboardEnabled
+            ? 'Interactive parallax card. Use arrow keys to tilt, Escape to reset.'
+            : undefined
+        }
         onClick={handleClick}
         onMouseEnter={activate}
         onMouseLeave={deactivate}
@@ -939,10 +1041,14 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onTouchCancel={handleTouchEnd}
+        onKeyDown={handleKeyDown}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         style={{
           position: 'relative',
           overflow: 'visible',
           touchAction: touchEnabled ? 'none' : undefined,
+          outline: keyboardEnabled ? undefined : 'none',
         }}
       >
         <Box

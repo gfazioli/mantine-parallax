@@ -35,6 +35,10 @@ Set `resetOnLeave={false}` to keep the last rotation position when the mouse lea
 
 Enable `gyroscopeEnabled` to use the DeviceOrientation API on mobile devices — the card will tilt based on physical device orientation. On iOS 13+, permission is automatically requested on the first tap. Adjust `gyroscopeSensitivity` (default `1`) to control how much device tilt translates into card rotation.
 
+### Keyboard Interaction
+
+Set `keyboardEnabled` to enable keyboard-driven tilt. When focused (via Tab), use **arrow keys** to tilt the card and **Escape** to reset. The component automatically adds `tabIndex`, focus styles, and ARIA attributes (`role="group"`, `aria-roledescription="parallax card"`). Adjust `keyboardStep` (default `5`) to control degrees per keypress. Works with `springEffect` for bouncy keyboard-driven movement.
+
 <Demo data={demos.configurator} />
 
 ## Initial values and Skew
