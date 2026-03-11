@@ -809,10 +809,17 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       if (gyroActiveRef.current) {
         gyroActiveRef.current = false;
         gyroBaselineRef.current = null;
+        isHoveringRef.current = false;
         setIsHovering(false);
         if (resetOnLeave) {
           updateRotation({ x: 0, y: 0 });
         }
+        const current = rotationRef.current;
+        onRotationChangeRef.current?.({
+          rotateX: resetOnLeave ? 0 : current.x,
+          rotateY: resetOnLeave ? 0 : current.y,
+          isHovering: false,
+        });
       }
       return;
     }
@@ -1053,9 +1060,10 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
           return React.cloneElement(child as React.ReactElement<any>, {
             style: {
               ...(child as React.ReactElement<any>).props.style,
-              transform: isHovering
-                ? `perspective(${perspectiveValue}) translateX(${rotation.y * (index + 1) * contentParallaxDistance}px) translateY(${rotation.x * (index + 1) * -contentParallaxDistance}px)`
-                : '',
+              transform:
+                isHovering || rotation.x !== 0 || rotation.y !== 0
+                  ? `translateX(${rotation.y * (index + 1) * contentParallaxDistance}px) translateY(${rotation.x * (index + 1) * -contentParallaxDistance}px)`
+                  : 'translateX(0px) translateY(0px)',
               transformStyle: 'preserve-3d',
               transition:
                 prefersReducedMotion || springEffect
