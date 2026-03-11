@@ -167,8 +167,8 @@ export const shadow: MantineDemo = {
       type: 'number',
       initialValue: 1,
       libraryValue: 0,
-      min: -10,
-      max: 10,
+      min: -2,
+      max: 2,
       step: 0.01,
     },
     {
