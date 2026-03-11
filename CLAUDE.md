@@ -88,5 +88,5 @@ Rollup builds both ESM (`.mjs`) and CJS (`.cjs`) outputs with:
 
 ## Known Limitations
 
-- No gyroscope support for mobile device orientation.
 - `contentParallax` uses `React.Children.map` + `cloneElement` — does not work with Fragment or non-element children.
+- Gyroscope support (`gyroscopeEnabled`) requires the DeviceOrientation API — not available in all browsers. On iOS 13+, permission is requested on first user interaction (tap/click).

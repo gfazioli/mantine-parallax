@@ -544,4 +544,40 @@ describe('Parallax', () => {
     );
     expect(container).toBeTruthy();
   });
+
+  it('renders with gyroscopeEnabled without crashing', () => {
+    const { container } = render(
+      <Parallax gyroscopeEnabled>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with gyroscopeEnabled false without crashing', () => {
+    const { container } = render(
+      <Parallax gyroscopeEnabled={false}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with gyroscopeSensitivity without crashing', () => {
+    const { container } = render(
+      <Parallax gyroscopeEnabled gyroscopeSensitivity={2}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with gyroscope and other effects combined without crashing', () => {
+    const { container } = render(
+      <Parallax gyroscopeEnabled gyroscopeSensitivity={1.5} lightEffect glareEffect shadowEffect>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
 });
