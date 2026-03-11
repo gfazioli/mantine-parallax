@@ -173,6 +173,21 @@ export interface ParallaxBaseProps {
   touchEnabled?: boolean;
 
   /**
+   * If true, enables gyroscope-based rotation on mobile devices using the DeviceOrientation API.
+   * On iOS 13+, permission will be requested on the first user interaction (tap/click).
+   * When active, the card tilts based on physical device orientation.
+   * @default false
+   */
+  gyroscopeEnabled?: boolean;
+
+  /**
+   * The sensitivity multiplier for gyroscope rotation.
+   * Higher values produce more rotation for the same device tilt.
+   * @default 1
+   */
+  gyroscopeSensitivity?: number;
+
+  /**
    * The scale factor applied when hovering.
    * Set to 1 for no scaling.
    * @default 1
@@ -294,6 +309,8 @@ export const defaultProps = {
   resetOnLeave: true,
   invertRotation: false,
   touchEnabled: true,
+  gyroscopeEnabled: false,
+  gyroscopeSensitivity: 1,
   hoverScale: 1,
   transitionDuration: 300,
   transitionEasing: 'ease-out',
@@ -346,6 +363,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     invertRotation,
     maxRotation,
     touchEnabled,
+    gyroscopeEnabled,
+    gyroscopeSensitivity,
     hoverScale,
     transitionDuration,
     transitionEasing,
@@ -490,6 +509,133 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       deactivate();
     }
   }, [touchEnabled, deactivate]);
+
+  // Gyroscope support
+  const gyroBaselineRef = useRef<{ beta: number; gamma: number } | null>(null);
+  const gyroPermissionRef = useRef<'pending' | 'granted' | 'denied'>('pending');
+  const gyroActiveRef = useRef(false);
+
+  const handleDeviceOrientation = useCallback(
+    (e: DeviceOrientationEvent) => {
+      if (isDisabled || !gyroscopeEnabled) {
+        return;
+      }
+
+      const beta = e.beta ?? 0; // front-back tilt (-180 to 180)
+      const gamma = e.gamma ?? 0; // left-right tilt (-90 to 90)
+
+      // Set baseline on first reading
+      if (!gyroBaselineRef.current) {
+        gyroBaselineRef.current = { beta, gamma };
+      }
+
+      const sign = invertRotation ? -1 : 1;
+      const deltaBeta = beta - gyroBaselineRef.current.beta;
+      const deltaGamma = gamma - gyroBaselineRef.current.gamma;
+
+      const rotateX = clampRotation(sign * deltaBeta * gyroscopeSensitivity);
+      const rotateY = clampRotation(sign * deltaGamma * gyroscopeSensitivity);
+
+      if (!gyroActiveRef.current) {
+        gyroActiveRef.current = true;
+        setIsHovering(true);
+      }
+
+      setRotation({ x: rotateX, y: rotateY });
+      onRotationChange?.({ rotateX, rotateY, isHovering: true });
+
+      if (lightEffect || glareEffect) {
+        // Map rotation to light position (0-100 range)
+        const lightX = Math.max(0, Math.min(100, 50 + rotateY * 2));
+        const lightY = Math.max(0, Math.min(100, 50 - rotateX * 2));
+        setLightPosition({ x: lightX, y: lightY });
+      }
+    },
+    [
+      isDisabled,
+      gyroscopeEnabled,
+      gyroscopeSensitivity,
+      invertRotation,
+      clampRotation,
+      onRotationChange,
+      lightEffect,
+      glareEffect,
+    ]
+  );
+
+  const hasDeviceOrientation = typeof window !== 'undefined' && 'DeviceOrientationEvent' in window;
+
+  const requestGyroscopePermission = useCallback(async () => {
+    if (
+      !hasDeviceOrientation ||
+      !gyroscopeEnabled ||
+      isDisabled ||
+      gyroPermissionRef.current === 'granted'
+    ) {
+      return;
+    }
+
+    // iOS 13+ requires explicit permission request
+    const DeviceOrientationEventTyped = DeviceOrientationEvent as unknown as {
+      requestPermission?: () => Promise<'granted' | 'denied'>;
+    };
+
+    if (typeof DeviceOrientationEventTyped.requestPermission === 'function') {
+      try {
+        const permission = await DeviceOrientationEventTyped.requestPermission();
+        gyroPermissionRef.current = permission;
+      } catch {
+        gyroPermissionRef.current = 'denied';
+      }
+    } else {
+      // Non-iOS or older browsers — no permission needed
+      gyroPermissionRef.current = 'granted';
+    }
+
+    if (gyroPermissionRef.current === 'granted') {
+      gyroBaselineRef.current = null;
+      window.addEventListener('deviceorientation', handleDeviceOrientation);
+    }
+  }, [hasDeviceOrientation, gyroscopeEnabled, isDisabled, handleDeviceOrientation]);
+
+  useEffect(() => {
+    if (!hasDeviceOrientation || !gyroscopeEnabled || isDisabled) {
+      // Cleanup if disabled or unavailable
+      if (hasDeviceOrientation) {
+        window.removeEventListener('deviceorientation', handleDeviceOrientation);
+      }
+      if (gyroActiveRef.current) {
+        gyroActiveRef.current = false;
+        gyroBaselineRef.current = null;
+        setIsHovering(false);
+        if (resetOnLeave) {
+          setRotation({ x: 0, y: 0 });
+        }
+      }
+      return;
+    }
+
+    // On non-iOS browsers, start listening immediately
+    const DeviceOrientationEventTyped = DeviceOrientationEvent as unknown as {
+      requestPermission?: () => Promise<'granted' | 'denied'>;
+    };
+
+    if (typeof DeviceOrientationEventTyped.requestPermission !== 'function') {
+      gyroPermissionRef.current = 'granted';
+      window.addEventListener('deviceorientation', handleDeviceOrientation);
+    }
+
+    return () => {
+      window.removeEventListener('deviceorientation', handleDeviceOrientation);
+    };
+  }, [hasDeviceOrientation, gyroscopeEnabled, isDisabled, handleDeviceOrientation, resetOnLeave]);
+
+  // Request gyroscope permission on first user interaction (needed for iOS 13+)
+  const handleClick = useCallback(() => {
+    if (gyroscopeEnabled && gyroPermissionRef.current === 'pending') {
+      requestGyroscopePermission();
+    }
+  }, [gyroscopeEnabled, requestGyroscopePermission]);
 
   useEffect(() => {
     return () => {
@@ -648,6 +794,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       <Box
         w={w}
         h={h}
+        onClick={handleClick}
         onMouseEnter={activate}
         onMouseLeave={deactivate}
         onMouseMove={handleMouseMove}

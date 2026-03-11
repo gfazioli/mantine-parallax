@@ -33,6 +33,8 @@ The `onRotationChange` callback fires whenever the rotation changes, receiving `
 
 Set `resetOnLeave={false}` to keep the last rotation position when the mouse leaves instead of resetting to the initial values. The `invertRotation` prop reverses the tilt direction — the card tilts away from the cursor instead of toward it. Use `maxRotation` to clamp the rotation to a maximum degree value, useful for achieving subtle effects with high `threshold` values.
 
+Enable `gyroscopeEnabled` to use the DeviceOrientation API on mobile devices — the card will tilt based on physical device orientation. On iOS 13+, permission is automatically requested on the first tap. Adjust `gyroscopeSensitivity` (default `1`) to control how much device tilt translates into card rotation.
+
 <Demo data={demos.configurator} />
 
 ## Initial values and Skew

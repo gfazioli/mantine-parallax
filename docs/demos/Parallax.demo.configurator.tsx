@@ -110,6 +110,21 @@ export const configurator: MantineDemo = {
       step: 1,
     },
     {
+      prop: 'gyroscopeEnabled',
+      type: 'boolean',
+      initialValue: false,
+      libraryValue: false,
+    },
+    {
+      prop: 'gyroscopeSensitivity',
+      type: 'number',
+      initialValue: 1,
+      libraryValue: 1,
+      min: 0.1,
+      max: 5,
+      step: 0.1,
+    },
+    {
       prop: 'perspective',
       type: 'number',
       initialValue: 1000,
