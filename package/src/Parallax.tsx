@@ -642,7 +642,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
   const handleTouchMove = useCallback(
     (e: React.TouchEvent<HTMLElement>) => {
-      if (!isHoveringRef.current || !touchEnabled) {
+      if (!isHoveringRef.current || !touchEnabled || gyroActiveRef.current) {
         return;
       }
       const touch = e.touches[0];
@@ -693,13 +693,13 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   }, [resetOnLeave, springEffect, startSpringLoop, updateRotation]);
 
   const handleTouchStart = useCallback(() => {
-    if (touchEnabled) {
+    if (touchEnabled && !gyroActiveRef.current) {
       activate();
     }
   }, [touchEnabled, activate]);
 
   const handleTouchEnd = useCallback(() => {
-    if (touchEnabled) {
+    if (touchEnabled && !gyroActiveRef.current) {
       deactivate();
     }
   }, [touchEnabled, deactivate]);
@@ -828,12 +828,16 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     }
 
     // On non-iOS browsers, start listening immediately
+    // On iOS, re-add listener if permission was already granted (e.g. after prop change)
     const DeviceOrientationEventTyped = DeviceOrientationEvent as unknown as {
       requestPermission?: () => Promise<'granted' | 'denied'>;
     };
 
     if (typeof DeviceOrientationEventTyped.requestPermission !== 'function') {
       gyroPermissionRef.current = 'granted';
+      window.addEventListener('deviceorientation', handleDeviceOrientation);
+    } else if (gyroPermissionRef.current === 'granted') {
+      // iOS: permission already granted, re-attach listener with updated callback
       window.addEventListener('deviceorientation', handleDeviceOrientation);
     }
 
