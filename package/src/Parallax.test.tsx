@@ -580,4 +580,69 @@ describe('Parallax', () => {
     );
     expect(container).toBeTruthy();
   });
+
+  it('renders with springEffect without crashing', () => {
+    const { container } = render(
+      <Parallax springEffect>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with springEffect false without crashing', () => {
+    const { container } = render(
+      <Parallax springEffect={false}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders with spring props without crashing', () => {
+    const { container } = render(
+      <Parallax springEffect springStiffness={200} springDamping={15}>
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('disables CSS transition on transform when springEffect is true', () => {
+    const { container } = render(
+      <Parallax springEffect>
+        <div>Test</div>
+      </Parallax>
+    );
+    const rootDiv = container.querySelector('[class]');
+    const style = rootDiv?.getAttribute('style') || '';
+    expect(style).not.toContain('transform 300ms');
+  });
+
+  it('renders with spring and other effects combined without crashing', () => {
+    const { container } = render(
+      <Parallax
+        springEffect
+        springStiffness={180}
+        springDamping={10}
+        lightEffect
+        shadowEffect
+        glareEffect
+      >
+        <div>Test</div>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
+
+  it('renders Parallax.Layer with springEffect parent without crashing', () => {
+    const { container } = render(
+      <Parallax springEffect>
+        <Parallax.Layer depth={5}>
+          <div>Layer content</div>
+        </Parallax.Layer>
+      </Parallax>
+    );
+    expect(container).toBeTruthy();
+  });
 });

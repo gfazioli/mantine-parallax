@@ -84,6 +84,12 @@ Below a more complex example of how to use the `Parallax` component.
 
 <Demo data={demos.full} />
 
+## Spring Physics
+
+Enable `springEffect` to replace CSS transitions with spring-based physics animation. The card movement becomes more natural, with overshoot and oscillation. Adjust `springStiffness` (default `150`, higher = snappier) and `springDamping` (default `12`, higher = less bounce) to fine-tune the feel. Works with all effects including shadow, light, glare, and `Parallax.Layer`.
+
+<Demo data={demos.spring} />
+
 ## Glare Effect
 
 The `glareEffect` prop adds a reflective glare that follows the cursor, simulating a glossy surface. You can customize it with `glareColor`, `glareMaxOpacity`, `glareSize`, and `glareOverlay`. Combine it with `lightEffect` and `shadowEffect` for the full Apple TV Card experience.
