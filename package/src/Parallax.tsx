@@ -188,6 +188,27 @@ export interface ParallaxBaseProps {
   gyroscopeSensitivity?: number;
 
   /**
+   * If true, enables spring-based physics animation instead of CSS transitions.
+   * Produces more natural, physically-based movement with overshoot and oscillation.
+   * @default false
+   */
+  springEffect?: boolean;
+
+  /**
+   * The stiffness of the spring (tension). Higher values produce a snappier response.
+   * Only effective when `springEffect` is true.
+   * @default 150
+   */
+  springStiffness?: number;
+
+  /**
+   * The damping coefficient of the spring. Higher values reduce oscillation.
+   * Only effective when `springEffect` is true.
+   * @default 12
+   */
+  springDamping?: number;
+
+  /**
    * The scale factor applied when hovering.
    * Set to 1 for no scaling.
    * @default 1
@@ -311,6 +332,9 @@ export const defaultProps = {
   touchEnabled: true,
   gyroscopeEnabled: false,
   gyroscopeSensitivity: 1,
+  springEffect: false,
+  springStiffness: 150,
+  springDamping: 12,
   hoverScale: 1,
   transitionDuration: 300,
   transitionEasing: 'ease-out',
@@ -333,6 +357,13 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const [isHovering, setIsHovering] = useState(false);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [lightPosition, setLightPosition] = useState({ x: 50, y: 50 });
+
+  // Spring physics refs
+  const springRafRef = useRef<number>(0);
+  const targetRotationRef = useRef({ x: 0, y: 0 });
+  const springVelocityRef = useRef({ x: 0, y: 0 });
+  const springPositionRef = useRef({ x: 0, y: 0 });
+  const lastFrameTimeRef = useRef(0);
 
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const theme = useMantineTheme();
@@ -365,6 +396,9 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     touchEnabled,
     gyroscopeEnabled,
     gyroscopeSensitivity,
+    springEffect,
+    springStiffness,
+    springDamping,
     hoverScale,
     transitionDuration,
     transitionEasing,
@@ -416,6 +450,66 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     [maxRotation]
   );
 
+  // Spring animation loop
+  const springStep = useCallback(
+    (timestamp: number) => {
+      if (!lastFrameTimeRef.current) {
+        lastFrameTimeRef.current = timestamp;
+      }
+
+      const dt = Math.min((timestamp - lastFrameTimeRef.current) / 1000, 0.064); // cap at ~15fps min
+      lastFrameTimeRef.current = timestamp;
+
+      const pos = springPositionRef.current;
+      const vel = springVelocityRef.current;
+      const target = targetRotationRef.current;
+
+      // Damped harmonic oscillator
+      const ax = -springStiffness * (pos.x - target.x) - springDamping * vel.x;
+      const ay = -springStiffness * (pos.y - target.y) - springDamping * vel.y;
+
+      vel.x += ax * dt;
+      vel.y += ay * dt;
+      pos.x += vel.x * dt;
+      pos.y += vel.y * dt;
+
+      // Check if settled (velocity and distance both near zero)
+      const distX = Math.abs(pos.x - target.x);
+      const distY = Math.abs(pos.y - target.y);
+      const speedX = Math.abs(vel.x);
+      const speedY = Math.abs(vel.y);
+      const settled = distX < 0.01 && distY < 0.01 && speedX < 0.01 && speedY < 0.01;
+
+      if (settled) {
+        pos.x = target.x;
+        pos.y = target.y;
+        vel.x = 0;
+        vel.y = 0;
+        springRafRef.current = 0;
+        setRotation({ x: target.x, y: target.y });
+        onRotationChange?.({
+          rotateX: target.x,
+          rotateY: target.y,
+          isHovering: isHoveringRef.current,
+        });
+        return;
+      }
+
+      setRotation({ x: pos.x, y: pos.y });
+      onRotationChange?.({ rotateX: pos.x, rotateY: pos.y, isHovering: isHoveringRef.current });
+      springRafRef.current = requestAnimationFrame(springStep);
+    },
+    [springStiffness, springDamping, onRotationChange]
+  );
+
+  const startSpringLoop = useCallback(() => {
+    if (springRafRef.current) {
+      return; // already running
+    }
+    lastFrameTimeRef.current = 0;
+    springRafRef.current = requestAnimationFrame(springStep);
+  }, [springStep]);
+
   const scheduleUpdate = useCallback(
     (clientX: number, clientY: number, rect: DOMRect) => {
       if (rafRef.current) {
@@ -434,8 +528,13 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         const rotateY = clampRotation(sign * ((mouseX - centerX) / rect.width) * threshold);
         const rotateX = clampRotation(sign * -((mouseY - centerY) / rect.height) * threshold);
 
-        setRotation({ x: rotateX, y: rotateY });
-        onRotationChange?.({ rotateX, rotateY, isHovering: true });
+        if (springEffect) {
+          targetRotationRef.current = { x: rotateX, y: rotateY };
+          startSpringLoop();
+        } else {
+          setRotation({ x: rotateX, y: rotateY });
+          onRotationChange?.({ rotateX, rotateY, isHovering: true });
+        }
 
         if (lightEffect || glareEffect) {
           setLightPosition({
@@ -445,7 +544,16 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         }
       });
     },
-    [threshold, lightEffect, glareEffect, onRotationChange, invertRotation, clampRotation]
+    [
+      threshold,
+      lightEffect,
+      glareEffect,
+      onRotationChange,
+      invertRotation,
+      clampRotation,
+      springEffect,
+      startSpringLoop,
+    ]
   );
 
   const handleMouseMove = useCallback(
@@ -483,20 +591,27 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     isHoveringRef.current = false;
     setIsHovering(false);
     setLightPosition({ x: 50, y: 50 });
-    if (resetOnLeave) {
+
+    if (springEffect && resetOnLeave) {
+      // Let spring animate back to zero
+      targetRotationRef.current = { x: 0, y: 0 };
+      startSpringLoop();
+    } else if (resetOnLeave) {
       setRotation({ x: 0, y: 0 });
     }
-    if (wasHovering) {
+
+    if (wasHovering && !springEffect) {
       const resetValues = resetOnLeave
         ? { rotateX: 0, rotateY: 0 }
         : { rotateX: rotation.x, rotateY: rotation.y };
       onRotationChange?.({ ...resetValues, isHovering: false });
     }
+
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = 0;
     }
-  }, [onRotationChange, resetOnLeave, rotation]);
+  }, [onRotationChange, resetOnLeave, rotation, springEffect, startSpringLoop]);
 
   const handleTouchStart = useCallback(() => {
     if (touchEnabled) {
@@ -541,8 +656,13 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         setIsHovering(true);
       }
 
-      setRotation({ x: rotateX, y: rotateY });
-      onRotationChange?.({ rotateX, rotateY, isHovering: true });
+      if (springEffect) {
+        targetRotationRef.current = { x: rotateX, y: rotateY };
+        startSpringLoop();
+      } else {
+        setRotation({ x: rotateX, y: rotateY });
+        onRotationChange?.({ rotateX, rotateY, isHovering: true });
+      }
 
       if (lightEffect || glareEffect) {
         // Map rotation to light position (0-100 range)
@@ -560,6 +680,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       onRotationChange,
       lightEffect,
       glareEffect,
+      springEffect,
+      startSpringLoop,
     ]
   );
 
@@ -642,6 +764,9 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
       }
+      if (springRafRef.current) {
+        cancelAnimationFrame(springRafRef.current);
+      }
     };
   }, []);
 
@@ -664,12 +789,21 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     ? `, box-shadow ${restDuration}ms ${transitionEasing}`
     : '';
 
+  // When spring is active, JS drives the transform — only keep non-transform CSS transitions
+  const springBgTransition = springEffect
+    ? `background-position ${restDuration}ms ${transitionEasing}${restShadowTransition}`
+    : '';
+
   const cardStyle: MantineStyleProp = {
     transition: prefersReducedMotion
       ? 'none'
-      : isHovering
-        ? `transform ${hoverDuration}ms ${transitionEasing}${shadowTransition}`
-        : `transform ${restDuration}ms ${transitionEasing}, background-position ${restDuration}ms ${transitionEasing}${restShadowTransition}`,
+      : springEffect
+        ? shadowTransition
+          ? `box-shadow ${hoverDuration}ms ${transitionEasing}, ${springBgTransition}`
+          : springBgTransition || 'none'
+        : isHovering
+          ? `transform ${hoverDuration}ms ${transitionEasing}${shadowTransition}`
+          : `transform ${restDuration}ms ${transitionEasing}, background-position ${restDuration}ms ${transitionEasing}${restShadowTransition}`,
     transform: isHovering
       ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)${scaleValue}`
       : !resetOnLeave && (rotation.x !== 0 || rotation.y !== 0)
@@ -750,9 +884,10 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
                 ? `perspective(${perspectiveValue}) translateX(${rotation.y * (index + 1) * contentParallaxDistance}px) translateY(${rotation.x * (index + 1) * -contentParallaxDistance}px)`
                 : '',
               transformStyle: 'preserve-3d',
-              transition: prefersReducedMotion
-                ? 'none'
-                : `transform ${hoverDuration}ms ${transitionEasing}`,
+              transition:
+                prefersReducedMotion || springEffect
+                  ? 'none'
+                  : `transform ${hoverDuration}ms ${transitionEasing}`,
             },
           });
         }
@@ -777,6 +912,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       restDuration,
       transitionEasing,
       prefersReducedMotion,
+      springEffect,
     }),
     [
       rotation,
@@ -786,6 +922,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       restDuration,
       transitionEasing,
       prefersReducedMotion,
+      springEffect,
     ]
   );
 

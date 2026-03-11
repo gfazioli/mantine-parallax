@@ -8,6 +8,7 @@ export interface ParallaxContextValue {
   restDuration: number;
   transitionEasing: string;
   prefersReducedMotion: boolean | undefined;
+  springEffect: boolean;
 }
 
 export const [ParallaxProvider, useParallaxContext] = createSafeContext<ParallaxContextValue>(

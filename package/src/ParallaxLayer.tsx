@@ -29,9 +29,10 @@ export function ParallaxLayer(_props: ParallaxLayerProps) {
       ? `perspective(${ctx.perspectiveValue}) translateX(${ctx.rotation.y * depth}px) translateY(${ctx.rotation.x * -depth}px)`
       : '',
     transformStyle: 'preserve-3d',
-    transition: ctx.prefersReducedMotion
-      ? 'none'
-      : `transform ${ctx.hoverDuration}ms ${ctx.transitionEasing}`,
+    transition:
+      ctx.prefersReducedMotion || ctx.springEffect
+        ? 'none'
+        : `transform ${ctx.hoverDuration}ms ${ctx.transitionEasing}`,
   };
 
   return (

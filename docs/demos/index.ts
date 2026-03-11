@@ -9,5 +9,6 @@ export { initial } from './Parallax.demo.initial';
 export { parallax } from './Parallax.demo.parallax';
 export { presentation } from './Parallax.demo.presentation';
 export { scroll } from './Parallax.demo.scroll';
+export { spring } from './Parallax.demo.spring';
 export { shadow } from './Parallax.demo.shadow';
 export { usage } from './Parallax.demo.usage';
