@@ -27,8 +27,8 @@ export function ParallaxLayer(_props: ParallaxLayerProps) {
 
   const layerStyle: React.CSSProperties = {
     transform: ctx.isHovering
-      ? `perspective(${ctx.perspectiveValue}) translateX(${ctx.rotation.y * depth}px) translateY(${ctx.rotation.x * -depth}px)`
-      : '',
+      ? `translateX(${ctx.rotation.y * depth}px) translateY(${ctx.rotation.x * -depth}px)`
+      : 'translateX(0px) translateY(0px)',
     transformStyle: 'preserve-3d',
     transition:
       ctx.prefersReducedMotion || ctx.springEffect
