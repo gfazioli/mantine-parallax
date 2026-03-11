@@ -85,7 +85,7 @@ export const spring: MantineDemo = {
     {
       prop: 'springStiffness',
       type: 'number',
-      initialValue: 150,
+      initialValue: 360,
       libraryValue: 150,
       min: 10,
       max: 500,
@@ -111,6 +111,12 @@ export const spring: MantineDemo = {
     },
     {
       prop: 'lightEffect',
+      type: 'boolean',
+      initialValue: true,
+      libraryValue: false,
+    },
+    {
+      prop: 'lightOverlay',
       type: 'boolean',
       initialValue: true,
       libraryValue: false,
