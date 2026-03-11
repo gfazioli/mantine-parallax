@@ -908,9 +908,6 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const shadowX = hasShadowRotation ? -rotation.y * shadowOffset : 0;
   const shadowY = hasShadowRotation ? rotation.x * shadowOffset : 0;
 
-  const shadowTransition = shadowEffect
-    ? `, box-shadow ${hoverDuration}ms ${transitionEasing}`
-    : '';
   const restShadowTransition = shadowEffect
     ? `, box-shadow ${restDuration}ms ${transitionEasing}`
     : '';
@@ -921,14 +918,15 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     : '';
 
   const cardStyle: MantineStyleProp = {
+    // box-shadow is NOT GPU-accelerated — transitioning it during hover causes repaint lag.
+    // During hover, rotation updates at 60fps via RAF so the shadow is already smooth.
+    // We only transition box-shadow on rest (mouse leave) for a smooth return to zero.
     transition: prefersReducedMotion
       ? 'none'
       : springEffect
-        ? shadowTransition
-          ? `box-shadow ${hoverDuration}ms ${transitionEasing}, ${springBgTransition}`
-          : springBgTransition || 'none'
+        ? springBgTransition || 'none'
         : isHovering
-          ? `transform ${hoverDuration}ms ${transitionEasing}${shadowTransition}`
+          ? `transform ${hoverDuration}ms ${transitionEasing}`
           : `transform ${restDuration}ms ${transitionEasing}, background-position ${restDuration}ms ${transitionEasing}${restShadowTransition}`,
     transform: isHovering
       ? `perspective(${perspectiveValue}) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) rotateZ(${initialRotationZ}deg) skewX(${initialSkewX}deg) skewY(${initialSkewY}deg)${scaleValue}`
