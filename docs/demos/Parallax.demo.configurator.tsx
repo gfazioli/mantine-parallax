@@ -125,6 +125,21 @@ export const configurator: MantineDemo = {
       step: 0.1,
     },
     {
+      prop: 'keyboardEnabled',
+      type: 'boolean',
+      initialValue: false,
+      libraryValue: false,
+    },
+    {
+      prop: 'keyboardStep',
+      type: 'number',
+      initialValue: 5,
+      libraryValue: 5,
+      min: 1,
+      max: 20,
+      step: 1,
+    },
+    {
       prop: 'perspective',
       type: 'number',
       initialValue: 1000,
