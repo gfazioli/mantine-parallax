@@ -94,7 +94,7 @@ export const spring: MantineDemo = {
     {
       prop: 'springDamping',
       type: 'number',
-      initialValue: 12,
+      initialValue: 3,
       libraryValue: 12,
       min: 1,
       max: 40,

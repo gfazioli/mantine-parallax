@@ -389,6 +389,9 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const springVelocityRef = useRef({ x: 0, y: 0 });
   const springPositionRef = useRef({ x: 0, y: 0 });
   const lastFrameTimeRef = useRef(0);
+  // Refs for spring params so the running RAF loop always reads current values
+  const springStiffnessRef = useRef(0);
+  const springDampingRef = useRef(0);
 
   const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const theme = useMantineTheme();
@@ -459,6 +462,10 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const onRotationChangeRef = useRef(onRotationChange);
   onRotationChangeRef.current = onRotationChange;
 
+  // Sync spring param refs so the running RAF loop always reads current values
+  springStiffnessRef.current = springStiffness;
+  springDampingRef.current = springDamping;
+
   const updateRotation = useCallback((newRotation: { x: number; y: number }) => {
     rotationRef.current = newRotation;
     setRotation(newRotation);
@@ -502,9 +509,11 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       const vel = springVelocityRef.current;
       const target = targetRotationRef.current;
 
-      // Damped harmonic oscillator
-      const ax = -springStiffness * (pos.x - target.x) - springDamping * vel.x;
-      const ay = -springStiffness * (pos.y - target.y) - springDamping * vel.y;
+      // Damped harmonic oscillator — read from refs to avoid stale closure
+      const stiffness = springStiffnessRef.current;
+      const damping = springDampingRef.current;
+      const ax = -stiffness * (pos.x - target.x) - damping * vel.x;
+      const ay = -stiffness * (pos.y - target.y) - damping * vel.y;
 
       vel.x += ax * dt;
       vel.y += ay * dt;
@@ -541,7 +550,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       });
       springRafRef.current = requestAnimationFrame(springStep);
     },
-    [springStiffness, springDamping, updateRotation]
+    [updateRotation]
   );
 
   const startSpringLoop = useCallback(() => {
@@ -648,12 +657,15 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       updateRotation({ x: 0, y: 0 });
     }
 
-    if (wasHovering && !springEffect) {
+    // Notify consumers of deactivation.
+    // When spring + resetOnLeave, the spring loop will fire callbacks during the return animation.
+    // In all other cases, fire immediately with current (or reset) rotation values.
+    if (wasHovering && !(springEffect && resetOnLeave)) {
       const current = rotationRef.current;
-      const resetValues = resetOnLeave
+      const values = resetOnLeave
         ? { rotateX: 0, rotateY: 0 }
         : { rotateX: current.x, rotateY: current.y };
-      onRotationChangeRef.current?.({ ...resetValues, isHovering: false });
+      onRotationChangeRef.current?.({ ...values, isHovering: false });
     }
   }, [resetOnLeave, springEffect, startSpringLoop, updateRotation]);
 
@@ -887,6 +899,11 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       springRafRef.current = 0;
     }
   }, [springEffect]);
+
+  // Reset spring velocity when physics parameters change to avoid residual momentum
+  useEffect(() => {
+    springVelocityRef.current = { x: 0, y: 0 };
+  }, [springStiffness, springDamping]);
 
   useEffect(() => {
     return () => {
