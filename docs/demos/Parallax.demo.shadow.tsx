@@ -31,7 +31,7 @@ import { Parallax } from '@gfazioli/mantine-parallax';
 function Demo() {
   return (
     <Center w="100%" h={300}>
-      <Parallax {{props}} p={32} bg="tomato">
+      <Parallax {{props}} p={32} bg="tomato" radius={16}>
         <Box
           w={300}
           h={200}
