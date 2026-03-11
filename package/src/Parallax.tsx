@@ -491,6 +491,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     (timestamp: number) => {
       if (!lastFrameTimeRef.current) {
         lastFrameTimeRef.current = timestamp;
+        springRafRef.current = requestAnimationFrame(springStep);
+        return;
       }
 
       const dt = Math.min((timestamp - lastFrameTimeRef.current) / 1000, 0.064); // cap at ~15fps min
@@ -695,6 +697,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
       if (!gyroActiveRef.current) {
         gyroActiveRef.current = true;
+        isHoveringRef.current = true;
         setIsHovering(true);
       }
 
@@ -773,7 +776,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         gyroBaselineRef.current = null;
         setIsHovering(false);
         if (resetOnLeave) {
-          setRotation({ x: 0, y: 0 });
+          updateRotation({ x: 0, y: 0 });
         }
       }
       return;
@@ -904,7 +907,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
   const scaleValue = isHovering && hoverScale !== 1 ? ` scale(${hoverScale})` : '';
 
-  const hasShadowRotation = isHovering || (!resetOnLeave && (rotation.x !== 0 || rotation.y !== 0));
+  const hasShadowRotation = isHovering || rotation.x !== 0 || rotation.y !== 0;
   const shadowX = hasShadowRotation ? -rotation.y * shadowOffset : 0;
   const shadowY = hasShadowRotation ? rotation.x * shadowOffset : 0;
 
@@ -924,7 +927,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     transition: prefersReducedMotion
       ? 'none'
       : springEffect
-        ? springBgTransition || 'none'
+        ? springBgTransition
         : isHovering
           ? `transform ${hoverDuration}ms ${transitionEasing}`
           : `transform ${restDuration}ms ${transitionEasing}, background-position ${restDuration}ms ${transitionEasing}${restShadowTransition}`,
