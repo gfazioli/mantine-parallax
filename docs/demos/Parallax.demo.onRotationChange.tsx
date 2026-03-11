@@ -9,7 +9,7 @@ function Demo() {
   return (
     <Stack align="center" gap="md">
       <Center w="100%" h={300}>
-        <Parallax w={300} lightEffect lightOverlay onRotationChange={setInfo}>
+        <Parallax w={300} lightEffect lightOverlay onRotationChange={setInfo} radius="md">
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Text fw={500}>Hover this card</Text>
             <Text size="sm" c="dimmed">
@@ -40,7 +40,7 @@ function Demo() {
   return (
     <Stack align="center" gap="md">
       <Center w="100%" h={300}>
-        <Parallax w={300} lightEffect lightOverlay onRotationChange={setInfo}>
+        <Parallax w={300} lightEffect lightOverlay onRotationChange={setInfo} radius="md">
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Text fw={500}>Hover this card</Text>
             <Text size="sm" c="dimmed">

@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Box,
+  createVarsResolver,
+  getRadius,
   getThemeColor,
   polymorphicFactory,
   useMantineTheme,
@@ -8,6 +10,7 @@ import {
   useStyles,
   type BoxProps,
   type MantineColor,
+  type MantineRadius,
   type MantineStyleProp,
   type PolymorphicFactory,
   type StylesApiProps,
@@ -298,6 +301,12 @@ export interface ParallaxBaseProps {
   glareOverlay?: boolean;
 
   /**
+   * Border radius of the parallax card.
+   * Supports Mantine theme values ('xs', 'sm', 'md', 'lg', 'xl'), CSS strings, or numbers.
+   */
+  radius?: MantineRadius | (string & {}) | number;
+
+  /**
    * Callback fired whenever the rotation changes.
    * Receives the current rotation values and hover state.
    */
@@ -308,6 +317,11 @@ export interface ParallaxBaseProps {
    */
   children?: React.ReactNode;
 }
+
+export type ParallaxCssVariables = {
+  root: '--parallax-radius';
+};
+
 export interface ParallaxProps
   extends BoxProps, ParallaxBaseProps, StylesApiProps<ParallaxFactory> {}
 
@@ -316,6 +330,7 @@ export type ParallaxFactory = PolymorphicFactory<{
   defaultComponent: 'div';
   defaultRef: HTMLDivElement;
   stylesNames: ParallaxStylesNames;
+  vars: ParallaxCssVariables;
   staticComponents: {
     Layer: typeof ParallaxLayer;
   };
@@ -364,6 +379,12 @@ export const defaultProps = {
   glareSize: 30,
   glareOverlay: true,
 } satisfies Partial<ParallaxProps>;
+
+const varsResolver = createVarsResolver<ParallaxFactory>((_, { radius }) => ({
+  root: {
+    '--parallax-radius': radius === undefined ? undefined : getRadius(radius),
+  },
+}));
 
 const CHILDREN_CONTAINER_STYLE: React.CSSProperties = {
   position: 'relative',
@@ -441,6 +462,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     glareMaxOpacity,
     glareSize,
     glareOverlay,
+    radius,
     onRotationChange,
     w,
     h,
@@ -481,6 +503,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     styles,
     unstyled,
     vars,
+    varsResolver,
   });
 
   const clampRotation = useCallback(
@@ -892,11 +915,17 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
     }
   }, [keyboardEnabled, deactivate]);
 
-  // Cancel spring loop when springEffect is toggled off
+  // Sync spring state when springEffect is toggled
   useEffect(() => {
-    if (!springEffect && springRafRef.current) {
+    if (springEffect) {
+      // Sync spring position to current rotation so it doesn't jump from {0,0}
+      springPositionRef.current = rotationRef.current;
+      springVelocityRef.current = { x: 0, y: 0 };
+    } else if (springRafRef.current) {
       cancelAnimationFrame(springRafRef.current);
       springRafRef.current = 0;
+      springVelocityRef.current = { x: 0, y: 0 };
+      springPositionRef.current = rotationRef.current;
     }
   }, [springEffect]);
 

@@ -5,7 +5,7 @@ import { MantineDemo } from '@mantinex/demo';
 function Demo() {
   return (
     <Center w="100%" h={400}>
-      <Parallax w={340} h={280} bg="dark.7" p="xl" style={{ borderRadius: 16 }}>
+      <Parallax w={340} h={280} bg="dark.9" p="xl" radius={16}>
         <Parallax.Layer depth={1}>
           <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
             Depth 1
@@ -43,7 +43,7 @@ import { Parallax } from '@gfazioli/mantine-parallax';
 function Demo() {
   return (
     <Center w="100%" h={400}>
-      <Parallax w={340} h={280} bg="dark.7" p="xl" style={{ borderRadius: 16 }}>
+      <Parallax w={340} h={280} bg="dark.9" p="xl" radius={16}>
         <Parallax.Layer depth={1}>
           <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
             Depth 1

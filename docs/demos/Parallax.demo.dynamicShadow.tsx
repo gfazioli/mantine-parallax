@@ -1,25 +1,34 @@
 import { Parallax, ParallaxProps } from '@gfazioli/mantine-parallax';
-import { Center, Group, Image, Paper, Text, Title } from '@mantine/core';
+import { Card, Center, Group, Image, Text, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 
 function Demo(props: ParallaxProps) {
   return (
     <Center w="100%" h={400}>
-      <Parallax {...props} w={340} lightEffect lightOverlay lightIntensity={0.05} lightSize={60}>
-        <Paper shadow="none" radius="md" p="lg" style={{ overflow: 'hidden' }}>
-          <Image
-            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-2.png"
-            height={160}
-            alt="Card image"
-            style={{ marginLeft: -20, marginRight: -20, marginTop: -20 }}
-          />
+      <Parallax
+        {...props}
+        w={340}
+        lightEffect
+        lightOverlay
+        lightIntensity={0.05}
+        lightSize={60}
+        radius="md"
+      >
+        <Card shadow="none" padding="lg" radius="md" withBorder>
+          <Card.Section>
+            <Image
+              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-2.png"
+              height={160}
+              alt="Card image"
+            />
+          </Card.Section>
           <Group justify="space-between" mt="md" mb="xs">
             <Title order={4}>Dynamic Shadow</Title>
           </Group>
           <Text size="sm" c="dimmed">
             Enable shadowEffect and tilt the card to see the shadow follow the rotation.
           </Text>
-        </Paper>
+        </Card>
       </Parallax>
     </Center>
   );
@@ -38,14 +47,16 @@ function Demo() {
         lightOverlay
         lightIntensity={0.05}
         lightSize={60}
+        radius="md"
       >
-        <Paper shadow="none" radius="md" p="lg" style={{ overflow: 'hidden' }}>
-          <Image
-            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-2.png"
-            height={160}
-            alt="Card image"
-            style={{ marginLeft: -20, marginRight: -20, marginTop: -20 }}
-          />
+        <Card shadow="none" padding="lg" radius="md" withBorder>
+          <Card.Section>
+            <Image
+              src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-2.png"
+              height={160}
+              alt="Card image"
+            />
+          </Card.Section>
           <Group justify="space-between" mt="md" mb="xs">
             <Title order={4}>Dynamic Shadow</Title>
           </Group>
@@ -53,7 +64,7 @@ function Demo() {
             Enable shadowEffect and tilt the card to see the shadow
             follow the rotation.
           </Text>
-        </Paper>
+        </Card>
       </Parallax>
     </Center>
   );

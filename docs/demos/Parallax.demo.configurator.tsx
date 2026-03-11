@@ -5,7 +5,7 @@ import { MantineDemo } from '@mantinex/demo';
 function Demo(props: ParallaxProps) {
   return (
     <Center w="100%" h={500}>
-      <Parallax {...props} w={400}>
+      <Parallax {...props} w={400} radius="md">
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Card.Section>
             <Image
@@ -40,7 +40,7 @@ import { Parallax } from '@gfazioli/mantine-parallax';
 function Demo() {
   return (
     <Center w="100%" h={500}>
-      <Parallax {{props}} w={400}>
+      <Parallax {{props}} w={400} radius="md">
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Card.Section>
             <Image
