@@ -365,11 +365,20 @@ export const defaultProps = {
   glareOverlay: true,
 } satisfies Partial<ParallaxProps>;
 
+const CHILDREN_CONTAINER_STYLE: React.CSSProperties = {
+  position: 'relative',
+  width: '100%',
+  height: '100%',
+  overflow: 'visible',
+  zIndex: 1,
+};
+
 export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   const props = useProps('Parallax', defaultProps, _props);
 
   const rafRef = useRef<number>(0);
   const isHoveringRef = useRef(false);
+  const rotationRef = useRef({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [lightPosition, setLightPosition] = useState({ x: 50, y: 50 });
@@ -446,6 +455,15 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
   const isDisabled = disabled || prefersReducedMotion;
 
+  // Ref for onRotationChange to avoid callback cascade
+  const onRotationChangeRef = useRef(onRotationChange);
+  onRotationChangeRef.current = onRotationChange;
+
+  const updateRotation = useCallback((newRotation: { x: number; y: number }) => {
+    rotationRef.current = newRotation;
+    setRotation(newRotation);
+  }, []);
+
   const getStyles = useStyles<ParallaxFactory>({
     name: 'Parallax',
     props,
@@ -504,8 +522,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         vel.x = 0;
         vel.y = 0;
         springRafRef.current = 0;
-        setRotation({ x: target.x, y: target.y });
-        onRotationChange?.({
+        updateRotation({ x: target.x, y: target.y });
+        onRotationChangeRef.current?.({
           rotateX: target.x,
           rotateY: target.y,
           isHovering: isHoveringRef.current,
@@ -513,11 +531,15 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         return;
       }
 
-      setRotation({ x: pos.x, y: pos.y });
-      onRotationChange?.({ rotateX: pos.x, rotateY: pos.y, isHovering: isHoveringRef.current });
+      updateRotation({ x: pos.x, y: pos.y });
+      onRotationChangeRef.current?.({
+        rotateX: pos.x,
+        rotateY: pos.y,
+        isHovering: isHoveringRef.current,
+      });
       springRafRef.current = requestAnimationFrame(springStep);
     },
-    [springStiffness, springDamping, onRotationChange]
+    [springStiffness, springDamping, updateRotation]
   );
 
   const startSpringLoop = useCallback(() => {
@@ -550,8 +572,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
           targetRotationRef.current = { x: rotateX, y: rotateY };
           startSpringLoop();
         } else {
-          setRotation({ x: rotateX, y: rotateY });
-          onRotationChange?.({ rotateX, rotateY, isHovering: true });
+          updateRotation({ x: rotateX, y: rotateY });
+          onRotationChangeRef.current?.({ rotateX, rotateY, isHovering: true });
         }
 
         if (lightEffect || glareEffect) {
@@ -566,11 +588,11 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       threshold,
       lightEffect,
       glareEffect,
-      onRotationChange,
       invertRotation,
       clampRotation,
       springEffect,
       startSpringLoop,
+      updateRotation,
     ]
   );
 
@@ -605,6 +627,12 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
   }, [isDisabled]);
 
   const deactivate = useCallback(() => {
+    // Cancel pending RAF first to prevent race condition
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+    }
+
     const wasHovering = isHoveringRef.current;
     isHoveringRef.current = false;
     setIsHovering(false);
@@ -615,21 +643,17 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       targetRotationRef.current = { x: 0, y: 0 };
       startSpringLoop();
     } else if (resetOnLeave) {
-      setRotation({ x: 0, y: 0 });
+      updateRotation({ x: 0, y: 0 });
     }
 
     if (wasHovering && !springEffect) {
+      const current = rotationRef.current;
       const resetValues = resetOnLeave
         ? { rotateX: 0, rotateY: 0 }
-        : { rotateX: rotation.x, rotateY: rotation.y };
-      onRotationChange?.({ ...resetValues, isHovering: false });
+        : { rotateX: current.x, rotateY: current.y };
+      onRotationChangeRef.current?.({ ...resetValues, isHovering: false });
     }
-
-    if (rafRef.current) {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = 0;
-    }
-  }, [onRotationChange, resetOnLeave, rotation, springEffect, startSpringLoop]);
+  }, [resetOnLeave, springEffect, startSpringLoop, updateRotation]);
 
   const handleTouchStart = useCallback(() => {
     if (touchEnabled) {
@@ -678,8 +702,8 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         targetRotationRef.current = { x: rotateX, y: rotateY };
         startSpringLoop();
       } else {
-        setRotation({ x: rotateX, y: rotateY });
-        onRotationChange?.({ rotateX, rotateY, isHovering: true });
+        updateRotation({ x: rotateX, y: rotateY });
+        onRotationChangeRef.current?.({ rotateX, rotateY, isHovering: true });
       }
 
       if (lightEffect || glareEffect) {
@@ -695,11 +719,11 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       gyroscopeSensitivity,
       invertRotation,
       clampRotation,
-      onRotationChange,
       lightEffect,
       glareEffect,
       springEffect,
       startSpringLoop,
+      updateRotation,
     ]
   );
 
@@ -785,25 +809,26 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       }
 
       const sign = invertRotation ? -1 : 1;
-      let newX = rotation.x;
-      let newY = rotation.y;
+      const current = rotationRef.current;
+      let newX = current.x;
+      let newY = current.y;
 
       switch (e.key) {
         case 'ArrowUp':
           e.preventDefault();
-          newX = clampRotation(rotation.x + sign * keyboardStep);
+          newX = clampRotation(current.x + sign * keyboardStep);
           break;
         case 'ArrowDown':
           e.preventDefault();
-          newX = clampRotation(rotation.x - sign * keyboardStep);
+          newX = clampRotation(current.x - sign * keyboardStep);
           break;
         case 'ArrowLeft':
           e.preventDefault();
-          newY = clampRotation(rotation.y - sign * keyboardStep);
+          newY = clampRotation(current.y - sign * keyboardStep);
           break;
         case 'ArrowRight':
           e.preventDefault();
-          newY = clampRotation(rotation.y + sign * keyboardStep);
+          newY = clampRotation(current.y + sign * keyboardStep);
           break;
         case 'Escape':
           e.preventDefault();
@@ -823,20 +848,19 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         targetRotationRef.current = { x: newX, y: newY };
         startSpringLoop();
       } else {
-        setRotation({ x: newX, y: newY });
-        onRotationChange?.({ rotateX: newX, rotateY: newY, isHovering: true });
+        updateRotation({ x: newX, y: newY });
+        onRotationChangeRef.current?.({ rotateX: newX, rotateY: newY, isHovering: true });
       }
     },
     [
       keyboardEnabled,
       isDisabled,
       invertRotation,
-      rotation,
       keyboardStep,
       clampRotation,
       springEffect,
       startSpringLoop,
-      onRotationChange,
+      updateRotation,
     ]
   );
 
@@ -852,6 +876,14 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       deactivate();
     }
   }, [keyboardEnabled, deactivate]);
+
+  // Cancel spring loop when springEffect is toggled off
+  useEffect(() => {
+    if (!springEffect && springRafRef.current) {
+      cancelAnimationFrame(springRafRef.current);
+      springRafRef.current = 0;
+    }
+  }, [springEffect]);
 
   useEffect(() => {
     return () => {
@@ -989,14 +1021,6 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       })
     : children;
 
-  const childrenContainerStyle: React.CSSProperties = {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    overflow: 'visible',
-    zIndex: 1,
-  };
-
   const contextValue = useMemo(
     () => ({
       rotation,
@@ -1057,7 +1081,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
           {...others}
           {...getStyles('root', { style: cardStyle })}
         >
-          <div {...getStyles('content', { style: childrenContainerStyle })}>
+          <div {...getStyles('content', { style: CHILDREN_CONTAINER_STYLE })}>
             {childrenWithParallax}
           </div>
           {lightEffect && <div {...getStyles('light', { style: lightStyle })} />}
