@@ -23,10 +23,11 @@ export function ParallaxLayer(_props: ParallaxLayerProps) {
   const { depth = 1, style, children, ...others } = props;
   const ctx = useParallaxContext();
 
+  const isActive = ctx.isHovering || ctx.rotation.x !== 0 || ctx.rotation.y !== 0;
   const duration = ctx.isHovering ? ctx.hoverDuration : ctx.restDuration;
 
   const layerStyle: React.CSSProperties = {
-    transform: ctx.isHovering
+    transform: isActive
       ? `translateX(${ctx.rotation.y * depth}px) translateY(${ctx.rotation.x * -depth}px)`
       : 'translateX(0px) translateY(0px)',
     transformStyle: 'preserve-3d',
