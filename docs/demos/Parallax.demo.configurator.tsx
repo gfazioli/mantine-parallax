@@ -251,7 +251,7 @@ export const configurator: MantineDemo = {
       prop: 'lightIntensity',
       type: 'number',
       initialValue: 0.1,
-      libraryValue: 0.1,
+      libraryValue: 0.2,
       min: 0,
       max: 1,
       step: 0.1,
@@ -269,7 +269,7 @@ export const configurator: MantineDemo = {
       type: 'color',
       prop: 'lightColor',
       initialValue: 'rgba(255, 255, 255, .5)',
-      libraryValue: 'rgba(255, 255, 255, .5)',
+      libraryValue: 'rgba(255, 255, 255, .1)',
     },
     {
       prop: 'lightGradientType',

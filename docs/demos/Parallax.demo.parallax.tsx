@@ -42,7 +42,7 @@ export const parallax: MantineDemo = {
       libraryValue: 1000,
       step: 1,
       min: 1,
-      max: 3000,
+      max: 10000,
     },
     {
       prop: 'threshold',
@@ -93,7 +93,7 @@ export const parallax: MantineDemo = {
       prop: 'lightIntensity',
       type: 'number',
       initialValue: 0.1,
-      libraryValue: 0.1,
+      libraryValue: 0.2,
       min: 0,
       max: 1,
       step: 0.1,
@@ -111,7 +111,7 @@ export const parallax: MantineDemo = {
       type: 'color',
       prop: 'lightColor',
       initialValue: 'rgba(255, 255, 255, .5)',
-      libraryValue: 'rgba(255, 255, 255, .5)',
+      libraryValue: 'rgba(255, 255, 255, .1)',
     },
     {
       prop: 'lightGradientType',

@@ -20,11 +20,12 @@ const defaultProps: Partial<ParallaxLayerProps> = {
 
 export function ParallaxLayer(_props: ParallaxLayerProps) {
   const props = useProps('ParallaxLayer', defaultProps, _props);
-  const { depth, style, children, ...others } = props;
+  const { depth = 1, style, children, ...others } = props;
   const ctx = useParallaxContext();
 
+  const duration = ctx.isHovering ? ctx.hoverDuration : ctx.restDuration;
+
   const layerStyle: React.CSSProperties = {
-    ...(typeof style === 'object' && !Array.isArray(style) ? style : {}),
     transform: ctx.isHovering
       ? `perspective(${ctx.perspectiveValue}) translateX(${ctx.rotation.y * depth}px) translateY(${ctx.rotation.x * -depth}px)`
       : '',
@@ -32,11 +33,11 @@ export function ParallaxLayer(_props: ParallaxLayerProps) {
     transition:
       ctx.prefersReducedMotion || ctx.springEffect
         ? 'none'
-        : `transform ${ctx.hoverDuration}ms ${ctx.transitionEasing}`,
+        : `transform ${duration}ms ${ctx.transitionEasing}`,
   };
 
   return (
-    <Box style={layerStyle} {...others}>
+    <Box style={[layerStyle, style]} {...others}>
       {children}
     </Box>
   );
