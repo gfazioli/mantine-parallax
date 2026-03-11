@@ -5,7 +5,7 @@ import { MantineDemo } from '@mantinex/demo';
 function Demo(props: ParallaxProps) {
   return (
     <Center w="100%" h={300}>
-      <Parallax {...props} p={32} bg="tomato">
+      <Parallax {...props} p={32} bg="tomato" radius={16}>
         <Box
           w={300}
           h={200}

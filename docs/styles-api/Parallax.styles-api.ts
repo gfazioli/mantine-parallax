@@ -9,7 +9,11 @@ export const ParallaxStylesApi: StylesApiData<ParallaxFactory> = {
     glare: 'Glare reflection effect',
   },
 
-  vars: {},
+  vars: {
+    root: {
+      '--parallax-radius': 'Controls `border-radius` of the parallax card',
+    },
+  },
 
   //modifiers: [{ selector: 'root' }],
 };
