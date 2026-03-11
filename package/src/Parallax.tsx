@@ -706,7 +706,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
 
   // Gyroscope support
   const gyroBaselineRef = useRef<{ beta: number; gamma: number } | null>(null);
-  const gyroPermissionRef = useRef<'pending' | 'granted' | 'denied'>('pending');
+  const gyroPermissionRef = useRef<'pending' | 'requesting' | 'granted' | 'denied'>('pending');
   const gyroActiveRef = useRef(false);
 
   const handleDeviceOrientation = useCallback(
@@ -772,10 +772,13 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       !hasDeviceOrientation ||
       !gyroscopeEnabled ||
       isDisabled ||
-      gyroPermissionRef.current === 'granted'
+      gyroPermissionRef.current === 'granted' ||
+      gyroPermissionRef.current === 'requesting'
     ) {
       return;
     }
+
+    gyroPermissionRef.current = 'requesting';
 
     // iOS 13+ requires explicit permission request
     const DeviceOrientationEventTyped = DeviceOrientationEvent as unknown as {
@@ -921,6 +924,13 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
       deactivate();
     }
   }, [keyboardEnabled, deactivate]);
+
+  // Deactivate if disabled changes mid-hover
+  useEffect(() => {
+    if (isDisabled && isHoveringRef.current) {
+      deactivate();
+    }
+  }, [isDisabled, deactivate]);
 
   // Sync spring state when springEffect is toggled
   useEffect(() => {

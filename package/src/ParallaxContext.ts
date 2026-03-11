@@ -12,5 +12,5 @@ export interface ParallaxContextValue {
 }
 
 export const [ParallaxProvider, useParallaxContext] = createSafeContext<ParallaxContextValue>(
-  'Parallax.Layer must be used within a Parallax component'
+  'ParallaxLayer/Parallax.Layer must be used within a Parallax component'
 );
