@@ -1140,7 +1140,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
         style={{
           position: 'relative',
           overflow: 'visible',
-          touchAction: touchEnabled ? 'none' : undefined,
+          touchAction: touchEnabled && !isDisabled ? 'none' : undefined,
           outline: keyboardEnabled ? undefined : 'none',
         }}
       >
