@@ -394,7 +394,7 @@ const CHILDREN_CONTAINER_STYLE: React.CSSProperties = {
   zIndex: 1,
 };
 
-export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
+export const Parallax = polymorphicFactory<ParallaxFactory>((_props) => {
   const props = useProps('Parallax', defaultProps, _props);
 
   const rafRef = useRef<number>(0);
@@ -1144,12 +1144,7 @@ export const Parallax = polymorphicFactory<ParallaxFactory>((_props, ref) => {
           outline: keyboardEnabled ? undefined : 'none',
         }}
       >
-        <Box
-          ref={ref}
-          h={h ? '100%' : undefined}
-          {...others}
-          {...getStyles('root', { style: cardStyle })}
-        >
+        <Box h={h ? '100%' : undefined} {...others} {...getStyles('root', { style: cardStyle })}>
           <div {...getStyles('content', { style: CHILDREN_CONTAINER_STYLE })}>
             {childrenWithParallax}
           </div>

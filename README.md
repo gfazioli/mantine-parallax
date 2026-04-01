@@ -18,6 +18,7 @@
 ## Overview
 
 This component is created on top of the [Mantine](https://mantine.dev/) library.
+It requires **Mantine 9.x** and **React 19**.
 
 [Mantine Parallax](https://gfazioli.github.io/mantine-parallax/) provides a flexible way to create rich, interactive motion effects for UI elements, ranging from the classic Apple TV card tilt to custom 3D transformations. 
 
