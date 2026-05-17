@@ -1,6 +1,6 @@
-import React, { act } from 'react';
-import { fireEvent } from '@testing-library/dom';
 import { render, screen } from '@mantine-tests/core';
+import { fireEvent } from '@testing-library/dom';
+import React, { act } from 'react';
 import { Parallax } from './Parallax';
 
 describe('Parallax', () => {

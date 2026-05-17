@@ -1,4 +1,3 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Box,
   createVarsResolver,
@@ -16,6 +15,7 @@ import {
   type StylesApiProps,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ParallaxProvider } from './ParallaxContext';
 import { ParallaxLayer } from './ParallaxLayer';
 import classes from './Parallax.module.css';
