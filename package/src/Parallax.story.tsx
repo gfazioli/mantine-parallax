@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Badge,
   Box,
@@ -13,6 +12,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useIntersection } from '@mantine/hooks';
+import React from 'react';
 import { Parallax, ParallaxProps } from './Parallax';
 
 export default {

@@ -1,5 +1,5 @@
-import React from 'react';
 import { Box, useProps, type BoxProps } from '@mantine/core';
+import React from 'react';
 import { useParallaxContext } from './ParallaxContext';
 
 export interface ParallaxLayerProps extends BoxProps {

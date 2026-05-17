@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { Parallax } from '@gfazioli/mantine-parallax';
 import { Badge, Card, Center, Code, Group, Stack, Text } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 
 function Demo() {
   const [info, setInfo] = useState({ rotateX: 0, rotateY: 0, isHovering: false });
