@@ -28,12 +28,12 @@
     "next": "16.2.6",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "remark-slug": "^7.0.1",
-    "shiki": "^3.23.0",
-    "type-fest": "^4.41.0"
+    "remark-slug": "^8.0.0",
+    "shiki": "^4.0.0",
+    "type-fest": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.19.19",
+    "@types/node": "^25.0.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "typescript": "6.0.3"
