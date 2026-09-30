@@ -1,7 +1,17 @@
 import { render, screen } from '@mantine-tests/core';
-import { fireEvent } from '@testing-library/dom';
+import { fireEvent } from '@testing-library/react';
 import React, { act } from 'react';
 import { Parallax } from './Parallax';
+
+// MantineProvider renders its <style> tags before the component, so `container.firstElementChild`
+// is a <style>, not Parallax, and `[class]` matches the outer Box, which renders `class=""`: take
+// the inner root and its parent, the outer interaction Box.
+// fireEvent comes from @testing-library/react, not /dom: React runs onMouseEnter/onMouseLeave from
+// mouseover/mouseout and onFocus/onBlur from focusin/focusout, which only the React version fires.
+function getBoxes(container: HTMLElement) {
+  const root = container.querySelector('[class*="root"]') as HTMLElement;
+  return { root, outerBox: root.parentElement as HTMLElement };
+}
 
 describe('Parallax', () => {
   it('renders without crashing', () => {
@@ -185,9 +195,10 @@ describe('Parallax', () => {
         <div>Test</div>
       </Parallax>
     );
-    const root = container.querySelector('[data-testid="parallax-root"]');
-    expect(root).toBeInTheDocument();
+    const { root, outerBox } = getBoxes(container);
+    expect(root).toHaveAttribute('data-testid', 'parallax-root');
     expect(root).toHaveAttribute('aria-label', 'parallax');
+    expect(outerBox).not.toHaveAttribute('data-testid');
   });
 
   it('registers mouse event handlers on outer wrapper', () => {
@@ -196,16 +207,20 @@ describe('Parallax', () => {
         <div>Test</div>
       </Parallax>
     );
-    const outerBox = container.firstElementChild as HTMLElement;
-    // Verify that mouse events don't throw
-    expect(() => {
-      act(() => {
-        fireEvent.mouseEnter(outerBox);
-      });
-      act(() => {
-        fireEvent.mouseLeave(outerBox);
-      });
-    }).not.toThrow();
+    const { outerBox, root } = getBoxes(container);
+
+    // Positive control for 'does not activate hover when disabled': here the same event activates.
+    act(() => {
+      fireEvent.mouseEnter(outerBox);
+    });
+    expect(root.style.transition).toBe('transform 100ms ease-out');
+
+    act(() => {
+      fireEvent.mouseLeave(outerBox);
+    });
+    expect(root.style.transition).toBe(
+      'transform 300ms ease-out, background-position 300ms ease-out'
+    );
   });
 
   it('does not activate hover when disabled', () => {
@@ -214,13 +229,12 @@ describe('Parallax', () => {
         <div>Test</div>
       </Parallax>
     );
-    const outerBox = container.firstElementChild as HTMLElement;
+    const { outerBox, root } = getBoxes(container);
 
     act(() => {
       fireEvent.mouseEnter(outerBox);
     });
-    const root = container.querySelector('[class*="root"]') as HTMLElement;
-    expect(root?.style.transition).toBe(
+    expect(root.style.transition).toBe(
       'transform 300ms ease-out, background-position 300ms ease-out'
     );
   });
@@ -241,8 +255,10 @@ describe('Parallax', () => {
         <div>Test</div>
       </Parallax>
     );
-    const outerBox = container.firstElementChild as HTMLElement;
+    const { outerBox, root } = getBoxes(container);
     expect(outerBox).toBeInTheDocument();
+    // jsdom drops the outer Box's calc(... var(--mantine-scale)) sizes; the root's 100% survives.
+    expect(root.style.height).toBe('100%');
   });
 
   it('registers touch event handlers on outer wrapper', () => {
@@ -251,15 +267,31 @@ describe('Parallax', () => {
         <div>Test</div>
       </Parallax>
     );
-    const outerBox = container.firstElementChild as HTMLElement;
-    expect(() => {
-      act(() => {
-        fireEvent.touchStart(outerBox);
-      });
-      act(() => {
-        fireEvent.touchEnd(outerBox);
-      });
-    }).not.toThrow();
+    const { outerBox, root } = getBoxes(container);
+
+    // Positive control for 'does not activate touch when touchEnabled is false'.
+    act(() => {
+      fireEvent.touchStart(outerBox);
+    });
+    expect(root.style.transition).toBe('transform 100ms ease-out');
+
+    act(() => {
+      fireEvent.touchEnd(outerBox);
+    });
+    expect(root.style.transition).toBe(
+      'transform 300ms ease-out, background-position 300ms ease-out'
+    );
+
+    // A cancelled touch (scroll takeover, system gesture) must reset the card too.
+    act(() => {
+      fireEvent.touchStart(outerBox);
+    });
+    act(() => {
+      fireEvent.touchCancel(outerBox);
+    });
+    expect(root.style.transition).toBe(
+      'transform 300ms ease-out, background-position 300ms ease-out'
+    );
   });
 
   it('does not activate touch when touchEnabled is false', () => {
@@ -268,13 +300,12 @@ describe('Parallax', () => {
         <div>Test</div>
       </Parallax>
     );
-    const outerBox = container.firstElementChild as HTMLElement;
+    const { outerBox, root } = getBoxes(container);
 
     act(() => {
       fireEvent.touchStart(outerBox);
     });
-    const root = container.querySelector('[class*="root"]') as HTMLElement;
-    expect(root?.style.transition).toBe(
+    expect(root.style.transition).toBe(
       'transform 300ms ease-out, background-position 300ms ease-out'
     );
   });
@@ -387,7 +418,7 @@ describe('Parallax', () => {
         <div>Test</div>
       </Parallax>
     );
-    const outerBox = container.firstElementChild as HTMLElement;
+    const { outerBox } = getBoxes(container);
 
     act(() => {
       fireEvent.mouseEnter(outerBox);
@@ -614,9 +645,9 @@ describe('Parallax', () => {
         <div>Test</div>
       </Parallax>
     );
-    const rootDiv = container.querySelector('[class]');
-    const style = rootDiv?.getAttribute('style') || '';
-    expect(style).not.toContain('transform 300ms');
+    const { root } = getBoxes(container);
+    // The spring drives the transform from JS, so only background-position keeps a CSS transition.
+    expect(root.style.transition).toBe('background-position 300ms ease-out');
   });
 
   it('renders with spring and other effects combined without crashing', () => {
@@ -686,6 +717,33 @@ describe('Parallax', () => {
     expect(el).toBeTruthy();
     expect(el?.getAttribute('aria-roledescription')).toBe('parallax card');
     expect(el?.getAttribute('aria-label')).toContain('arrow keys');
+  });
+
+  it('activates on focus, tilts with arrow keys and resets on blur when keyboardEnabled', () => {
+    const { container } = render(
+      <Parallax keyboardEnabled>
+        <div>Test</div>
+      </Parallax>
+    );
+    const { outerBox, root } = getBoxes(container);
+
+    act(() => {
+      fireEvent.focus(outerBox);
+    });
+    expect(root.style.transition).toBe('transform 100ms ease-out');
+
+    act(() => {
+      fireEvent.keyDown(outerBox, { key: 'ArrowUp' });
+    });
+    expect(root.style.transform).toContain('rotateX(5deg)');
+
+    act(() => {
+      fireEvent.blur(outerBox);
+    });
+    expect(root.style.transition).toBe(
+      'transform 300ms ease-out, background-position 300ms ease-out'
+    );
+    expect(root.style.transform).toContain('rotateX(0deg)');
   });
 
   it('does not add ARIA attributes when keyboardEnabled is false', () => {
